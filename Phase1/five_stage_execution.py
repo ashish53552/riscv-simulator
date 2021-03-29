@@ -18,36 +18,36 @@ def fetch(PC, IR) :
 	return (PC, IR)
 
 
-# In Decode, the Instruction is a Hexadecimal String
+# In Decode, the instruction is a Hexadecimal String of format 0x0 0x123123112
 def decode(instruction) :
-
-	bin_instruction = format(int(split_instruction[1],16), '0>32b')
-	op_code = bun_instruction[25:]
+	split_instruction = instruction.split()
+	bin_instruction = format(int(split_instruction[1],16),'0>32b')
+	op_code = bin_instruction[25:]
 
 	if(op_code == '0110011'):
-		return instruction_encoding.extract_R_type(instruction)
+		return instruction_encoding.extract_R_type(bin_instruction)
 
 	elif(op_code == '0010011' or op_code == '0000011' or op_code == '1100111') :
-		return instruction_encoding.extract_I_type(instruction)
+		return instruction_encoding.extract_I_type(bin_instruction)
 
 	elif(op_code == '0100011') :
-		return instruction_encoding.extract_S_type(instruction)
+		return instruction_encoding.extract_S_type(bin_instruction)
 
 	elif(op_code == '1100011') :
-		return instruction_encoding.extract_SB_type(instruction)
+		return instruction_encoding.extract_SB_type(bin_instruction)
 
 	elif(op_code == '1101111') :
-		return instruction_encoding.extract_UJ_type(instruction)
+		return instruction_encoding.extract_UJ_type(bin_instruction)
 
 	elif(op_code == '0010111' or op_code == '0110111') :
-		return instruction_encoding.extract_U_type(instruction)
+		return instruction_encoding.extract_U_type(bin_instruction)
 
 	else :
 		print("Invalid Instruction")
 		return None
 
 
-def excute(value1, value2, op) :
+def execute(value1, value2, op) :
 
 	pass 
 

@@ -8,7 +8,8 @@
 
 def iag(pc_prev, ra, imm, mux_pc_cs, mux_inc_cs) :
 
-	mux_pc_output = None, mux_inc_output = None
+	mux_pc_output = None
+	mux_inc_output = None
 
 	if mux_pc_cs == 0 :
 		mux_pc_output = ra
