@@ -16,20 +16,20 @@ def twos_complement(val,total_bits):
     return val     
 
 #Both value1 and value2 are Hexadecimal Strings, converted to signed decimal integers
-def get_neg_values(value1,value2,total_bits1,total_bits2)               
+def get_neg_values(value1,value2,total_bits1,total_bits2) :          
 
-	value1 = pad_hexa(value1,total_bits1/4)
-	value2 = pad_hexa(value2,total_bits2/4)
+	value1 = pad_hexa(value1,int(total_bits1/4))
+	value2 = pad_hexa(value2,int(total_bits2/4))
 
 	bin_value1 = format(int(value1,16),'0>32b')		
-	if(bin_value1[0] == 1) :
-		value1 = twos_complenent(int(value1,total_16),total_bits1)	
+	if(bin_value1[0] == '1') :
+		value1 = twos_complement(int(value1,16),total_bits1)	
 	else :
 		value1 = int(value1,16)	
 
 	bin_value2 = format(int(value2,16),'0>32b')		
-	if(bin_value2[0] == 1) :
-		value2 = twos_complenent(int(value2,total_16),total_bits2)	
+	if(bin_value2[0] == '1') :
+		value2 = twos_complement(int(value2,16),total_bits2)	
 	else :
 		value2 = int(value2,16)	
 
@@ -37,14 +37,14 @@ def get_neg_values(value1,value2,total_bits1,total_bits2)
 
 #Taking an integer value, and converting it to a hexadecimal string with a bound on the number of bits
 #If the number of bits is exceeding a certain range, then extra MSB side bits (from carry) are taken out
-def bounding_hex(num,total_bits=32)
+def bounding_hex(num,total_bits=32) :
 
 	formatting_string = '0>' + str(total_bits) + 'b'
 
 	if num > 2**(total_bits-1)-1 :
 		num = int('0'+bin(num)[-(total_bits-2):],2)
 	elif num < -1*(2**(total_bits-1)):
-		num = int('1'+bin(num)[-(total_bits-2):],2)
+		num = int('1'+bin(int(hex(-1*twos_complement(-1*num,total_bits)),16))[-(total_bits-2):],2)
 
 	if num < 0 :
 		bin_num = format(int(hex(-1*twos_complement(-1*num,total_bits)),16),formatting_string)
@@ -138,6 +138,24 @@ def execute(value1, value2, total_bits1, total_bits2, op) :
 
 	 elif op == 'shift_right_arithmetic' :
 	 	return bounding_hex(value1>>value2 + (2**(value2)-1)*(2**(total_bits1-value2)))
+
+	 elif op == 'check_if_equal' :
+	 	if(value1 == value2) :
+	 		return True
+	 	else :
+	 		return False
+
+	 elif op == 'check_if_less than' :
+	 	if(value1 < value2) :
+	 		return True
+	 	else :
+	 		return False
+
+	 elif op == 'check_if_greater_than_equal_to' :
+	 	if(value1 >= value2) :
+	 		return True
+	 	else :
+	 		return False
 
 
 def memory_access(MAR, MDR) :
