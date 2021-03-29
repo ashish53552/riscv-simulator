@@ -13,7 +13,9 @@ def pad_hexa(hex_num,total_half_bytes):
 def twos_complement(val,total_bits):
     
 	val = val - (1 << total_bits)
-    return val     
+	return val     
+
+
 
 #Both value1 and value2 are Hexadecimal Strings, converted to signed decimal integers
 def get_neg_values(value1,value2,total_bits1,total_bits2) :          
@@ -106,56 +108,56 @@ def execute(value1, value2, total_bits1, total_bits2, op) :
 
 	value1, value2 = get_neg_values(value1,value2,total_bits1,total_bits2)
 
-	 if op == 'addition' :
-	 	return bounding_hex(value1+value2)
+	if op == 'addition' :
+		return bounding_hex(value1+value2)
 
-	 elif op == 'subtract' :
-	 	return bounding_hex(value1-value2) 
+	elif op == 'subtract' :
+		return bounding_hex(value1-value2) 
 
-	 elif op == 'multiply' :
-	 	return bounding_hex(value1*value2)
+	elif op == 'multiply' :
+		return bounding_hex(value1*value2)
 
-	 elif op == 'divide' :
-	 	return bounding_hex(value1//value2)
+	elif op == 'divide' :
+		return bounding_hex(value1//value2)
 
-	 elif op == 'remainder' :
-	 	return bounding_hex(value1%value2)
+	elif op == 'remainder' :
+		return bounding_hex(value1%value2)
 
-	 elif op == 'and_bitwise' :
-	 	return bounding_hex(value1&value2)
+	elif op == 'and_bitwise' :
+		return bounding_hex(value1&value2)
 
-	 elif op == 'or_bitwise' :
-	 	return bounding_hex(value1|value2)
+	elif op == 'or_bitwise' :
+		return bounding_hex(value1|value2)
 
-	 elif op == 'xor_bitwise' :
-	 	return bounding_hex(value1^value2)
+	elif op == 'xor_bitwise' :
+		return bounding_hex(value1^value2)
 
-	 elif op == 'shift_left_logical' :
-	 	return bounding_hex(value1<<value2)
+	elif op == 'shift_left_logical' :
+		return bounding_hex(value1<<value2)
 
-	 elif op == 'shift_right_logical' :
-	 	return bounding_hex(value1>>value2)
+	elif op == 'shift_right_logical' :
+		return bounding_hex(value1>>value2)
 
-	 elif op == 'shift_right_arithmetic' :
-	 	return bounding_hex(value1>>value2 + (2**(value2)-1)*(2**(total_bits1-value2)))
+	elif op == 'shift_right_arithmetic' :
+		return bounding_hex(value1>>value2 + (2**(value2)-1)*(2**(total_bits1-value2)))
 
-	 elif op == 'check_if_equal' :
-	 	if(value1 == value2) :
-	 		return True
-	 	else :
-	 		return False
+	elif op == 'check_if_equal' :
+		if(value1 == value2) :
+			return True
+		else :
+			return False
 
-	 elif op == 'check_if_less than' :
-	 	if(value1 < value2) :
-	 		return True
-	 	else :
-	 		return False
+	elif op == 'check_if_less than' :
+		if(value1 < value2) :
+			return True
+		else :
+			return False
 
-	 elif op == 'check_if_greater_than_equal_to' :
-	 	if(value1 >= value2) :
-	 		return True
-	 	else :
-	 		return False
+	elif op == 'check_if_greater_than_equal_to' :
+		if(value1 >= value2) :
+			return True
+		else :
+			return False
 
 
 def memory_access(MAR, MDR) :

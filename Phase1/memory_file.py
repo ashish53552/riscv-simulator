@@ -71,5 +71,4 @@ def get_data_from_memory(location, no_of_byte):
         location = "0x" + format((int(location, 16) + 1), "0>8x").upper()
 
     value = "0x"+format(value, "0>8")
-
     return value

@@ -1,16 +1,6 @@
-import five_stage_execution
+from five_stage_execution import *
 from instruction_encoding import *
 from collections import OrderedDict
-
-# Default Register File
-registers = OrderedDict()
-
-for i in range(32):
-  registers["x"+str(i)] = "0x00000000"
-
-registers["x2"] = "0x7FFFFFF0"
-registers["x3"] = "0x10000000"
-<<<<<<< HEAD
 
 #instructions_machine_code array will have all the .mc file instructions
 instructions_machine_code = []
@@ -25,8 +15,7 @@ no_of_instructions = len(instructions_machine_code)
 
 
 for instruction in instructions_machine_code:
-
-    five_stage_execution.decode(instruction)
+    decode(instruction)
 
 
 
