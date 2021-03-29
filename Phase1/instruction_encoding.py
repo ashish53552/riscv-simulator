@@ -79,9 +79,6 @@ def extract_SB_type(bin_instruction) :
 		"rd" : None,
 	}
 
-	# SB format - opcode - [6:0] , f3-[12:14] , rs1 - [15:19] , rs2 - [20:24]  , imm - [7:10(1:4bits), 25:30(5:10bits), 11(11th bit) ,31(12th bit)]
-
-	bin_instruction = format(int(instruction.split()[1], 16), '0>32b')
 	extracted_fields["opc_code"] = bin_instruction[25:]
 	extracted_fields["rs1"] = bin_instruction[12:17]
 	extracted_fields["rs2"] = bin_instruction[7:12]
