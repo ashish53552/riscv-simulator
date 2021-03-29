@@ -10,7 +10,7 @@ for i in range(32):
 
 registers["x2"] = "0x7FFFFFF0"
 registers["x3"] = "0x10000000"
-
+<<<<<<< HEAD
 
 #instructions_machine_code array will have all the .mc file instructions
 instructions_machine_code = []
