@@ -11,7 +11,6 @@ no_of_instructions = len(instructions_machine_code)
 
 
 
-##Currently solving assuming only one instruction in .mc file, later adding a for loop would make the program work for .mc file with multiple instructions
 for instruction in instructions_machine_code:
 
     split_instruction = instruction.split()     #split into instruction number and actual instruction (see .mc file to understand)
