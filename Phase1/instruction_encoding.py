@@ -3,6 +3,7 @@
 #The variable istruction is a string of the 32 bit binary instruction
 
 # ASSUMING INSTRUCTION OF TYPE 0x0 0x11111111
+instruction="0x0 0x11111111"
 def extract_R_type(instruction) :
 
 	extracted_fields = {"opc_code" : None,
@@ -96,3 +97,5 @@ def extract_U_type(instruction) :
 	extracted_fields['imm'] = bin_instruction[:20]
 
 	return extracted_fields ;
+
+#extract_I_type(instruction)
