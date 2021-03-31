@@ -1,27 +1,30 @@
+from collections import OrderedDict
 from five_stage_execution import *
 from instruction_encoding import *
 from execute_instruction import *
-from collections import OrderedDict
+from memory_file import *
+from register_file import *
 
 #instructions_machine_code array will have all the .mc file instructions
-instructions_machine_code = []
-
 input_file = open("./test/input.mc","r")
 
 PC = None, IR = None
 
+# Storing each instruction in the text memory
 for line in input_file:
-    instructions_machine_code.append(line)
+    instr = line.split()[1]
+    add_text_to_memory(instr)
 
-#total instructions in .mc file
-no_of_instructions = len(instructions_machine_code)
+# To mark the end of the instructions
+add_text_to_memory("0x00000000")
 
-
-for instruction in instructions_machine_code:
-    
+# Fetching the instruction from the text memory, decoding it and performing the respective tasks
+while True:
     PC, IR = fetch(PC, IR)
-    instruction_dict = decode(IR)
+    if IR == "0x00000000":
+        break
 
+    instruction_dict = decode(IR)
     instruction = identify_instruction_and_run(instruction_dict)
 
 
