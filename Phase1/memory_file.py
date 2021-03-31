@@ -17,33 +17,8 @@ def add_text_to_memory(instruction):
     memory[text_pointer] = instruction[-8:-6]
     text_pointer = "0x" + format((int(text_pointer, 16) + 1), "0>8x").upper()  # incrementing the text pointer
 
-def add_data_to_memory(data, no_of_byte):
-    global data_pointer
-    # For storing Single Byte Data like in sb
-    if no_of_byte == 1:
-        memory[data_pointer] = data[-2:]
-        data_pointer = "0x" + format((int(data_pointer, 16) + 1), "0>8x").upper() #incrementing the data pointer
-
-    # For storing Half Word Data like in sh
-    elif no_of_byte == 2:
-        memory[data_pointer] = data[-2:]
-        data_pointer = "0x" + format((int(data_pointer, 16) + 1), "0>8x").upper()  # incrementing the data pointer
-        memory[data_pointer] = data[-4:-2]
-        data_pointer = "0x" + format((int(data_pointer, 16) + 1), "0>8x").upper()  # incrementing the data pointer
-
-    # For storing Word Data like in sw
-    elif no_of_byte == 4:
-        memory[data_pointer] = data[-2:]
-        data_pointer = "0x" + format((int(data_pointer, 16) + 1), "0>8x").upper()  # incrementing the data pointer
-        memory[data_pointer] = data[-4:-2]
-        data_pointer = "0x" + format((int(data_pointer, 16) + 1), "0>8x").upper()  # incrementing the data pointer
-        memory[data_pointer] = data[-6:-4]
-        data_pointer = "0x" + format((int(data_pointer, 16) + 1), "0>8x").upper()  # incrementing the data pointer
-        memory[data_pointer] = data[-8:-6]
-        data_pointer = "0x" + format((int(data_pointer, 16) + 1), "0>8x").upper()  # incrementing the data pointer
-
-# Assuming stack will only store word of 32 bits
-def add_data_to_stack(data, location, no_of_byte):
+# Adding data of given bit in a given memory location
+def add_data_to_memory(data, location, no_of_byte):
     if no_of_byte == 1:
         memory[location] = data[-2:]
 
