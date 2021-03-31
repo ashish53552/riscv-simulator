@@ -22,14 +22,14 @@ def identify_instruction_and_run(instruction_dict,PC) :
 def run_add(instruction_dict) :
 
 	rs1 = int(instruction_dict['rs1'],2)
-	val_rs1 = get_register_val(rs1)
+	val_rs1 = hex(get_register_val(rs1))
 
 	rs2 = int(instruction_dict['rs2'],2)
-	val_rs2 = get_register_val(rs2)
+	val_rs2 = hex(get_register_val(rs2))
 
 	rd = int(instruction_dict['rd'],2)
 
-	output = execute(val1, val2, 32, 32, 'addition')
+	output = execute(val_rs1, val_rs2, 32, 32, 'addition')
 
 	write_back(rd,output)
 

@@ -181,6 +181,7 @@ def memory_access(MAR, MDR, num_bytes) :
 
 def write_back(register_num,value) :
 
+	register_num = 'x' + str(register_num)
 	register_file.update_register_val(register_num,value)
 
 
