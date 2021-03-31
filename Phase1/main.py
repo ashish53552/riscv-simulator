@@ -8,7 +8,8 @@ from register_file import *
 #instructions_machine_code array will have all the .mc file instructions
 input_file = open("./test/input.mc","r")
 
-PC = None, IR = None
+PC = None
+IR = None
 
 # Storing each instruction in the text memory
 for line in input_file:

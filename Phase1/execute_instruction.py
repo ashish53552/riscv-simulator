@@ -201,3 +201,12 @@ def run_auipc() :
 def run_lui() :
 
 	pass 
+
+
+
+
+
+
+
+
+

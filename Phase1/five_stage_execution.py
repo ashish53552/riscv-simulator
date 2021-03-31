@@ -1,4 +1,5 @@
 import memory_file
+import register_file
 from iag_file import *
 import instruction_encoding
 
@@ -6,14 +7,12 @@ import instruction_encoding
 
 #Returning a hexadecimal in uppercase format
 def make_hex_uppercase(hex_num) :
-
-	return '0x' + upper(hex_num)[2:]
+	return '0x' + (hex_num.upper())[2:]
 
 
 #Padding a hexadecimal to its total_bits where hex_num is a hexadecimal_string with '0x' in the beginning
 def pad_hexa(hex_num,total_half_bytes):
-
-    return '0x' + hex_num[2:].zfill(total_half_bytes)
+	return '0x' + hex_num[2:].zfill(total_half_bytes)
 
 
 #For Instructions like I : total_bits = 12, & for UJ : total_bits = 20
@@ -71,7 +70,7 @@ def fetch(PC,IR) :
 	if PC is None :
 		PC = "0x00000000"
 	else :
-		iag_output_dict = iag_file.iag(PC, None, None, 1, 0)
+		iag_output_dict = iag(PC, None, None, 1, 0)
 		PC = iag_output_dict["PC"]
 
 	IR = memory_file.get_data_from_memory(PC,4)
@@ -171,15 +170,29 @@ def memory_access(MAR, MDR, num_bytes) :
 	if MAR != None and MDR != None :
 		MAR = pad_hexa(make_hex_uppercase(MAR),8)
 		MDR = pad_hexa(make_hex_uppercase(MDR),8)
-		add_data_to_memory(MDR,MAR,num_bytes)
+		memory_file.add_data_to_memory(MDR,MAR,num_bytes)
 		return None
 
 	elif MAR != None and MDR == None :
 		pad_hexa(make_hex_uppercase(MAR),8)
-		MDR = get_data_from_memory(MAR,num_bytes)
+		MDR = memory_file.get_data_from_memory(MAR,num_bytes)
 		return MDR
 
 
 def write_back(register_num,value) :
 
-	update_register_val(register_num,value)
+	register_file.update_register_val(register_num,value)
+
+
+
+
+
+
+
+
+
+
+
+
+
+	

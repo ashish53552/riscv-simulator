@@ -6,12 +6,9 @@
 # mux_pc_cs : Control Signal to MuxPC where {0 : Take ra, 1 : Take PC}
 # mux_inc_cs : Control Signal to MuxINC where {0 : Take 4, 1 : Take imm}
 
-
 from five_stage_execution import *
 
-
-def iag(pc_prev, ra, imm, mux_pc_cs, mux_inc_cs) :
-
+def iag(pc_prev, ra, imm, mux_pc_cs, mux_inc_cs):
 	mux_pc_output = None
 	mux_inc_output = None
 
@@ -28,3 +25,27 @@ def iag(pc_prev, ra, imm, mux_pc_cs, mux_inc_cs) :
 	iag_output = {"PC" : pad_hexa(make_hex_uppercase(hex(int(mux_pc_output,16)+int(mux_inc_output,16))),8), "PC_temp" : pad_hexa(make_hex_uppercase(hex(int(mux_pc_output,16)+4)),8)}
 
 	return iag_output
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	

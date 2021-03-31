@@ -1,5 +1,6 @@
 from collections import OrderedDict
 
+#memory is a dictionary with key=location in hex-string and value=data in hex-string
 memory = OrderedDict()
 
 text_pointer = "0x00000000"
@@ -42,8 +43,22 @@ def add_data_to_memory(data, location, no_of_byte):
 def get_data_from_memory(location, no_of_byte):
     value = ""
     for i in reversed(range(no_of_byte)):
-        value = memory[location]+value
+        value = memory[location] + value
         location = "0x" + format((int(location, 16) + 1), "0>8x").upper()
 
     value = "0x"+format(value, "0>8")
     return value
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -2,6 +2,7 @@
 
 from collections import OrderedDict
 
+#registers is a dictionary with key=register number in string and value=data in hex-string
 registers = OrderedDict()
 
 for i in range(32):
