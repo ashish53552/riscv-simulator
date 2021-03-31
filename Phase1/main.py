@@ -16,14 +16,14 @@ for line in input_file:
     add_text_to_memory(instr)
 
 # To mark the end of the instructions
-add_text_to_memory(str(hex(0)))
+add_text_to_memory("0x00000000")
 
 # Fetching the instruction from the text memory, decoding it and performing the respective tasks
 while True:
     PC, IR = fetch(PC, IR)
-    if IR == str(hex(0)):
+    if IR == "0x00000000":
         break
-        
+
     instruction_dict = decode(IR)
     instruction = identify_instruction_and_run(instruction_dict)
 
