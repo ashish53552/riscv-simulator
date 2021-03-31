@@ -53,7 +53,7 @@ def bounding_hex(num,total_bits=32) :
 	else :
 		hex_num = hex(num)
 
-	return hex_num
+	return '0x' + upper(hex_num)[2:]
 
 # Five Stage Execution Procedure for Running an Instruction
 
