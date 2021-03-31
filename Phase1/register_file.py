@@ -13,10 +13,14 @@ registers["x3"] = "0x10000000"
 
 
 def get_register_val(register_num):
+
     return registers[register_num]
 
+
 def update_register_val(register_num, value):
-    registers[register_num] = value
+
+	if register_num != 'x0' :
+    	registers[register_num] = value
 
 
 

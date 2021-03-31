@@ -36,7 +36,7 @@ def run_add(instruction_dict) :
 
 
 # R Type
-def run_and() :
+def run_and(instruction_dict) :
 
 	rs1 = int(instruction_dict['rs1'],2)
 	val_rs1 = hex(get_register_val(rs1))
@@ -53,7 +53,7 @@ def run_and() :
 
 
 # R Type
-def run_or() :
+def run_or(instruction_dict) :
 
 	rs1 = int(instruction_dict['rs1'],2)
 	val_rs1 = hex(get_register_val(rs1))
@@ -86,7 +86,7 @@ def run_sll() :
 
 
 # R Type
-def run_slt() :
+def run_slt(instruction_dict) :
 
 	rs1 = int(instruction_dict['rs1'],2)
 	val_rs1 = hex(get_register_val(rs1))
@@ -107,7 +107,7 @@ def run_slt() :
 
 
 # R Type
-def run_sra() :
+def run_sra(instruction_dict) :
 
 	rs1 = int(instruction_dict['rs1'],2)
 	val_rs1 = hex(get_register_val(rs1))
@@ -124,7 +124,7 @@ def run_sra() :
 
 
 # R Type
-def run_srl() :
+def run_srl(instruction_dict) :
 
 	rs1 = int(instruction_dict['rs1'],2)
 	val_rs1 = hex(get_register_val(rs1))
@@ -141,7 +141,7 @@ def run_srl() :
 
 
 # R Type
-def run_sub() :
+def run_sub(instruction_dict) :
 
 	rs1 = int(instruction_dict['rs1'],2)
 	val_rs1 = hex(get_register_val(rs1))
@@ -157,7 +157,7 @@ def run_sub() :
 
 
 # R Type
-def run_xor() :
+def run_xor(instruction_dict) :
 
 	rs1 = int(instruction_dict['rs1'],2)
 	val_rs1 = hex(get_register_val(rs1))
@@ -173,7 +173,7 @@ def run_xor() :
 
 
 # R Type
-def run_mul() :
+def run_mul(instruction_dict) :
 	rs1 = int(instruction_dict['rs1'],2)
 	val_rs1 = hex(get_register_val(rs1))
 
@@ -189,7 +189,7 @@ def run_mul() :
 
 
 # R Type
-def run_div() :
+def run_div(instruction_dict) :
 
 	rs1 = int(instruction_dict['rs1'],2)
 	val_rs1 = hex(get_register_val(rs1))
@@ -205,8 +205,8 @@ def run_div() :
 
 
 # R Type
-def run_rem() :
-	
+def run_rem(instruction_dict) :
+
 	rs1 = int(instruction_dict['rs1'],2)
 	val_rs1 = hex(get_register_val(rs1))
 
@@ -221,103 +221,193 @@ def run_rem() :
 
 
 # I Type
-def run_addi() :
+def run_addi(instruction_dict) :
 
-	pass 
+	rs1 = int(instruction_dict['rs1'],2)
+	val_rs1 = hex(get_register_val(rs1))
 
+	val_imm = hex(int(instruction_dict['imm'],2))
 
-# I Type
-def run_andi() :
+	rd = int(instruction_dict['rd'],2)
 
-	pass 
+	output = execute(val_rs1, val_imm, 32, 32, 'addition')
 
-
-# I Type
-def run_ori() :
-
-	pass 
+	write_back(rd,output) 
 
 
 # I Type
-def run_lw() :
+def run_andi(instruction_dict) :
 
-	pass 
+	rs1 = int(instruction_dict['rs1'],2)
+	val_rs1 = hex(get_register_val(rs1))
 
+	val_imm = hex(int(instruction_dict['imm'],2))
 
-# I Type
-def run_lh() :
+	rd = int(instruction_dict['rd'],2)
 
-	pass 
+	output = execute(val_rs1, val_imm, 32, 32, 'and_bitwise')
 
-
-# I Type
-def run_lb() :
-
-	pass 
+	write_back(rd,output)  
 
 
 # I Type
-def jalr() :
+def run_ori(instruction_dict) :
+
+	rs1 = int(instruction_dict['rs1'],2)
+	val_rs1 = hex(get_register_val(rs1))
+
+	val_imm = hex(int(instruction_dict['imm'],2))
+
+	rd = int(instruction_dict['rd'],2)
+
+	output = execute(val_rs1, val_imm, 32, 32, 'or_bitwise')
+
+	write_back(rd,output)  
+
+
+# I Type
+def run_lw(instruction_dict) :
+
+	rs1 = int(instruction_dict['rs1'],2)
+	val_rs1 = hex(get_register_val(rs1))
+
+	val_imm = hex(int(instruction_dict['imm'],2))
+
+	rd = int(instruction_dict['rd'],2)
+
+	output = execute(val_rs1, val_imm, 32, 32, 'addition')
+
+	MDR = memory_access(output,None,4)
+
+	write_back(rd,MDR)   
+
+
+# I Type
+def run_lh(instruction_dict) :
+
+	rs1 = int(instruction_dict['rs1'],2)
+	val_rs1 = hex(get_register_val(rs1))
+
+	val_imm = hex(int(instruction_dict['imm'],2))
+
+	rd = int(instruction_dict['rd'],2)
+
+	output = execute(val_rs1, val_imm, 32, 32, 'addition')
+
+	MDR = memory_access(output,None,2)
+
+	write_back(rd,MDR)
+
+
+# I Type
+def run_lb(instruction_dict) :
+
+	rs1 = int(instruction_dict['rs1'],2)
+	val_rs1 = hex(get_register_val(rs1))
+
+	val_imm = hex(int(instruction_dict['imm'],2))
+
+	rd = int(instruction_dict['rd'],2)
+
+	output = execute(val_rs1, val_imm, 32, 32, 'addition')
+
+	MDR = memory_access(output,None,1)
+
+	write_back(rd,MDR) 
+
+
+# I Type
+def jalr(instruction_dict) :
 
 	pass 
 
 
 # S Type
-def run_sw() :
+def run_sw(instruction_dict) :
 
-	pass 
+	rs1 = int(instruction_dict['rs1'],2)
+	val_rs1 = hex(get_register_val(rs1))
+
+	rs2 = int(instruction_dict['rs2'],2)
+	val_rs2 = hex(get_register_val(rs2))
+
+	val_imm = hex(int(instruction_dict['imm'],2))
+
+	output = execute(val_rs1, val_imm, 32, 32, 'addition')
+
+	none_value = memory_access(output,val_rs2,4)
 
 
 # S Type
-def run_sh() :
+def run_sh(instruction_dict) :
 
-	pass 
+	rs1 = int(instruction_dict['rs1'],2)
+	val_rs1 = hex(get_register_val(rs1))
+
+	rs2 = int(instruction_dict['rs2'],2)
+	val_rs2 = hex(get_register_val(rs2))
+
+	val_imm = hex(int(instruction_dict['imm'],2))
+
+	output = execute(val_rs1, val_imm, 32, 32, 'addition')
+
+	none_value = memory_access(output,val_rs2,2)
 
 
 # S Type
-def run_sb() :
+def run_sb(instruction_dict) :
+
+	rs1 = int(instruction_dict['rs1'],2)
+	val_rs1 = hex(get_register_val(rs1))
+
+	rs2 = int(instruction_dict['rs2'],2)
+	val_rs2 = hex(get_register_val(rs2))
+
+	val_imm = hex(int(instruction_dict['imm'],2))
+
+	output = execute(val_rs1, val_imm, 32, 32, 'addition')
+
+	none_value = memory_access(output,val_rs2,1) 
+
+
+# SB Type
+def run_beq(instruction_dict) :
 
 	pass 
 
 
 # SB Type
-def run_beq() :
+def run_bne(instruction_dict) :
 
 	pass 
 
 
 # SB Type
-def run_bne() :
+def run_bge(instruction_dict) :
 
 	pass 
 
 
 # SB Type
-def run_bge() :
-
-	pass 
-
-
-# SB Type
-def run_blt() :
+def run_blt(instruction_dict) :
 
 	pass 
 
 
 # UJ Type
-def run_jal() :
+def run_jal(instruction_dict) :
 
 	pass 
 
 
 # U Type
-def run_auipc() :
+def run_auipc(instruction_dict) :
 
 	pass 
 
 
 # U Type
-def run_lui() :
+def run_lui(instruction_dict) :
 
 	pass 
 
