@@ -16,7 +16,6 @@ def twos_complement(val,total_bits):
 	return val     
 
 
-
 #Both value1 and value2 are Hexadecimal Strings, converted to signed decimal integers
 def get_neg_values(value1,value2,total_bits1,total_bits2) :          
 
@@ -68,7 +67,7 @@ def fetch(PC, IR) :
 		iag_output_dict = iag_file.iag(PC, None, None, 1, 0)
 		PC = iag_output_dict["PC"]
 
-	IR = memory_file.memory[PC]
+	IR = memory_file.get_data_from_memory(PC,4)
 
 	return (PC, IR)
 
@@ -162,9 +161,13 @@ def execute(value1, value2, total_bits1, total_bits2, op) :
 
 def memory_access(MAR, MDR) :
 
-	pass
+	if MAR != None and MDR != None :
+		pass
+
+	elif MAR != None and MDR == None :
+		pass
 
 
 def write_back(register_num,value) :
 
-	pass
+	register[register_num] = value
