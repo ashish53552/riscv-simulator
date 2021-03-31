@@ -3,7 +3,7 @@ from instruction_encoding import *
 from execute_instruction import *
 
 #Function to identify the type of instruction
-def identify_instruction_and_run(instruction_dict) :
+def identify_instruction_and_run(instruction_dict,PC) :
 
 	opc_code = instruction_dict['opc_code']
 	funct3 = instruction_dict['funct3']
@@ -12,7 +12,7 @@ def identify_instruction_and_run(instruction_dict) :
 	if opc_code == '0110011' :
 		if funct3 == '000' and funct7 == '0000000' :
 			run_add(instruction_dict)
-			return
+			return PC
 
 
 

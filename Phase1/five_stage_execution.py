@@ -1,13 +1,20 @@
 import memory_file
-import iag_file
+from iag_file import *
 import instruction_encoding
 
 #Auxillary Functions for Dealing with 2's Complement for Negative Numbers
+
+#Returning a hexadecimal in uppercase format
+def make_hex_uppercase(hex_num) :
+
+	return '0x' + upper(hex_num)[2:]
+
 
 #Padding a hexadecimal to its total_bits where hex_num is a hexadecimal_string with '0x' in the beginning
 def pad_hexa(hex_num,total_half_bytes):
 
     return '0x' + hex_num[2:].zfill(total_half_bytes)
+
 
 #For Instructions like I : total_bits = 12, & for UJ : total_bits = 20
 def twos_complement(val,total_bits):
@@ -53,13 +60,13 @@ def bounding_hex(num,total_bits=32) :
 	else :
 		hex_num = hex(num)
 
-	return '0x' + upper(hex_num)[2:]
+	return pad_hexa(make_hex_uppercase(hex_num),int(total_bits/4))
 
 # Five Stage Execution Procedure for Running an Instruction
 
 
 # Here in Fetch, the PC and IR are Hexadecimal Strings of the Program Counter and Instruction Respectively
-def fetch(PC, IR) :
+def fetch(PC,IR) :
 
 	if PC is None :
 		PC = "0x00000000"
@@ -69,7 +76,7 @@ def fetch(PC, IR) :
 
 	IR = memory_file.get_data_from_memory(PC,4)
 
-	return (PC, IR)
+	return (PC,IR)
 
 
 # In Decode, the instruction is a Hexadecimal String of format 0x0 0x123123112
@@ -159,15 +166,20 @@ def execute(value1, value2, total_bits1, total_bits2, op) :
 			return False
 
 
-def memory_access(MAR, MDR) :
+def memory_access(MAR, MDR, num_bytes) :
 
 	if MAR != None and MDR != None :
-		pass
+		MAR = pad_hexa(make_hex_uppercase(MAR),8)
+		MDR = pad_hexa(make_hex_uppercase(MDR),8)
+		add_data_to_memory(MDR,MAR,num_bytes)
+		return None
 
 	elif MAR != None and MDR == None :
-		pass
+		pad_hexa(make_hex_uppercase(MAR),8)
+		MDR = get_data_from_memory(MAR,num_bytes)
+		return MDR
 
 
 def write_back(register_num,value) :
 
-	register[register_num] = value
+	update_register_val(register_num,value)
