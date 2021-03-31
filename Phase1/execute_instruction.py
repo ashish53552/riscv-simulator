@@ -37,68 +37,172 @@ def run_add(instruction_dict) :
 
 # R Type
 def run_and() :
+	rs1 = int(instruction_dict['rs1'],2)
+	val_rs1 = hex(get_register_val(rs1))
 
-	pass 
+	rs2 = int(instruction_dict['rs2'],2)
+	val_rs2 = hex(get_register_val(rs2))
+
+	rd = int(instruction_dict['rd'],2)
+
+	output = execute(val_rs1, val_rs2, 32, 32, 'and_bitwise')
+
+	write_back(rd,output)
+
 
 
 # R Type
 def run_or() :
+	rs1 = int(instruction_dict['rs1'],2)
+	val_rs1 = hex(get_register_val(rs1))
 
-	pass 
+	rs2 = int(instruction_dict['rs2'],2)
+	val_rs2 = hex(get_register_val(rs2))
+
+	rd = int(instruction_dict['rd'],2)
+
+	output = execute(val_rs1, val_rs2, 32, 32, 'or_bitwise')
+
+	write_back(rd,output)
+ 
 
 
 # R Type
 def run_sll() :
+	rs1 = int(instruction_dict['rs1'],2)
+	val_rs1 = hex(get_register_val(rs1))
 
-	pass 
+	rs2 = int(instruction_dict['rs2'],2)
+	val_rs2 = hex(get_register_val(rs2))
+
+	rd = int(instruction_dict['rd'],2)
+
+	output = execute(val_rs1, val_rs2, 32, 32, 'shift_left_logical')
+
+	write_back(rd,output) 
 
 
 # R Type
 def run_slt() :
+	rs1 = int(instruction_dict['rs1'],2)
+	val_rs1 = hex(get_register_val(rs1))
 
-	pass 
+	rs2 = int(instruction_dict['rs2'],2)
+	val_rs2 = hex(get_register_val(rs2))
+
+	rd = int(instruction_dict['rd'],2)
+
+	output = execute(val_rs1, val_rs2, 32, 32, 'check_if_less than')
+
+	write_back(rd,output)
 
 
 # R Type
 def run_sra() :
+	rs1 = int(instruction_dict['rs1'],2)
+	val_rs1 = hex(get_register_val(rs1))
 
-	pass 
+	rs2 = int(instruction_dict['rs2'],2)
+	val_rs2 = hex(get_register_val(rs2))
+
+	rd = int(instruction_dict['rd'],2)
+
+	output = execute(val_rs1, val_rs2, 32, 32, 'shift_right_arithmetic')
+
+	write_back(rd,output)
+
 
 
 # R Type
 def run_srl() :
+	rs1 = int(instruction_dict['rs1'],2)
+	val_rs1 = hex(get_register_val(rs1))
 
-	pass 
+	rs2 = int(instruction_dict['rs2'],2)
+	val_rs2 = hex(get_register_val(rs2))
+
+	rd = int(instruction_dict['rd'],2)
+
+	output = execute(val_rs1, val_rs2, 32, 32, 'shift_right_logical')
+
+	write_back(rd,output)
+	
 
 
 # R Type
 def run_sub() :
+	rs1 = int(instruction_dict['rs1'],2)
+	val_rs1 = hex(get_register_val(rs1))
 
-	pass 
+	rs2 = int(instruction_dict['rs2'],2)
+	val_rs2 = hex(get_register_val(rs2))
+
+	rd = int(instruction_dict['rd'],2)
+
+	output = execute(val_rs1, val_rs2, 32, 32, 'subtract')
+
+	write_back(rd,output)
 
 
 # R Type
 def run_xor() :
+	rs1 = int(instruction_dict['rs1'],2)
+	val_rs1 = hex(get_register_val(rs1))
 
-	pass 
+	rs2 = int(instruction_dict['rs2'],2)
+	val_rs2 = hex(get_register_val(rs2))
+
+	rd = int(instruction_dict['rd'],2)
+
+	output = execute(val_rs1, val_rs2, 32, 32, 'xor_bitwise')
+
+	write_back(rd,output)
 
 
 # R Type
 def run_mul() :
+	rs1 = int(instruction_dict['rs1'],2)
+	val_rs1 = hex(get_register_val(rs1))
 
+	rs2 = int(instruction_dict['rs2'],2)
+	val_rs2 = hex(get_register_val(rs2))
+
+	rd = int(instruction_dict['rd'],2)
+
+	output = execute(val_rs1, val_rs2, 32, 32, 'multiply')
+
+	write_back(rd,output)
 	pass 
 
 
 # R Type
 def run_div() :
+	rs1 = int(instruction_dict['rs1'],2)
+	val_rs1 = hex(get_register_val(rs1))
 
-	pass 
+	rs2 = int(instruction_dict['rs2'],2)
+	val_rs2 = hex(get_register_val(rs2))
+
+	rd = int(instruction_dict['rd'],2)
+
+	output = execute(val_rs1, val_rs2, 32, 32, 'divide')
+
+	write_back(rd,output)
 
 
 # R Type
 def run_rem() :
+	rs1 = int(instruction_dict['rs1'],2)
+	val_rs1 = hex(get_register_val(rs1))
 
-	pass 
+	rs2 = int(instruction_dict['rs2'],2)
+	val_rs2 = hex(get_register_val(rs2))
+
+	rd = int(instruction_dict['rd'],2)
+
+	output = execute(val_rs1, val_rs2, 32, 32, 'remainder')
+
+	write_back(rd,output)
 
 
 # I Type
