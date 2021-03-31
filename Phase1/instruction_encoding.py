@@ -104,6 +104,14 @@ def extract_UJ_type(bin_instruction) :
 		"rs2" : None,
 		"rd" : None,
 	}
+	extracted_fields["opc_code"] = bin_instruction[25:]
+	extracted_fields["rd"] = bin_instruction[20:25]
+	imm19_12 = bin_instruction[12:20]
+	imm11 = bin_instruction[11:12]
+	imm10_1 = bin_instruction[1:11]
+	imm_20 = bin_instruction[0:1]
+	imm = list.reverse(imm10_1)+imm11+list.reverse(imm19_12)+list.reverse(imm_20)
+	extracted_fields["imm"] = imm
 	return extracted_fields 
 
 
