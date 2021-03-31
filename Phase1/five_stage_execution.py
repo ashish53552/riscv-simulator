@@ -62,7 +62,7 @@ def bounding_hex(num,total_bits=32) :
 def fetch(PC, IR) :
 
 	if PC is None :
-		PC = str(hex(0)) 
+		PC = "0x00000000"
 	else :
 		iag_output_dict = iag_file.iag(PC, None, None, 1, 0)
 		PC = iag_output_dict["PC"]
