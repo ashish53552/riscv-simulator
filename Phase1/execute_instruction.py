@@ -19,9 +19,20 @@ def identify_instruction_and_run(instruction_dict,PC) :
 # Functions to directly run the Instruction
 
 # R Type
-def run_add() :
+def run_add(instruction_dict) :
 
-	pass 
+	rs1 = int(instruction_dict['rs1'],2)
+	val_rs1 = get_register_val(rs1)
+
+	rs2 = int(instruction_dict['rs2'],2)
+	val_rs2 = get_register_val(rs2)
+
+	rd = int(instruction_dict['rd'],2)
+
+	output = execute(val1, val2, 32, 32, 'addition')
+
+	write_back(rd,output)
+
 
 
 # R Type
