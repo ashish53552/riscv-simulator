@@ -89,6 +89,7 @@ def extract_SB_type(bin_instruction) :
 	imm3 = bin_instruction[20]
 	imm4 = bin_instruction[0]
 	imm = imm4 + imm3 + imm2 + imm1
+	imm = format(int(imm,2)*2,'0>32b')
 	extracted_fields["imm"] = imm
 	
 	return extracted_fields 
@@ -112,6 +113,7 @@ def extract_UJ_type(bin_instruction) :
 	imm10_1 = bin_instruction[1:11][::-1]
 	imm_20 = bin_instruction[0:1]
 	imm = imm10_1+imm11+imm19_12+imm_20
+	imm = format(int(imm,2)*2,'0>32b')
 	extracted_fields["imm"] = imm
 	return extracted_fields 
 

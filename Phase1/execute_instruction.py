@@ -37,6 +37,7 @@ def run_add(instruction_dict) :
 
 # R Type
 def run_and() :
+
 	rs1 = int(instruction_dict['rs1'],2)
 	val_rs1 = hex(get_register_val(rs1))
 
@@ -53,6 +54,7 @@ def run_and() :
 
 # R Type
 def run_or() :
+
 	rs1 = int(instruction_dict['rs1'],2)
 	val_rs1 = hex(get_register_val(rs1))
 
@@ -69,6 +71,7 @@ def run_or() :
 
 # R Type
 def run_sll() :
+
 	rs1 = int(instruction_dict['rs1'],2)
 	val_rs1 = hex(get_register_val(rs1))
 
@@ -84,6 +87,7 @@ def run_sll() :
 
 # R Type
 def run_slt() :
+
 	rs1 = int(instruction_dict['rs1'],2)
 	val_rs1 = hex(get_register_val(rs1))
 
@@ -94,11 +98,17 @@ def run_slt() :
 
 	output = execute(val_rs1, val_rs2, 32, 32, 'check_if_less than')
 
+	if output == True :
+		output = '0x00000001'
+	else :
+		output = '0x00000000'
+
 	write_back(rd,output)
 
 
 # R Type
 def run_sra() :
+
 	rs1 = int(instruction_dict['rs1'],2)
 	val_rs1 = hex(get_register_val(rs1))
 
@@ -115,6 +125,7 @@ def run_sra() :
 
 # R Type
 def run_srl() :
+
 	rs1 = int(instruction_dict['rs1'],2)
 	val_rs1 = hex(get_register_val(rs1))
 
@@ -131,6 +142,7 @@ def run_srl() :
 
 # R Type
 def run_sub() :
+
 	rs1 = int(instruction_dict['rs1'],2)
 	val_rs1 = hex(get_register_val(rs1))
 
@@ -146,6 +158,7 @@ def run_sub() :
 
 # R Type
 def run_xor() :
+
 	rs1 = int(instruction_dict['rs1'],2)
 	val_rs1 = hex(get_register_val(rs1))
 
@@ -177,6 +190,7 @@ def run_mul() :
 
 # R Type
 def run_div() :
+
 	rs1 = int(instruction_dict['rs1'],2)
 	val_rs1 = hex(get_register_val(rs1))
 
@@ -192,6 +206,7 @@ def run_div() :
 
 # R Type
 def run_rem() :
+	
 	rs1 = int(instruction_dict['rs1'],2)
 	val_rs1 = hex(get_register_val(rs1))
 
