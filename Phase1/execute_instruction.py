@@ -11,7 +11,7 @@ def identify_instruction_and_run(instruction_dict,PC) :
 	funct3 = instruction_dict['funct3']
 	funct7 = instruction_dict['funct7']
 
-	if opc_code == '0110011' :
+	if opc_code == '0110011' : # R format
 		if funct3 == '000' and funct7 == '0000000' :
 			PC, branch = run_add(instruction_dict,PC)
 			return PC, branch
@@ -59,6 +59,58 @@ def identify_instruction_and_run(instruction_dict,PC) :
 		elif funct3 == '110' and funct7 == '0000001':
 			PC, branch = run_rem(instruction_dict,PC)
 			return PC,branch			
+
+
+	elif opc_code == '0010011' : # I format
+		if funct3 == '000':
+			PC, branch = run_addi(instruction_dict,PC)
+			return PC, branch
+		
+		elif funct3 == '111':
+			PC, branch = run_andi(instruction_dict,PC)
+			return PC,branch
+
+		
+		elif funct3 == '110':
+			PC, branch = run_ori(instruction_dict,PC)
+			return PC,branch
+
+
+	elif opc_code == '0000011' : # I format
+		if funct3 == '000':
+			PC, branch = run_lb(instruction_dict,PC)
+			return PC,branch
+
+		elif funct3 == '001':
+			PC, branch = run_lh(instruction_dict,PC)
+			return PC,branch
+
+		elif funct3 == '010':
+			PC, branch = run_lw(instruction_dict,PC)
+			return PC,branch
+
+
+	elif opc_code == '1100111' : # I format
+		if funct3 == '000':
+			PC, branch = run_jalr(instruction_dict,PC)
+			return PC,branch		
+
+
+	elif opc_code == '0100011' : # S format
+		if funct3 == '000':
+			PC, branch = run_sb(instruction_dict,PC)
+			return PC,branch	
+
+		elif funct3 == '010':
+			PC, branch = run_sw(instruction_dict,PC)
+			return PC,branch
+
+		elif funct3 == '010':
+			PC, branch = run_sh(instruction_dict,PC)
+			return PC,branch
+
+	
+
 
 
 # Functions to directly run the Instruction
