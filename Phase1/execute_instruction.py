@@ -531,7 +531,11 @@ def run_auipc(instruction_dict,PC) :
 
 	val_imm = hex(int(instruction_dict['imm'],2))
 
-	output = execute(PC, val_imm, 32, 20, 'addition')
+	shift_amount = hex(12)
+
+	val_imm = execute(val_imm, shift_amount, 20, 12, 'shift_left_logical')
+
+	output = execute(PC, val_imm, 32, 32, 'addition')
 
 	write_back(rd,output)
 		
@@ -544,6 +548,10 @@ def run_lui(instruction_dict,PC) :
 	rd = int(instruction_dict['rd'],2)
 
 	val_imm = hex(int(instruction_dict['imm'],2))
+
+	shift_amount = hex(12)
+
+	val_imm = execute(val_imm, shift_amount, 20, 12, 'shift_left_logical')
 
 	write_back(rd,val_imm)
 		
