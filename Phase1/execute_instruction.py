@@ -10,8 +10,9 @@ def identify_instruction_and_run(instruction_dict,PC) :
 	opc_code = instruction_dict['opc_code']
 	funct3 = instruction_dict['funct3']
 	funct7 = instruction_dict['funct7']
-
-	if opc_code == '0110011' : # R format
+	
+	# R format
+	if opc_code == '0110011' : 
 		if funct3 == '000' and funct7 == '0000000' :
 			PC, branch = run_add(instruction_dict,PC)
 			return PC, branch
@@ -60,8 +61,8 @@ def identify_instruction_and_run(instruction_dict,PC) :
 			PC, branch = run_rem(instruction_dict,PC)
 			return PC,branch			
 
-
-	elif opc_code == '0010011' : # I format
+	# I format
+	elif opc_code == '0010011' : 
 		if funct3 == '000':
 			PC, branch = run_addi(instruction_dict,PC)
 			return PC, branch
@@ -75,8 +76,8 @@ def identify_instruction_and_run(instruction_dict,PC) :
 			PC, branch = run_ori(instruction_dict,PC)
 			return PC,branch
 
-
-	elif opc_code == '0000011' : # I format
+	# I format
+	elif opc_code == '0000011' : 
 		if funct3 == '000':
 			PC, branch = run_lb(instruction_dict,PC)
 			return PC,branch
@@ -89,14 +90,14 @@ def identify_instruction_and_run(instruction_dict,PC) :
 			PC, branch = run_lw(instruction_dict,PC)
 			return PC,branch
 
-
-	elif opc_code == '1100111' : # I format
+	# I format
+	elif opc_code == '1100111' : 
 		if funct3 == '000':
 			PC, branch = run_jalr(instruction_dict,PC)
 			return PC,branch		
 
-
-	elif opc_code == '0100011' : # S format
+	# S format
+	elif opc_code == '0100011' : 
 		if funct3 == '000':
 			PC, branch = run_sb(instruction_dict,PC)
 			return PC,branch	
@@ -109,8 +110,38 @@ def identify_instruction_and_run(instruction_dict,PC) :
 			PC, branch = run_sh(instruction_dict,PC)
 			return PC,branch
 
-	
+	# SB format
+	elif opc_code == '1100011':
+		if funct3 == '000':
+			PC, branch = run_beq(instruction_dict,PC)
+			return PC,branch	
 
+		elif funct3 == '001':
+			PC, branch = run_bne(instruction_dict,PC)
+			return PC,branch
+
+		elif funct3 == '100':
+			PC, branch = run_blt(instruction_dict,PC)
+			return PC,branch
+
+		elif funct3 == '101':
+			PC, branch = run_bge(instruction_dict,PC)
+			return PC,branch
+
+	# U format
+	elif opc_code == '0010111':
+		PC, branch = run_auipc(instruction_dict,PC)
+		return PC,branch	
+
+	# U format
+	elif opc_code == '0110111':
+		PC, branch = run_lui(instruction_dict,PC)
+		return PC,branch	
+
+	# UJ format
+	elif opc_code == '1101111':
+		PC, branch = run_jal(instruction_dict,PC)
+		return PC,branch		
 
 
 # Functions to directly run the Instruction
