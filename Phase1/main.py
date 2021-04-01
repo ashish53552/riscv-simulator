@@ -10,6 +10,7 @@ input_file = open("./test/input.mc","r")
 
 PC = None
 IR = None
+branch = False
 
 # Storing each instruction in the text memory
 for line in input_file:
@@ -21,12 +22,16 @@ add_text_to_memory("0x00000000")
 
 # Fetching the instruction from the text memory, decoding it and performing the respective tasks
 while True:
-    PC, IR = fetch(PC, IR)
+	
+	global PC, IR, branch
+
+    PC, IR = fetch(PC,IR,branch)
     if IR == "0x00000000":
         break
 
     instruction_dict = decode(IR)
-    instruction = identify_instruction_and_run(instruction_dict)
+
+    PC,branch = identify_instruction_and_run(instruction_dict)
 
 
 

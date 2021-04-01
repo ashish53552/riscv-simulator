@@ -65,12 +65,16 @@ def bounding_hex(num,total_bits=32) :
 
 
 # Here in Fetch, the PC and IR are Hexadecimal Strings of the Program Counter and Instruction Respectively
-def fetch(PC,IR) :
+def fetch(PC,IR,branch) :
 
 	if PC is None :
 		PC = "0x00000000"
 	else :
-		iag_output_dict = iag(PC, None, None, 1, 0)
+		iag_output_dict = None
+		if branch == False :
+			iag_output_dict = iag(PC, None, None, 1, 0)
+		else :
+			iag_output_dict = iag(PC, None, 0, 1, 1)
 		PC = iag_output_dict["PC"]
 
 	IR = memory_file.get_data_from_memory(PC,4)
