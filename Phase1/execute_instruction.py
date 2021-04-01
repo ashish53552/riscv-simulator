@@ -15,7 +15,50 @@ def identify_instruction_and_run(instruction_dict,PC) :
 		if funct3 == '000' and funct7 == '0000000' :
 			PC, branch = run_add(instruction_dict,PC)
 			return PC, branch
+		
+		elif funct3 == '111' and funct7 == '0000000':
+			PC, branch = run_and(instruction_dict,PC)
+			return PC,branch
+		
+		elif funct3 == '110' and funct7 == '0000000':
+			PC, branch = run_and(instruction_dict,PC)
+			return PC,branch
 
+		elif funct3 == '001' and funct7 == '0000000':
+			PC, branch = run_sll(instruction_dict,PC)
+			return PC,branch
+
+		elif funct3 == '010' and funct7 == '0000000':
+			PC, branch = run_slt(instruction_dict,PC)
+			return PC,branch
+
+		elif funct3 == '101' and funct7 == '0100000':
+			PC, branch = run_sra(instruction_dict,PC)
+			return PC,branch
+
+		elif funct3 == '101' and funct7 == '0000000':
+			PC, branch = run_srl(instruction_dict,PC)
+			return PC,branch
+			
+		elif funct3 == '000' and funct7 == '0100000':
+			PC, branch = run_sub(instruction_dict,PC)
+			return PC,branch
+			
+		elif funct3 == '100' and funct7 == '0000000':
+			PC, branch = run_xor(instruction_dict,PC)
+			return PC,branch
+			
+		elif funct3 == '000' and funct7 == '0000001':
+			PC, branch = run_mul(instruction_dict,PC)
+			return PC,branch				
+
+		elif funct3 == '100' and funct7 == '0000001':
+			PC, branch = run_div(instruction_dict,PC)
+			return PC,branch
+
+		elif funct3 == '110' and funct7 == '0000001':
+			PC, branch = run_rem(instruction_dict,PC)
+			return PC,branch			
 
 
 # Functions to directly run the Instruction
