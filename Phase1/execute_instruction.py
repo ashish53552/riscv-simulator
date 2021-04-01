@@ -1,7 +1,7 @@
 from five_stage_execution import *
 from instruction_encoding import *
 from execute_instruction import *
-
+import register_file
 
 
 #Function to identify the type of instruction
@@ -24,10 +24,10 @@ def identify_instruction_and_run(instruction_dict,PC) :
 def run_add(instruction_dict,PC) :
 
 	rs1 = int(instruction_dict['rs1'],2)
-	val_rs1 = hex(get_register_val(rs1))
+	val_rs1 = hex(register_file.get_register_val(rs1))
 
 	rs2 = int(instruction_dict['rs2'],2)
-	val_rs2 = hex(get_register_val(rs2))
+	val_rs2 = hex(register_file.get_register_val(rs2))
 
 	rd = int(instruction_dict['rd'],2)
 
@@ -43,10 +43,10 @@ def run_add(instruction_dict,PC) :
 def run_and(instruction_dict,PC) :
 
 	rs1 = int(instruction_dict['rs1'],2)
-	val_rs1 = hex(get_register_val(rs1))
+	val_rs1 = hex(register_file.get_register_val(rs1))
 
 	rs2 = int(instruction_dict['rs2'],2)
-	val_rs2 = hex(get_register_val(rs2))
+	val_rs2 = hex(register_file.get_register_val(rs2))
 
 	rd = int(instruction_dict['rd'],2)
 
@@ -62,10 +62,10 @@ def run_and(instruction_dict,PC) :
 def run_or(instruction_dict,PC) :
 
 	rs1 = int(instruction_dict['rs1'],2)
-	val_rs1 = hex(get_register_val(rs1))
+	val_rs1 = hex(register_file.get_register_val(rs1))
 
 	rs2 = int(instruction_dict['rs2'],2)
-	val_rs2 = hex(get_register_val(rs2))
+	val_rs2 = hex(register_file.get_register_val(rs2))
 
 	rd = int(instruction_dict['rd'],2)
 
@@ -81,10 +81,10 @@ def run_or(instruction_dict,PC) :
 def run_sll(instruction_dict,PC) :
 
 	rs1 = int(instruction_dict['rs1'],2)
-	val_rs1 = hex(get_register_val(rs1))
+	val_rs1 = hex(register_file.get_register_val(rs1))
 
 	rs2 = int(instruction_dict['rs2'],2)
-	val_rs2 = hex(get_register_val(rs2))
+	val_rs2 = hex(register_file.get_register_val(rs2))
 
 	rd = int(instruction_dict['rd'],2)
 
@@ -99,10 +99,10 @@ def run_sll(instruction_dict,PC) :
 def run_slt(instruction_dict,PC) :
 
 	rs1 = int(instruction_dict['rs1'],2)
-	val_rs1 = hex(get_register_val(rs1))
+	val_rs1 = hex(register_file.get_register_val(rs1))
 
 	rs2 = int(instruction_dict['rs2'],2)
-	val_rs2 = hex(get_register_val(rs2))
+	val_rs2 = hex(register_file.get_register_val(rs2))
 
 	rd = int(instruction_dict['rd'],2)
 
@@ -122,10 +122,10 @@ def run_slt(instruction_dict,PC) :
 def run_sra(instruction_dict,PC) :
 
 	rs1 = int(instruction_dict['rs1'],2)
-	val_rs1 = hex(get_register_val(rs1))
+	val_rs1 = hex(register_file.get_register_val(rs1))
 
 	rs2 = int(instruction_dict['rs2'],2)
-	val_rs2 = hex(get_register_val(rs2))
+	val_rs2 = hex(register_file.get_register_val(rs2))
 
 	rd = int(instruction_dict['rd'],2)
 
@@ -141,10 +141,10 @@ def run_sra(instruction_dict,PC) :
 def run_srl(instruction_dict,PC) :
 
 	rs1 = int(instruction_dict['rs1'],2)
-	val_rs1 = hex(get_register_val(rs1))
+	val_rs1 = hex(register_file.get_register_val(rs1))
 
 	rs2 = int(instruction_dict['rs2'],2)
-	val_rs2 = hex(get_register_val(rs2))
+	val_rs2 = hex(register_file.get_register_val(rs2))
 
 	rd = int(instruction_dict['rd'],2)
 
@@ -160,10 +160,10 @@ def run_srl(instruction_dict,PC) :
 def run_sub(instruction_dict,PC) :
 
 	rs1 = int(instruction_dict['rs1'],2)
-	val_rs1 = hex(get_register_val(rs1))
+	val_rs1 = hex(register_file.get_register_val(rs1))
 
 	rs2 = int(instruction_dict['rs2'],2)
-	val_rs2 = hex(get_register_val(rs2))
+	val_rs2 = hex(register_file.get_register_val(rs2))
 
 	rd = int(instruction_dict['rd'],2)
 
@@ -178,10 +178,10 @@ def run_sub(instruction_dict,PC) :
 def run_xor(instruction_dict,PC) :
 
 	rs1 = int(instruction_dict['rs1'],2)
-	val_rs1 = hex(get_register_val(rs1))
+	val_rs1 = hex(register_file.get_register_val(rs1))
 
 	rs2 = int(instruction_dict['rs2'],2)
-	val_rs2 = hex(get_register_val(rs2))
+	val_rs2 = hex(register_file.get_register_val(rs2))
 
 	rd = int(instruction_dict['rd'],2)
 
@@ -196,10 +196,10 @@ def run_xor(instruction_dict,PC) :
 def run_mul(instruction_dict,PC) :
 
 	rs1 = int(instruction_dict['rs1'],2)
-	val_rs1 = hex(get_register_val(rs1))
+	val_rs1 = hex(register_file.get_register_val(rs1))
 
 	rs2 = int(instruction_dict['rs2'],2)
-	val_rs2 = hex(get_register_val(rs2))
+	val_rs2 = hex(register_file.get_register_val(rs2))
 
 	rd = int(instruction_dict['rd'],2)
 
@@ -214,10 +214,10 @@ def run_mul(instruction_dict,PC) :
 def run_div(instruction_dict,PC) :
 
 	rs1 = int(instruction_dict['rs1'],2)
-	val_rs1 = hex(get_register_val(rs1))
+	val_rs1 = hex(register_file.get_register_val(rs1))
 
 	rs2 = int(instruction_dict['rs2'],2)
-	val_rs2 = hex(get_register_val(rs2))
+	val_rs2 = hex(register_file.get_register_val(rs2))
 
 	rd = int(instruction_dict['rd'],2)
 
@@ -232,10 +232,10 @@ def run_div(instruction_dict,PC) :
 def run_rem(instruction_dict,PC) :
 
 	rs1 = int(instruction_dict['rs1'],2)
-	val_rs1 = hex(get_register_val(rs1))
+	val_rs1 = hex(register_file.get_register_val(rs1))
 
 	rs2 = int(instruction_dict['rs2'],2)
-	val_rs2 = hex(get_register_val(rs2))
+	val_rs2 = hex(register_file.get_register_val(rs2))
 
 	rd = int(instruction_dict['rd'],2)
 
@@ -250,7 +250,7 @@ def run_rem(instruction_dict,PC) :
 def run_addi(instruction_dict,PC) :
 
 	rs1 = int(instruction_dict['rs1'],2)
-	val_rs1 = hex(get_register_val(rs1))
+	val_rs1 = hex(register_file.get_register_val(rs1))
 
 	val_imm = hex(int(instruction_dict['imm'],2))
 
@@ -267,7 +267,7 @@ def run_addi(instruction_dict,PC) :
 def run_andi(instruction_dict,PC) :
 
 	rs1 = int(instruction_dict['rs1'],2)
-	val_rs1 = hex(get_register_val(rs1))
+	val_rs1 = hex(register_file.get_register_val(rs1))
 
 	val_imm = hex(int(instruction_dict['imm'],2))
 
@@ -284,7 +284,7 @@ def run_andi(instruction_dict,PC) :
 def run_ori(instruction_dict,PC) :
 
 	rs1 = int(instruction_dict['rs1'],2)
-	val_rs1 = hex(get_register_val(rs1))
+	val_rs1 = hex(register_file.get_register_val(rs1))
 
 	val_imm = hex(int(instruction_dict['imm'],2))
 
@@ -301,7 +301,7 @@ def run_ori(instruction_dict,PC) :
 def run_lw(instruction_dict,PC) :
 
 	rs1 = int(instruction_dict['rs1'],2)
-	val_rs1 = hex(get_register_val(rs1))
+	val_rs1 = hex(register_file.get_register_val(rs1))
 
 	val_imm = hex(int(instruction_dict['imm'],2))
 
@@ -320,7 +320,7 @@ def run_lw(instruction_dict,PC) :
 def run_lh(instruction_dict,PC) :
 
 	rs1 = int(instruction_dict['rs1'],2)
-	val_rs1 = hex(get_register_val(rs1))
+	val_rs1 = hex(register_file.get_register_val(rs1))
 
 	val_imm = hex(int(instruction_dict['imm'],2))
 
@@ -339,7 +339,7 @@ def run_lh(instruction_dict,PC) :
 def run_lb(instruction_dict,PC) :
 
 	rs1 = int(instruction_dict['rs1'],2)
-	val_rs1 = hex(get_register_val(rs1))
+	val_rs1 = hex(register_file.get_register_val(rs1))
 
 	val_imm = hex(int(instruction_dict['imm'],2))
 
@@ -358,7 +358,7 @@ def run_lb(instruction_dict,PC) :
 def run_jalr(instruction_dict,PC) :
 
 	rs1 = int(instruction_dict['rs1'],2)
-	val_rs1 = hex(get_register_val(rs1))
+	val_rs1 = hex(register_file.get_register_val(rs1))
 
 	val_imm = hex(int(instruction_dict['imm'],2))
 
@@ -377,10 +377,10 @@ def run_jalr(instruction_dict,PC) :
 def run_sw(instruction_dict,PC) :
 
 	rs1 = int(instruction_dict['rs1'],2)
-	val_rs1 = hex(get_register_val(rs1))
+	val_rs1 = hex(register_file.get_register_val(rs1))
 
 	rs2 = int(instruction_dict['rs2'],2)
-	val_rs2 = hex(get_register_val(rs2))
+	val_rs2 = hex(register_file.get_register_val(rs2))
 
 	val_imm = hex(int(instruction_dict['imm'],2))
 
@@ -395,10 +395,10 @@ def run_sw(instruction_dict,PC) :
 def run_sh(instruction_dict,PC) :
 
 	rs1 = int(instruction_dict['rs1'],2)
-	val_rs1 = hex(get_register_val(rs1))
+	val_rs1 = hex(register_file.get_register_val(rs1))
 
 	rs2 = int(instruction_dict['rs2'],2)
-	val_rs2 = hex(get_register_val(rs2))
+	val_rs2 = hex(register_file.get_register_val(rs2))
 
 	val_imm = hex(int(instruction_dict['imm'],2))
 
@@ -413,10 +413,10 @@ def run_sh(instruction_dict,PC) :
 def run_sb(instruction_dict,PC) :
 
 	rs1 = int(instruction_dict['rs1'],2)
-	val_rs1 = hex(get_register_val(rs1))
+	val_rs1 = hex(register_file.get_register_val(rs1))
 
 	rs2 = int(instruction_dict['rs2'],2)
-	val_rs2 = hex(get_register_val(rs2))
+	val_rs2 = hex(register_file.get_register_val(rs2))
 
 	val_imm = hex(int(instruction_dict['imm'],2))
 
@@ -431,10 +431,10 @@ def run_sb(instruction_dict,PC) :
 def run_beq(instruction_dict,PC) :
 
 	rs1 = int(instruction_dict['rs1'],2)
-	val_rs1 = hex(get_register_val(rs1))
+	val_rs1 = hex(register_file.get_register_val(rs1))
 
 	rs2 = int(instruction_dict['rs2'],2)
-	val_rs2 = hex(get_register_val(rs2))
+	val_rs2 = hex(register_file.get_register_val(rs2))
 
 	val_imm = hex(int(instruction_dict['imm'],2))
 
@@ -452,10 +452,10 @@ def run_beq(instruction_dict,PC) :
 def run_bne(instruction_dict,PC) :
 
 	rs1 = int(instruction_dict['rs1'],2)
-	val_rs1 = hex(get_register_val(rs1))
+	val_rs1 = hex(register_file.get_register_val(rs1))
 
 	rs2 = int(instruction_dict['rs2'],2)
-	val_rs2 = hex(get_register_val(rs2))
+	val_rs2 = hex(register_file.get_register_val(rs2))
 
 	val_imm = hex(int(instruction_dict['imm'],2))
 
@@ -472,10 +472,10 @@ def run_bne(instruction_dict,PC) :
 def run_bge(instruction_dict,PC) :
 
 	rs1 = int(instruction_dict['rs1'],2)
-	val_rs1 = hex(get_register_val(rs1))
+	val_rs1 = hex(register_file.get_register_val(rs1))
 
 	rs2 = int(instruction_dict['rs2'],2)
-	val_rs2 = hex(get_register_val(rs2))
+	val_rs2 = hex(register_file.get_register_val(rs2))
 
 	val_imm = hex(int(instruction_dict['imm'],2))
 
@@ -492,10 +492,10 @@ def run_bge(instruction_dict,PC) :
 def run_blt(instruction_dict,PC) :
 
 	rs1 = int(instruction_dict['rs1'],2)
-	val_rs1 = hex(get_register_val(rs1))
+	val_rs1 = hex(register_file.get_register_val(rs1))
 
 	rs2 = int(instruction_dict['rs2'],2)
-	val_rs2 = hex(get_register_val(rs2))
+	val_rs2 = hex(register_file.get_register_val(rs2))
 
 	val_imm = hex(int(instruction_dict['imm'],2))
 
@@ -523,6 +523,7 @@ def run_jal(instruction_dict,PC) :
 		
 	return new_PC, True
 
+	val_imm = hex(int(instruction_dict['imm'],2))
 
 # U Type
 def run_auipc(instruction_dict,PC) :
@@ -551,11 +552,45 @@ def run_lui(instruction_dict,PC) :
 
 	shift_amount = hex(12)
 
+
 	val_imm = execute(val_imm, shift_amount, 20, 12, 'shift_left_logical')
 
 	write_back(rd,val_imm)
 		
 	return PC, False 
+
+	output = execute(PC, val_imm, 32, 32, 'addition')
+
+	write_back(rd,output)
+		
+	return PC, False
+
+
+# U Type
+def run_lui(instruction_dict,PC) :
+
+	rd = int(instruction_dict['rd'],2)
+
+	val_imm = hex(int(instruction_dict['imm'],2))
+
+	shift_amount = hex(12)
+
+	val_imm = execute(val_imm, shift_amount, 20, 12, 'shift_left_logical')
+
+	write_back(rd,val_imm)
+		
+	return PC, False 
+
+
+
+
+
+
+
+
+
+
+
 
 
 
