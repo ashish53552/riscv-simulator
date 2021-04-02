@@ -96,7 +96,7 @@ def extract_SB_type(bin_instruction) :
 
 
 def extract_UJ_type(bin_instruction) :
-# remember to muliply by 2 as immediate is omitted
+# Muliplying by 2 as immediate is omitted
 	extracted_fields={
 		"opc_code":None,
 		"imm" : None,
@@ -138,4 +138,5 @@ def extract_U_type(bin_instruction) :
 
 
 
-#print(extract_UJ_type())
+
+
