@@ -49,6 +49,18 @@ def get_data_from_memory(location, no_of_byte):
     value = "0x"+format(value, "0>8")
     return value
 
+def get_memory_file():
+    print("MEMORY FILE")
+    print("Text Memory")
+    for mem, val in memory.items():
+        if int(mem,16) < int(data_pointer,16):
+            print(mem, ":", val)
+        else:
+            break
+    print("Data Memory")
+    for mem, val in memory.items():
+        if int(mem,16) >= int(data_pointer,16):
+            print(mem, ":",val)
 
 
 
