@@ -28,7 +28,7 @@ while True:
     # print(PC)
     # print(get_register_file())
     PC, IR = fetch(PC, IR, branch)
-    print(PC)
+    # print(PC)
     # get_memory_file()
     if IR == "0x00000000":
         break

@@ -85,7 +85,7 @@ def extract_SB_type(bin_instruction):
     imm3 = bin_instruction[20]
     imm4 = bin_instruction[0]
     imm = imm4 + imm3 + imm2 + imm1
-    imm = format(int(imm, 2) * 2, '0>32b')
+    imm = format(int(imm, 2), '0>32b')
     extracted_fields["imm"] = imm
 
     return extracted_fields

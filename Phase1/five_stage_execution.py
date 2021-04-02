@@ -26,14 +26,15 @@ def twos_complement(val, total_bits):
 def get_neg_values(value1, value2, total_bits1, total_bits2):
     value1 = pad_hexa(value1, int(total_bits1 / 4))
     value2 = pad_hexa(value2, int(total_bits2 / 4))
+    # print("Ans", value1, value2)
 
-    bin_value1 = format(int(value1, 16), '0>32b')
+    bin_value1 = format(int(value1, 16), '0>' + str(total_bits1)+ 'b')
     if (bin_value1[0] == '1'):
         value1 = twos_complement(int(value1, 16), total_bits1)
     else:
         value1 = int(value1, 16)
 
-    bin_value2 = format(int(value2, 16), '0>32b')
+    bin_value2 = format(int(value2, 16), '0>' + str(total_bits2)+ 'b')
     if (bin_value2[0] == '1'):
         value2 = twos_complement(int(value2, 16), total_bits2)
     else:
@@ -73,7 +74,7 @@ def fetch(PC, IR, branch):
         if branch == False:
             iag_output_dict = iag(PC, None, None, 1, 0)
         else:
-            iag_output_dict = iag(PC, None, 0, 1, 1)
+            iag_output_dict = iag(PC, None, "0x00000000", 1, 1)
         PC = iag_output_dict["PC"]
 
     IR = memory_file.get_data_from_memory(PC, 4)
@@ -114,7 +115,9 @@ def decode(instruction):
 
 # Execute Step Performs the Function of the ALU directly on hexadecimal values
 def execute(value1, value2, total_bits1, total_bits2, op):
+    # print("execute", value1, value2)
     value1, value2 = get_neg_values(value1, value2, total_bits1, total_bits2)
+    print("execute", value1, value2)
 
     if op == 'addition':
         return bounding_hex(value1 + value2)
