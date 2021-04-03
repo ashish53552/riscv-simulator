@@ -6,7 +6,7 @@ from memory_file import *
 from register_file import *
 
 # instructions_machine_code array will have all the .mc file instructions
-input_file = open("../test/input.mc", "r")
+input_file = open("../test/fibonacci.mc", "r")
 
 PC = None
 IR = None
@@ -50,8 +50,7 @@ while True:
     # get_register_file()
     # get_data_memory_file()
     # cnt += 1
-    # if cnt==106:
-    #     break
+    # print("cnt", cnt)
 
 get_register_file()
 get_text_memory_file()

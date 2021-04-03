@@ -65,7 +65,7 @@ def add_data_to_memory(data, location, no_of_byte):
 
 # Getting values for a given memory location and the number of bytes, can be used for lw, lh, lb
 def get_data_from_memory(location, no_of_byte):
-    # if location in memory.keys():
+    if location in memory.keys():
         value = ""
         for i in reversed(range(no_of_byte)):
             value = memory[location] + value
@@ -73,7 +73,8 @@ def get_data_from_memory(location, no_of_byte):
 
         value = "0x"+format(value, "0>8")
         return value
-    # return "0x00000000"
+    # print("Error")
+    return "0x00000000"
 
 def get_text_memory_file():
     print("MEMORY FILE")

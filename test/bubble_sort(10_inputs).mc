@@ -1,5 +1,5 @@
 0x0	0x10000537	lui x10 65536	lui x10,0x10000
-0x4	0x00B00593	addi x11 x0 11	addi x11,x0,11
+0x4	0x00A00593	addi x11 x0 10	addi x11,x0,10
 0x8	0x00100393	addi x7 x0 1	addi x7 x0 1
 0xc	0x008000EF	jal x1 8	jal x1,bubblesort
 0x10 0x06000063	beq x0 x0 96	beq x0,x0,finish
