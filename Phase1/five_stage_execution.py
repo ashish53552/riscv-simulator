@@ -117,7 +117,7 @@ def decode(instruction):
 def execute(value1, value2, total_bits1, total_bits2, op):
     # print("execute", value1, value2)
     value1, value2 = get_neg_values(value1, value2, total_bits1, total_bits2)
-    print("execute", value1, value2)
+    # print("execute", value1, value2)
 
     if op == 'addition':
         return bounding_hex(value1 + value2)
@@ -173,6 +173,7 @@ def execute(value1, value2, total_bits1, total_bits2, op):
 
 def memory_access(MAR, MDR, num_bytes):
     if MAR != None and MDR != None:
+        # print("MAR", MAR, "MDR", MDR)
         MAR = pad_hexa(make_hex_uppercase(MAR), 8)
         MDR = pad_hexa(make_hex_uppercase(MDR), 8)
         memory_file.add_data_to_memory(MDR, MAR, num_bytes)

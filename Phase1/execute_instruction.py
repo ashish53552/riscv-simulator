@@ -605,11 +605,11 @@ def run_blt(instruction_dict, PC):
 def run_jal(instruction_dict, PC):
     rd = "x" + str(int(instruction_dict['rd'], 2))
 
-    val_imm = int(instruction_dict['imm'], 2)
+    val_imm = hex(int(instruction_dict['imm'], 2))
 
     new_PC = execute(PC, val_imm, 32, 20, 'addition')
 
-    PC = iag(PC, None, None, 1, 0)
+    PC = iag(PC, None, None, 1, 0)['PC']
 
     write_back(rd, PC)
 

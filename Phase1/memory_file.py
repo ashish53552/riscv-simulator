@@ -18,6 +18,30 @@ def add_text_to_memory(instruction):
     memory[text_pointer] = instruction[-8:-6]
     text_pointer = "0x" + format((int(text_pointer, 16) + 1), "0>8x").upper()  # incrementing the text pointer
 
+def add_data_before(data, no_of_byte=4):
+    global data_pointer
+    if no_of_byte == 1:
+        memory[data_pointer] = data[-2:]
+        data_pointer = "0x" + format((int(data_pointer, 16) + 1), "0>8x").upper()  # incrementing the location by one for next byte
+
+    # For storing Half Word Data like in sh
+    elif no_of_byte == 2:
+        memory[data_pointer] = data[-2:]
+        data_pointer = "0x" + format((int(data_pointer, 16) + 1), "0>8x").upper()  # incrementing the location by one for next byte
+        memory[data_pointer] = data[-4:-2]
+        data_pointer = "0x" + format((int(data_pointer, 16) + 1),"0>8x").upper()  # incrementing the location by one for next byte
+
+    # For storing Word Data like in sw
+    elif no_of_byte == 4:
+        memory[data_pointer] = data[-2:]
+        data_pointer = "0x" + format((int(data_pointer, 16) + 1), "0>8x").upper()  # incrementing the location by one for next byte
+        memory[data_pointer] = data[-4:-2]
+        data_pointer = "0x" + format((int(data_pointer, 16) + 1), "0>8x").upper()  # incrementing the location by one for next byte
+        memory[data_pointer] = data[-6:-4]
+        data_pointer = "0x" + format((int(data_pointer, 16) + 1), "0>8x").upper()  # incrementing the location by one for next byte
+        memory[data_pointer] = data[-8:-6]
+        data_pointer = "0x" + format((int(data_pointer, 16) + 1), "0>8x").upper()  # incrementing the location by one for next byte
+
 # Adding data of given bit in a given memory location
 def add_data_to_memory(data, location, no_of_byte):
     if no_of_byte == 1:
@@ -41,15 +65,17 @@ def add_data_to_memory(data, location, no_of_byte):
 
 # Getting values for a given memory location and the number of bytes, can be used for lw, lh, lb
 def get_data_from_memory(location, no_of_byte):
-    value = ""
-    for i in reversed(range(no_of_byte)):
-        value = memory[location] + value
-        location = "0x" + format((int(location, 16) + 1), "0>8x").upper()
+    # if location in memory.keys():
+        value = ""
+        for i in reversed(range(no_of_byte)):
+            value = memory[location] + value
+            location = "0x" + format((int(location, 16) + 1), "0>8x").upper()
 
-    value = "0x"+format(value, "0>8")
-    return value
+        value = "0x"+format(value, "0>8")
+        return value
+    # return "0x00000000"
 
-def get_memory_file():
+def get_text_memory_file():
     print("MEMORY FILE")
     print("Text Memory")
     for mem, val in memory.items():
@@ -57,9 +83,11 @@ def get_memory_file():
             print(mem, ":", val)
         else:
             break
+
+def get_data_memory_file():
     print("Data Memory")
     for mem, val in memory.items():
-        if int(mem,16) >= int(data_pointer,16):
+        if int(mem,16) >= int("0x10000000",16):
             print(mem, ":",val)
 
 

@@ -21,6 +21,18 @@ for line in input_file:
 # To mark the end of the instructions
 add_text_to_memory("0x00000000")
 
+# Adding Data to memory (Assuming 4 byte input)
+print("Enter the number of elements to be added in the Data Memory :")
+num = int(input())
+if num > 0:
+    list_of_values = input()
+    for x in list(list_of_values.split()):
+        data = bounding_hex(int(x))
+        # print(data)
+        add_data_before(data)
+
+# get_data_memory_file()
+# cnt = 0
 # Fetching the instruction from the text memory, decoding it and performing the respective tasks
 while True:
 
@@ -28,17 +40,23 @@ while True:
     # print(PC)
     # print(get_register_file())
     PC, IR = fetch(PC, IR, branch)
-    # print(PC)
+    # print("PC", PC)
     # get_memory_file()
     if IR == "0x00000000":
         break
-
     instruction_dict = decode(IR)
-    print(instruction_dict)
+    # print(instruction_dict)
     PC, branch = identify_instruction_and_run(instruction_dict, PC)
+    # get_register_file()
+    # get_data_memory_file()
+    # cnt += 1
+    # if cnt==106:
+    #     break
 
 get_register_file()
-get_memory_file()
+get_text_memory_file()
+print("\n")
+get_data_memory_file()
 
 
 

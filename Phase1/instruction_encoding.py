@@ -80,12 +80,14 @@ def extract_SB_type(bin_instruction):
     extracted_fields["rs1"] = bin_instruction[12:17]
     extracted_fields["rs2"] = bin_instruction[7:12]
     extracted_fields["funct3"] = bin_instruction[17:20]
-    imm1 = bin_instruction[21:25]
+    imm1 = bin_instruction[20:24]
     imm2 = bin_instruction[1:7]
-    imm3 = bin_instruction[20]
+    imm3 = bin_instruction[24]
     imm4 = bin_instruction[0]
     imm = imm4 + imm3 + imm2 + imm1
-    imm = format(int(imm, 2), '0>32b')
+    imm = format(int(imm, 2)*2, '0>12b')
+    if len(imm)>12:
+        imm = imm[1:]
     extracted_fields["imm"] = imm
 
     return extracted_fields
@@ -104,12 +106,14 @@ def extract_UJ_type(bin_instruction):
     }
     extracted_fields["opc_code"] = bin_instruction[25:]
     extracted_fields["rd"] = bin_instruction[20:25]
-    imm19_12 = bin_instruction[12:20][::-1]
+    imm19_12 = bin_instruction[12:20]
     imm11 = bin_instruction[11:12]
-    imm10_1 = bin_instruction[1:11][::-1]
+    imm10_1 = bin_instruction[1:11]
     imm_20 = bin_instruction[0:1]
-    imm = imm10_1 + imm11 + imm19_12 + imm_20
-    imm = format(int(imm, 2) * 2, '0>32b')
+    imm = imm_20 + imm19_12 + imm11 + imm10_1
+    imm = format(int(imm, 2)*2, '0>20b')
+    if len(imm)>20:
+        imm = imm[1:]
     extracted_fields["imm"] = imm
     return extracted_fields
 
