@@ -622,7 +622,7 @@ def run_jal(instruction_dict, PC):
 def run_auipc(instruction_dict, PC):
     rd = "x" + str(int(instruction_dict['rd'], 2))
 
-    val_imm = int(instruction_dict['imm'], 2)
+    val_imm = hex(int(instruction_dict['imm'], 2))
 
     shift_amount = hex(12)
 
@@ -639,7 +639,7 @@ def run_auipc(instruction_dict, PC):
 def run_lui(instruction_dict, PC):
     rd = "x" + str(int(instruction_dict['rd'], 2))
 
-    val_imm = int(instruction_dict['imm'], 2)
+    val_imm = hex(int(instruction_dict['imm'], 2))
 
     shift_amount = hex(12)
 
