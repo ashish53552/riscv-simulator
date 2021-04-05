@@ -6,7 +6,7 @@ from memory_file import *
 from register_file import *
 
 # instructions_machine_code array will have all the .mc file instructions
-input_file = open("../test/fibonacci.mc", "r")
+input_file = open("../test/merge.mc", "r")
 
 PC = None
 IR = None
@@ -49,12 +49,13 @@ while True:
     PC, branch = identify_instruction_and_run(instruction_dict, PC)
     # get_register_file()
     # get_data_memory_file()
+    # if PC == "0x00000118":
+    #     input("Continue")
     # cnt += 1
     # print("cnt", cnt)
 
 get_register_file()
 get_text_memory_file()
-print("\n")
 get_data_memory_file()
 
 

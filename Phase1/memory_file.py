@@ -77,19 +77,26 @@ def get_data_from_memory(location, no_of_byte):
     return "0x00000000"
 
 def get_text_memory_file():
-    print("MEMORY FILE")
-    print("Text Memory")
+    print("Text Memory\n")
     for mem, val in memory.items():
         if int(mem,16) < int(data_pointer,16):
             print(mem, ":", val)
         else:
             break
+    print('\n')
 
 def get_data_memory_file():
-    print("Data Memory")
-    for mem, val in memory.items():
-        if int(mem,16) >= int("0x10000000",16):
-            print(mem, ":",val)
+    print("Data Memory\n")
+    data_p = "0x10000000"
+    while data_p in memory.keys():
+        print(data_p, ":",memory[data_p])
+        data_p = "0x" + format((int(data_p, 16) + 1), "0>8x").upper()
+
+    print("\nStack Memory\n")
+    st_p = "0x" + format((int("0x7FFFFFF0", 16) - 4), "0>8x").upper()
+    while st_p in memory.keys():
+        print(st_p, ":", memory[st_p])
+        st_p = "0x" + format((int(st_p, 16) - 1), "0>8x").upper()
 
 
 

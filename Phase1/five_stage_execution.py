@@ -158,7 +158,7 @@ def execute(value1, value2, total_bits1, total_bits2, op):
         else:
             return False
 
-    elif op == 'check_if_less than':
+    elif op == 'check_if_less_than':
         if (value1 < value2):
             return True
         else:
