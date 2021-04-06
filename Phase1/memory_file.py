@@ -76,27 +76,39 @@ def get_data_from_memory(location, no_of_byte):
     # print("Error")
     return "0x00000000"
 
+
+
 def get_text_memory_file():
-    print("Text Memory\n")
+    #print("Text Memory\n")
+    Inst_Mem = OrderedDict()
     for mem, val in memory.items():
         if int(mem,16) < int(data_pointer,16):
-            print(mem, ":", val)
+            #print(mem, ":", val)
+            Inst_Mem[mem] = val
         else:
             break
-    print('\n')
+    #print('\n')
+    return Inst_Mem
 
 def get_data_memory_file():
-    print("Data Memory\n")
+    #print("Data Memory\n")
     data_p = "0x10000000"
+    Data_Mem = OrderedDict()
+    Stack_Mem = OrderedDict()
     while data_p in memory.keys():
-        print(data_p, ":",memory[data_p])
+        #print(data_p, ":",memory[data_p])
+        Data_Mem[data_p] = memory[data_p]
         data_p = "0x" + format((int(data_p, 16) + 1), "0>8x").upper()
 
-    print("\nStack Memory\n")
+    #print("\nStack Memory\n")
     st_p = "0x" + format((int("0x7FFFFFF0", 16) - 4), "0>8x").upper()
     while st_p in memory.keys():
-        print(st_p, ":", memory[st_p])
+        #print(st_p, ":", memory[st_p])
+        Stack_Mem[st_p] = memory[st_p]
         st_p = "0x" + format((int(st_p, 16) - 1), "0>8x").upper()
+        
+    return Data_Mem, Stack_Mem
+
 
 
 

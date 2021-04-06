@@ -24,10 +24,12 @@ def update_register_val(register_num, value):
 		registers[register_num] = value
 
 def get_register_file():
-	print("REGISTER FILE \n")
-	for register, val in registers.items():
-		print(register, ":", val)
-	print("\n")
+	#print("REGISTER FILE \n")
+	#for register, val in registers.items():
+	#	print(register, ":", val)
+	#print("\n")
+    return registers
+    
 
 
 
