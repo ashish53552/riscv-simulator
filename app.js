@@ -19,7 +19,7 @@ app.get('/', (req, res) => {
 });
 
 app.post('/',(req,res)=>{
-    // console.log(req.body);
+    console.log(req.body);
     
 
     // const pythonProcess = spawn('python',["gg\\gg2\\somefile.py", JSON.stringify(req.body)]);
@@ -28,9 +28,12 @@ app.post('/',(req,res)=>{
     //     res.send(JSON.parse(data))
     // });
 
+    // console.log(req.body);
+    // res.send(req.body);
+
     const pythonProcess = spawn('python',["Phase1\\main.py", JSON.stringify(req.body)]);
     pythonProcess.stdout.on('data', (data) => {
-        console.log(JSON.parse(data));
+       // console.log(JSON.parse(data));
       
         res.send(JSON.parse(data));
     });
