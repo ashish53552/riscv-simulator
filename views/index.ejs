@@ -4,30 +4,44 @@
   <body>
     <div style="height: 100%; width: 70%; position: absolute; background-color: aqua; padding: 50px;">
       <!-- <form > -->
-        <div style="height: 70%; width: 100%; padding: 10px;">
-          <textarea name="code" id="code" placeholder="write your code here..." style="width: 100%; height: 100%; margin-bottom: 25px;"></textarea>
+      <div style="height: 70%; width: 100%; padding: 10px;">
+        <textarea name="code" id="code" placeholder="write your code here..."
+          style="width: 100%; height: 100%; margin-bottom: 25px;"></textarea>
 
-        </div>
-        <div style="height: 30%; width: 100%; padding: 10px; box-sizing: border-box;">
-          <textarea name="inp" id="inp" placeholder='input' style="width: 100%; height: 100%; margin-bottom: 25px;"></textarea>
+      </div>
+      <div style="height: 30%; width: 100%; padding: 10px; box-sizing: border-box;">
+        <textarea name="inp" id="inp" placeholder='input'
+          style="width: 100%; height: 100%; margin-bottom: 25px;"></textarea>
 
-        </div>
-        <div style="padding: 10px;">
-          <button type='submit' id="submitButton"> submit </button>
-          <button type='upload' id="uploadButton">upload</button>
-        </div>
+      </div>
+      <div style="padding: 10px;">
+        <button type='submit' id="submitButton"> submit </button>
+        <button type='upload' id="uploadButton">upload</button>
+      </div>
 
       <!-- </form> -->
 
     </div>
-    <div style="height: 100%; width: 30%; position: absolute; margin-left: 70%; margin-right: 0px;background-color: pink; padding: 50px;" >
-      <div style="padding: 10px; background-color: antiquewhite; opacity: 80%;">
+
+    <div  style="overflow-y: scroll; height: 100%; width: 30%; position: absolute; margin-left: 70%; margin-right: 0px;background-color: pink; padding: 50px;">
+      <div style="padding: 10px; background-color: antiquewhite; opacity: 80%; ">
         <H5>Registers</H5>
         <p id="register-values"></p>
+        <!-- <div class="Registers">
+          <% for(var x=1;x<=15;x++){ %>
+            <div></div>
+            <input disabled style="padding:5px;" placeholder=<%= "0x100000" + x.toString(16).toUpperCase() %>>
+            <%}%>
+        </div> -->
         <H5>Intruction Memory</H5>
         <p id="instruction-values"></p>
         <H5>Data Memory</H5>
         <p id="data-values"></p>
+        <!-- <ul>
+          <% for(var x=1;x<=15;x++){ %>
+          <input disabled placeholder=<%= "0x100000" + x.toString(16).toUpperCase() %>>
+          <%}%>
+        </ul> -->
         <H5>Stack Memory</H5>
         <p id="stack-values"></p>
       </div>
@@ -37,28 +51,53 @@
 
   </body>
   <script>
-    const outputDialogue=document.querySelector("#output");
-    const submitDialogue=document.querySelector("#submitButton");
-    const code=document.querySelector("#code");
-    const inp=document.querySelector("#inp");
-    const register_values=document.querySelector("#register-values");
-    const data_values=document.querySelector("#data-values");
-    const instruction_values=document.querySelector("#instruction-values");
-    const stack_values=document.querySelector("#stack-values");
-    submitDialogue.addEventListener('click',(event)=>{
-      var data={};
-      data.code=code.value;
-      data.inp=inp.value;
-      $.post("/",data,(results,error)=>{
+    const outputDialogue = document.querySelector("#output");
+    const submitDialogue = document.querySelector("#submitButton");
+    const code = document.querySelector("#code");
+    const inp = document.querySelector("#inp");
+    const register_values = document.querySelector("#register-values");
+    const data_values = document.querySelector("#data-values");
+    const instruction_values = document.querySelector("#instruction-values");
+    const stack_values = document.querySelector("#stack-values");
+
+    submitDialogue.addEventListener('click', (event) => {
+      $('p').empty();
+      var data = {};
+      console.log(true);
+      data.code = code.value.replace(/^\s*[\r\n]/gm, "")
+      data.inp = inp.value.replace(/^\s*[\r\n]/gm, "")
+      console.log(data);
+      $.post("/", data, (results, error) => {
+        if(error) console.log(error);
         console.log(results);
-        var registers=results.registers;
-        var inst_mem=results.Inst_Mem;
-        var data_mem=results.Data_Mem;
-        var stack_mem=results.Stack_Mem;
-        register_values.innerHTML=registers;
-        data_values.innerHTML=data_mem;
-        instruction_values.innerHTML=inst_mem;
-        stack_values.innerHTML=stack_mem;        
+        var registers = results.registers;
+        var inst_mem = results.Inst_Mem;
+        var data_mem = results.Data_Mem;
+        var stack_mem = results.Stack_Mem;
+        var keys=Object.keys(registers);
+        var values=Object.values(registers);
+        for(var i=0;i<Object.keys(registers).length;i++){
+          register_values.insertAdjacentHTML('beforeend',keys[i] +" : "+ values[i]+"<br>");
+        }
+        
+        var keys=Object.keys(data_mem);
+        var values=Object.values(data_mem);
+        for(var i=0;i<keys.length;i++){
+          data_values.insertAdjacentHTML('beforeend',keys[i] +" : "+ values[i]+"<br>");
+        }
+        
+        var keys=Object.keys(inst_mem);
+        var values=Object.values(inst_mem);
+        for(var i=0;i<keys.length;i++){
+          instruction_values.insertAdjacentHTML('beforeend',keys[i] +" : "+ values[i]+"<br>");
+        }
+        
+        var keys=Object.keys(stack_mem);
+        var values=Object.values(stack_mem);
+        for(var i=0;i<keys.length;i++){
+          stack_values.insertAdjacentHTML('beforeend',keys[i] +" : "+ values[i]+"<br>");
+        }
+        
       });
     });
     // outputEvent.addEventListener('change',(event)=>{
@@ -94,8 +133,6 @@
     //         }
     //     })
     // });
-
-    
-</script>
+  </script>
 
   <%- include('partials/footer') %>

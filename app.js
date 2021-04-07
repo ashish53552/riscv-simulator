@@ -33,7 +33,7 @@ app.post('/',(req,res)=>{
 
     const pythonProcess = spawn('python',["Phase1\\main.py", JSON.stringify(req.body)]);
     pythonProcess.stdout.on('data', (data) => {
-       // console.log(JSON.parse(data));
+        console.log(JSON.parse(data));
       
         res.send(JSON.parse(data));
     });
