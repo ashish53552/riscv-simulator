@@ -10,7 +10,7 @@ A Simulator for a 32 bit RISC-V Instruction Set Architecture (ISA) built in Pyth
 	Hrishikesh Pawar	2018MEB1241	Instructions of R Format, Register & PMI Organization
 	
 ### Phase 1
-	A simulator to execute a sequence of machine code instructions to mimic the basic data and conrol path of RISC-V
+	A simulator to execute a sequence of machine code instructions to mimic the basic data and conrol path of RISC-V ISA
       
 ### How to Build
 	$cd src
@@ -38,7 +38,7 @@ A Simulator for a 32 bit RISC-V Instruction Set Architecture (ISA) built in Pyth
 		jal
 
 ### Input File Information
-###### The input file should contain a sequence of machine code instructions (corresponding to 32 bit RISC-V instructions) in a format like (just an example, more machine codes can be found in the 'test' directory) :
+###### The input file should contain a sequence of machine code instructions (corresponding to 32 bit RISC-V instructions) in the format - 'Instruction number followed by machine code. See below example.
 	0x00000000 0x00a00e93
 	0x00000004 0x00100e13
 	0x00000008 0x01d00333
@@ -50,9 +50,10 @@ A Simulator for a 32 bit RISC-V Instruction Set Architecture (ISA) built in Pyth
 
 ### Datapath for the Execution of a Single Machine Code Instruction
 The overall datapath (with control signals) corresponding to the execution of a single instruction looks like (corresponding code in Phase1/five_stage_execution.py)<br>
-<center><img src="img/datapath.png"></center><br>
+<center><img src="img/datapath.png" height="300"></center><br>
 The Instruction Adress Generator (IAG) for calculating the next program counter (PC) while executing instructions can be visualised as (corresponding code in Phase1/iag.py)<br>
-<center><img src="img/iag.png"></center><br>
+<center><img src="img/iag.png" height="300"></center><br>
 The processor-memory interface for transfer of data between all the registers in the simulated processor and the memory can be depicted by<br>
-<center><img src="img/pmi.png"></center><br>
+<center><img src="img/pmi.png" height="300"></center>
+<br>
 Source : Slides from CS204 : Computer Architecture by Dr. T.V. Kalyan (IIT Ropar)
