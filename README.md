@@ -2,12 +2,12 @@
 
 A Simulator for a 32 bit RISC-V Instruction Set Architecture (ISA) built in Python3.
 
-### Team Information
-	Divyansh Srivastava	2018MEB1009	
-	Vikram Setty		2018MED1010	
-	Ashish Kaushik		2018MMB1279	
-	Shrish Tripathi		2018MMB1294	
-	Hrishikesh Pawar	2018MEB1241	
+### Team Information & Contributions
+	Divyansh Srivastava	2018MEB1009	Instructions for SB, U Format & Memory Organization	
+	Vikram Setty		2018MED1010	Instructions for UJ Format, Five Stage Execution & IAG		
+	Ashish Kaushik		2018MMB1279	Instructions for I Format & GUI
+	Shrish Tripathi		2018MMB1294	Instructions for S Format & GUI
+	Hrishikesh Pawar	2018MEB1241	Instructions for R Format, Register & PMI Organization	
 	
 ### Phase 1
   A **Simulator** to execute a sequence of machine code instructions to mimic the basic data and control path of RISC-V ISA.
@@ -27,7 +27,9 @@ A Simulator for a 32 bit RISC-V Instruction Set Architecture (ISA) built in Pyth
 * app.js - Main file combining frontend and backend(both express and python components) of the Simulator. 
 
 ### How to Execute
-   * Locally (Python and Node Required)<br>
+   * The simulator is deployed at https://sheltered-journey-97920.herokuapp.com/#
+
+   * For running it *locally* **(Python and Node Required)**<br>
   ```
 		git clone "repo url"
 		npm install
@@ -35,7 +37,6 @@ A Simulator for a 32 bit RISC-V Instruction Set Architecture (ISA) built in Pyth
   ```
          Now the simulator can be accessed at http://localhost:80/
 	 
-   * It is also deployed at https://sheltered-journey-97920.herokuapp.com/#
    * Once the webpage is started, paste the machine code in the code window. You can optionally provide data directly to data memory from the input window like in case of bubble and merge sort. This accepts *space seperated values in decimal format*. Then click on submit and check the registers and memory sections.
 	
 ### Instructions Supported
@@ -52,8 +53,8 @@ A Simulator for a 32 bit RISC-V Instruction Set Architecture (ISA) built in Pyth
 	UJ-Type:
 		jal
 
-### Input File Information
-###### The input file should contain a sequence of machine code instructions (corresponding to 32 bit RISC-V instructions) in the format - 'Instruction number followed by machine code. See below example.
+### Input and Output Information
+###### The input file/set of instructions should contain a sequence of machine code instructions (corresponding to 32 bit RISC-V instructions) in the format - 'Instruction number' followed by the 'machine code'. An example would look like :
 	0x00 0x00a00e93
 	0x04 0x00100e13
 	0x08 0x01d00333
@@ -62,6 +63,9 @@ A Simulator for a 32 bit RISC-V Instruction Set Architecture (ISA) built in Pyth
 	.
 	0x48 0x00008067
 	0x4c 0x00000000
+###### The output format in the GUI is in the following format :
+	Register Data 	: 32 Registers with their Corresponding 32 bit Hexadecimal Values
+	Memory Data 	: Text, Data & Stack Memory Segments in Little Endian Format
 
 ### Datapath for the Execution of a Single Machine Code Instruction
 The overall datapath (with control signals) corresponding to the execution of a single instruction looks like (corresponding code in Phase1/five_stage_execution.py)<br>
