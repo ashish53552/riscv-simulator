@@ -15,27 +15,19 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.get('/', (req, res) => {
-    res.render('index2');
+    res.render('index');
 });
 
 app.post('/',(req,res)=>{
-    console.log(req.body);
-    
-
-    // const pythonProcess = spawn('python',["gg\\gg2\\somefile.py", JSON.stringify(req.body)]);
-    // pythonProcess.stdout.on('data', (data) => {
-    //     console.log(JSON.parse(data));
-    //     res.send(JSON.parse(data))
-    // });
-
-    // console.log(req.body);
-    // res.send(req.body);
-
+    //console.log(req.body); uncomment this to check the input at console
+    //calling python child process
     const pythonProcess = spawn('python',["Phase1/main.py", JSON.stringify(req.body)]);
+
+    //parsing the response from std.out.flush()
+
     pythonProcess.stdout.on('data', (data) => {
-        console.log(JSON.parse(data));
-      
-        res.send(JSON.parse(data));
+      //  console.log(JSON.parse(data)); uncomment this to check the output of the python file at console
+       res.send(JSON.parse(data)); // dumping the data to the frontend ajax call
     });
 
 
