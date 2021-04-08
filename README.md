@@ -12,16 +12,30 @@ A Simulator for a 32 bit RISC-V Instruction Set Architecture (ISA) built in Pyth
 ### Phase 1
 	A simulator to execute a sequence of machine code instructions to mimic the basic data and conrol path of RISC-V ISA
       
-### How to Build
-	$cd src
-	$make
-	
-### Cleaning the Project:
-	$cd src
-	$make clean
+### Technology Stack
+	Python 3.6(for the development of the simulator)
+	HTML, CSS, Node, Express, Javascript (for GUI)
 
-### How to execute
-	./myRISCVSim test/simple_add.mc
+### File Structure
+		
+![File structure](img/file_structure.png)
+
+* Phase1 - Contains the python files for various stages like instruction decoding, five stage execution, memory file, register file etc.
+* test - Contains few testcases to test the validity of the simulator
+* public - Contains CSS and JS components of the front-end of the GUI.
+* views - Contains the Express.js and JS components for the back-end of the GUI.
+* app.js - Main file combining frontend and backend(both express and python components) of the Simulator. 
+
+### How to Execute
+   * Locally (Python and Node Required)<br>
+  ```
+		git clone "repo url"
+		npm install
+		node app.js
+  ```
+         Now the simulator can be accessed at http://localhost:80/
+	 
+   * It is also deployed at https://sheltered-journey-97920.herokuapp.com/#
 	
 ### Instructions Supported
 	R-Type:
@@ -39,14 +53,14 @@ A Simulator for a 32 bit RISC-V Instruction Set Architecture (ISA) built in Pyth
 
 ### Input File Information
 ###### The input file should contain a sequence of machine code instructions (corresponding to 32 bit RISC-V instructions) in the format - 'Instruction number followed by machine code. See below example.
-	0x00000000 0x00a00e93
-	0x00000004 0x00100e13
-	0x00000008 0x01d00333
+	0x00 0x00a00e93
+	0x04 0x00100e13
+	0x08 0x01d00333
 	.
 	.
 	.
-	0x00000048 0x00008067
-	0x0000004c 0x00000000
+	0x48 0x00008067
+	0x4c 0x00000000
 
 ### Datapath for the Execution of a Single Machine Code Instruction
 The overall datapath (with control signals) corresponding to the execution of a single instruction looks like (corresponding code in Phase1/five_stage_execution.py)<br>
