@@ -31,7 +31,7 @@ app.post('/',(req,res)=>{
     // console.log(req.body);
     // res.send(req.body);
 
-    const pythonProcess = spawn('python',["Phase1\\main.py", JSON.stringify(req.body)]);
+    const pythonProcess = spawn('python',["./Phase1/main.py", JSON.stringify(req.body)]);
     pythonProcess.stdout.on('data', (data) => {
         console.log(JSON.parse(data));
       
