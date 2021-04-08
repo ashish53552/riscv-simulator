@@ -53,8 +53,8 @@ A Simulator for a 32 bit RISC-V Instruction Set Architecture (ISA) built in Pyth
 	UJ-Type:
 		jal
 
-### Input File Information
-###### The input file should contain a sequence of machine code instructions (corresponding to 32 bit RISC-V instructions) in the format - 'Instruction number followed by machine code. See below example.
+### Input and Output Information
+###### The input file/set of instructions should contain a sequence of machine code instructions (corresponding to 32 bit RISC-V instructions) in the format - 'Instruction number' followed by the 'machine code'. An example would look like :
 	0x00 0x00a00e93
 	0x04 0x00100e13
 	0x08 0x01d00333
@@ -63,6 +63,9 @@ A Simulator for a 32 bit RISC-V Instruction Set Architecture (ISA) built in Pyth
 	.
 	0x48 0x00008067
 	0x4c 0x00000000
+###### The output format in the GUI is in the following format :
+	Register Data 	: 32 Registers with their Corresponding 32 bit Hexadecimal Values
+	Memory Data 	: Text, Data & Stack Memory Segments in Little Endian Format
 
 ### Datapath for the Execution of a Single Machine Code Instruction
 The overall datapath (with control signals) corresponding to the execution of a single instruction looks like (corresponding code in Phase1/five_stage_execution.py)<br>
