@@ -36,6 +36,7 @@ A Simulator for a 32 bit RISC-V Instruction Set Architecture (ISA) built in Pyth
          Now the simulator can be accessed at http://localhost:80/
 	 
    * It is also deployed at https://sheltered-journey-97920.herokuapp.com/#
+   * Once the webpage is started, paste the machine code in the code window. You can optionally provide data directly to data memory from the input window like in case of bubble and merge sort. This accepts *space seperated values in decimal format*. Then click on submit and check the registers and memory sections.
 	
 ### Instructions Supported
 	R-Type:
