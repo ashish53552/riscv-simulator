@@ -2,12 +2,12 @@
 
 A Simulator for a 32 bit RISC-V Instruction Set Architecture (ISA) built in Python3.
 
-### Team Information
-	Divyansh Srivastava	2018MEB1009	
-	Vikram Setty		2018MED1010	
-	Ashish Kaushik		2018MMB1279	
-	Shrish Tripathi		2018MMB1294	
-	Hrishikesh Pawar	2018MEB1241	
+### Team Information & Contributions
+	Divyansh Srivastava	2018MEB1009	Instructions for SB, U Format & Memory Organization	
+	Vikram Setty		2018MED1010	Instructions for UJ Format, Five Stage Execution & IAG		
+	Ashish Kaushik		2018MMB1279	Instructions for I Format & GUI
+	Shrish Tripathi		2018MMB1294	Instructions for S Format & GUI
+	Hrishikesh Pawar	2018MEB1241	Instructions for R Format, Register & PMI Organization	
 	
 ### Phase 1
   A **Simulator** to execute a sequence of machine code instructions to mimic the basic data and control path of RISC-V ISA.
