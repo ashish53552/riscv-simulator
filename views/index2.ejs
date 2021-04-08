@@ -36,11 +36,12 @@
             <ul class="nav nav-tabs">
                 <li class="nav-item">
                     <div class="dropdown">
-                        <a class="btn btn-secondary dropdown-toggle" id="reg-toggle" href="#" role="button"
+                        <a class="btn btn-secondary dropdown-toggle" onClick="fun()" id="reg-toggle" href="#" role="button"
                             id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
                             Register
                         </a>
                         <ul class="dropdown-menu key" id="register-values">
+                            <li>Please run the code first</li>
                         </ul>
 
                     </div>
@@ -92,7 +93,16 @@
 
 
 </body>
+
 <script>
+    function fun(){
+        tables.hide();
+    }
+</script>
+
+<script>
+
+
     const outputDialogue = document.querySelector("#output");
     const submitDialogue = document.querySelector("#submitButton");
     const code = document.querySelector("#code");
