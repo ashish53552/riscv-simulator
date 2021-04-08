@@ -17,7 +17,7 @@
             <ul class="nav nav-tabs">
                 <li class="nav-item">
                     <div class="dropdown">
-                        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                        <a class="btn btn-secondary dropdown-toggle" id="reg-toggle" href="#" role="button" id="dropdownMenuLink"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             Register
                         </a>
@@ -29,24 +29,24 @@
                 <li class="nav-item">
                     <div class="dropdown">
                         <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                            data-bs-toggle="dropdown" aria-expanded="false">
+                            data-bs-toggle="dropdown" aria-expanded="false" class="mem-toggle">
                             Memory
                         </a>
                         <br>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
 
-                            <li><a class="button" data-table="1" href="#">Hide-all</a></li>
-                            <li><a class="button" data-table="instruction-values" href="#">text</a></li>
+                            <li><a class="button" style="text-decoration: none;" data-table="1" href="#">Hide-all</a></li>
+                            <li><a class="button" style="text-decoration: none;" data-table="instruction-values" href="#">text</a></li>
 
 
-                            <li><a class="button" data-table="data-values" href="#">data</a></li>
+                            <li><a class="button" style="text-decoration: none;" data-table="data-values" href="#">data</a></li>
 
-                            <li><a class="button" data-table="stack-values" href="#">stack</a></li>
+                            <li><a class="button" style="text-decoration: none;"data-table="stack-values" href="#">stack</a></li>
                         </ul>
                         <table id="1">
 
                         </table>
-                        <table id="instruction-values" style="max-height:10; overflow: auto;">
+                        <table id="instruction-values">
                         </table>
                         <table id="data-values">
                         </table>
@@ -78,6 +78,10 @@
     const data_values = document.querySelector("#data-values");
     const instruction_values = document.querySelector("#instruction-values");
     const stack_values = document.querySelector("#stack-values");
+    const reg_toggle=document.querySelector("#reg-toggle");
+
+
+
 
     submitDialogue.addEventListener('click', (event) => {
         var text;
