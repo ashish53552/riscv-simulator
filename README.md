@@ -1,6 +1,6 @@
 # RISC-V-Simulator
 
-A Simulator for a 32 bit RISC-V Instruction Set Architecture (ISA) built in Python3.
+A Simulator for a 32 bit RISC-V Instruction Set Architecture (ISA).
 
 ### Team Information & Contributions
 	Divyansh Srivastava	2018MEB1009	Instructions for SB, U Format & Memory Organization	
@@ -10,21 +10,58 @@ A Simulator for a 32 bit RISC-V Instruction Set Architecture (ISA) built in Pyth
 	Hrishikesh Pawar	2018MEB1241	Instructions for R Format, Register & PMI Organization	
 	
 ### Phase 1
-  A **Simulator** to execute a sequence of machine code instructions to mimic the basic data and control path of RISC-V ISA.
+  The **Simulator** executes a sequence of machine code instructions to mimic the basic data and control path of RISC-V ISA.
       
 ### Technology Stack
-	Python 3.6(for the development of the simulator)
-	HTML, CSS, Node, Express, Javascript (for GUI)
+	Python 3 (for the development of the simulator)
+	NodeJS, ExpressJS, Javascript, HTML and CSS (for GUI)
 
 ### File Structure
-		
-![File structure](img/file_structure.png)
 
-* Phase1 - Contains the python files for various stages like instruction decoding, five stage execution, memory file, register file etc.
-* test - Contains few testcases to test the validity of the simulator
-* public - Contains CSS and JS components of the front-end of the GUI.
-* views - Contains the Express.js and JS components for the back-end of the GUI.
-* app.js - Main file combining frontend and backend(both express and python components) of the Simulator. 
+```
+RISC-V-Simulator
+├─ app.js
+├─ img
+│  ├─ datapath.png
+│  ├─ file_structure.png
+│  ├─ iag.png
+│  └─ pmi.png
+├─ package-lock.json
+├─ package.json
+├─ Phase1
+│  ├─ execute_instruction.py
+│  ├─ five_stage_execution.py
+│  ├─ iag_file.py
+│  ├─ instruction_encoding.py
+│  ├─ main.py
+│  ├─ memory_file.py
+│  └─ register_file.py
+├─ Procfile
+├─ public
+│  ├─ css
+│  │  └─ sim.css
+│  └─ js
+│     └─ venus.js
+├─ README.md
+├─ test
+│  ├─ bubble_sort(10_inputs).mc
+│  ├─ factorial(of_10_in_x26).mc
+│  ├─ fibonacci(6th_number_in_x29).mc
+│  └─ merge(4_inputs).mc
+└─ views
+   ├─ index.ejs
+   └─ Partials
+      ├─ footer.ejs
+      └─ header.ejs
+
+```		
+
+
+	* Phase1 - Contains the python files for various stages like instruction decoding, five stage execution, memory file, register file.
+	* test - Contains few testcases to test the validity of the simulator.
+	* public - Contains CSS and JS components of the front-end of the GUI.
+	* views - Contains the Express.js and JS components for the back-end of the GUI.
+	* app.js - Main file combining frontend and backend(both express and python components) of the Simulator. 
 
 ### How to Execute
    * The simulator is deployed at https://sheltered-journey-97920.herokuapp.com/#
