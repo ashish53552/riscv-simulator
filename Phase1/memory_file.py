@@ -82,7 +82,7 @@ def get_text_memory_file():
     #print("Text Memory\n")
     Inst_Mem = OrderedDict()
     for mem, val in memory.items():
-        if int(mem,16) < int(data_pointer,16):
+        if int(mem,16) < int("0x10000000",16):
             #print(mem, ":", val)
             Inst_Mem[mem] = val
         else:

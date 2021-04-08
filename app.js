@@ -15,7 +15,7 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.get('/', (req, res) => {
-    res.render('index');
+    res.render('index2');
 });
 
 app.post('/',(req,res)=>{

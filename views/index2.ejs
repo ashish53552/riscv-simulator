@@ -1,0 +1,180 @@
+<%- include('partials/header') %>
+<header class="header">
+    RISC V SIMULATOR
+</header>
+<div style="height: 100% ">
+    <div class="editor">
+        <textarea spellcheck="false" id="code" class="textarea" style="height: 70%;"
+            placeholder="write your code here"></textarea>
+    </div>
+    <div class='editor'>
+        <textarea spellcheck="false" id="inp" placeholder="input the values here"
+            style="width: 65%; height: 10%;"></textarea>
+    </div>
+    <button type="button" id="submitButton" class="btn btn-outline-primary submit-button">Submit</button>
+        <div class="side" >
+
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <div class="dropdown">
+                        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Register
+                        </a>
+                        <ul class="dropdown-menu key" id="register-values">
+                        </ul>
+
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <div class="dropdown">
+                        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Memory
+                        </a>
+                        <br>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+
+                            <li><a class="button" data-table="1" href="#">Hide-all</a></li>
+                            <li><a class="button" data-table="instruction-values" href="#">text</a></li>
+
+
+                            <li><a class="button" data-table="data-values" href="#">data</a></li>
+
+                            <li><a class="button" data-table="stack-values" href="#">stack</a></li>
+                        </ul>
+                        <table id="1">
+
+                        </table>
+                        <table id="instruction-values" style="max-height:10; overflow: auto;">
+                        </table>
+                        <table id="data-values">
+                        </table>
+
+                        <table id="stack-values">
+
+                        </table>
+                    </div>
+                </li>
+            </ul>
+        </div>
+</div>
+
+
+
+
+
+
+
+
+
+</body>
+<script>
+    const outputDialogue = document.querySelector("#output");
+    const submitDialogue = document.querySelector("#submitButton");
+    const code = document.querySelector("#code");
+    const inp = document.querySelector("#inp");
+    const register_values = document.querySelector("#register-values");
+    const data_values = document.querySelector("#data-values");
+    const instruction_values = document.querySelector("#instruction-values");
+    const stack_values = document.querySelector("#stack-values");
+
+    submitDialogue.addEventListener('click', (event) => {
+        var text;
+        $('#register-values').empty();
+        $('#data-values').empty();
+        $('#stack-values').empty();
+        $('#instruction-values').empty();
+        // data init.
+        text = '<tr><th>address</th><th>+0</th><th>+1</th><th>+2</th><th>+3</th></tr>'
+        data_values.insertAdjacentHTML('beforeend', text);
+        instruction_values.insertAdjacentHTML('beforeend', text);
+        stack_values.insertAdjacentHTML('beforeend', text);
+
+
+
+        var data = {};
+        console.log(true);
+        data.code = code.value.replace(/^\s*[\r\n]/gm, "")
+        data.inp = inp.value.replace(/^\s*[\r\n]/gm, "")
+        console.log(data);
+
+        $.post("/", data, (results, error) => {
+            if (error) console.log(error);
+            console.log(results);
+            var registers = results.registers;
+            var inst_mem = results.Inst_Mem;
+            var data_mem = results.Data_Mem;
+            var stack_mem = results.Stack_Mem;
+            var keys = Object.keys(registers);
+            var values = Object.values(registers);
+            for (var i = 0; i < Object.keys(registers).length; i++) {
+                text = '<li><div><label class="dropdown-label">' + keys[i] +
+                    '</label><input disabled placeholder="' + values[i] +
+                    '" class="dropdown-input"></div></li>';
+                register_values.insertAdjacentHTML('beforeend', text);
+            }
+
+            var keys = Object.keys(data_mem);
+            var values = Object.values(data_mem);
+            for (var i = 0; i< keys.length; i+=4) {
+                text = '<tr><td>' + keys[i] + '</td><td>' + values[i] + '</td><td>' + values[i+1] +
+                    '</td><td>' + values[i+2] + '</td><td>' + values[i+3] + '</td></tr>'
+                data_values.insertAdjacentHTML('beforeend', text);
+            }
+
+            var keys = Object.keys(inst_mem);
+            var values = Object.values(inst_mem);
+            for (var i = 0; i< keys.length; i+=4) {
+                text = '<tr><td>' + keys[i] + '</td><td>' + values[i] + '</td><td>' + values[i+1] +
+                    '</td><td>' + values[i+2] + '</td><td>' + values[i+3] + '</td></tr>'
+                instruction_values.insertAdjacentHTML('beforeend', text);
+            }
+
+
+            var keys = Object.keys(stack_mem);
+            var values = Object.values(stack_mem);
+            for (var i = 0; i< keys.length; i+=4) {
+                text = '<tr><td>' + keys[i] + '</td><td>' + values[i] + '</td><td>' + values[i+1] +
+                    '</td><td>' + values[i+2] + '</td><td>' + values[i+3] + '</td></tr>'
+                stack_values.insertAdjacentHTML('beforeend', text);
+            }
+
+        });
+    });
+    // outputEvent.addEventListener('change',(event)=>{
+    //     wrapperNode.innerHTML='';
+    //     finalSubmitButton.disabled=true;
+    //     let data={};
+    //     data.identifier='fordate';
+    //     data.value=event.target.value;
+    //     $.post("/validation-portal",data,(req,res)=>{
+    //         let alldates=req;
+    //         dateEvent.innerHTML='';
+    //         //console.log(alldates);
+    //         for (let i = 0; i <alldates.length; i++) {
+    //             let option = document.createElement("OPTION");
+    //             dateEvent.options.add(option);
+    //             option.text = alldates[i].date;
+    //             option.value = alldates[i].date;
+    //         }
+    //         if(alldates.length===0){
+    //             finalSubmitButton.disabled=true;
+    //             wrapperNode.innerHTML='';
+    //             passengerListElement.innerHTML='';
+    //         }
+    //         if(alldates.length){
+    //             passengerListElement.innerHTML='';
+    //             for(var i=1;i<=30;i++){
+    //                 var option=document.createElement("OPTION");
+    //                 passengerListElement.options.add(option);
+    //                 //console.log(option);
+    //                 option.text=i;
+    //                 option.value=i;
+    //             }
+    //         }
+    //     })
+    // });
+</script>
+
+<%- include('partials/footer') %>

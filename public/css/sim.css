@@ -1,0 +1,97 @@
+.textarea{
+    background: url(http://i.imgur.com/2cOaJ.png);
+    background-attachment: local;
+    background-repeat: no-repeat;
+    padding-left: 35px;
+    padding-top: 10px;
+    border-color:#ccc;
+    width: 65%; 
+    min-height: 500px;
+}
+.editor{
+    margin-top: 10px;
+    padding-left: 30px;
+}
+.submit-button{
+    position: relative;
+    margin-left: 30px;
+    margin-top: 5px;
+    
+}
+
+.header{
+    text-align: center;
+    font-family: 'Ubuntu';
+    font-weight: 700;
+    font-size: 30px;
+    background-color:skyblue;
+}
+.side{
+    position:absolute;
+    top:92px;
+    /* width:300px; */
+    right:80px;
+    /* padding:50px; */
+    margin-right: 10px;
+
+}
+
+.dropdown{
+    
+}
+
+.dropdown-label{
+    display:inline;
+    font-family: "BlinkMacSystemFont";
+    font-weight: 400;
+    font-size:.85rem;
+    padding: 10px;
+}
+.dropdown-input{
+    display:inline;
+    width:200px;
+}
+.key{
+    
+     height: 568px;
+    overflow: auto;
+}
+.memory-table{
+    position:absolute;
+    left:0px;
+}
+
+table {
+    position:absolute;
+    top:50px;
+    right:0px;
+    width:190x;
+    margin-right: 0px;
+    font-family:  New,Courier,monospace;
+    border: 1px solid lightgray;
+    border-collapse: collapse;
+}
+  table, th, td {
+    border: none;
+  }
+  th, td {
+    padding: 3px;
+    text-align: left;
+   
+  }
+  tr:nth-child(even) {
+    background-color: #eee;
+  }
+  tr:nth-child(odd) {
+    background-color:darkgray;
+  }
+  
+ th {
+    background-color: white;
+    color: black;
+
+  }
+  th:hover{
+      color: #66FF66;
+
+  }

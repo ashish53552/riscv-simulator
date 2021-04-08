@@ -107,7 +107,7 @@ sys.stdout.flush()
 # from register_file import *
 
 # # instructions_machine_code array will have all the .mc file instructions
-# input_file = open("E:\\College\\CS204\\Main Project\\RISC-V-Simulator\\test2\\merge.mc", "r")
+# input_file = open("E:\College\CS204\Main Project\RISC-V-Simulator\\test_asm\\merge.mc", "r")
 
 # PC = None
 # IR = None
@@ -158,4 +158,4 @@ sys.stdout.flush()
 # registers=get_register_file()
 # memory=get_text_memory_file()
 # d,s=get_data_memory_file()
-# print(d)
+# print(memory)
