@@ -10,7 +10,7 @@ A Simulator for a 32 bit RISC-V Instruction Set Architecture (ISA) built in Pyth
 	Hrishikesh Pawar	2018MEB1241	
 	
 ### Phase 1
-	A simulator to execute a sequence of machine code instructions to mimic the basic data and conrol path of RISC-V ISA
+	A simulator to execute a sequence of machine code instructions to mimic the basic data and control path <br> of RISC-V ISA.
       
 ### Technology Stack
 	Python 3.6(for the development of the simulator)
