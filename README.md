@@ -13,7 +13,7 @@ A Simulator for a 32 bit RISC-V Instruction Set Architecture (ISA).
   The **Simulator** executes a sequence of machine code instructions to mimic the basic data and control path of RISC-V ISA.
       
 ### Technology Stack
-	Python 3 (for the development of the simulator)
+	Python 3 (for development of the simulator)
 	NodeJS, ExpressJS, Javascript, HTML and CSS (for GUI)
 
 ### File Structure
@@ -23,7 +23,6 @@ RISC-V-Simulator
 ├─ app.js
 ├─ img
 │  ├─ datapath.png
-│  ├─ file_structure.png
 │  ├─ iag.png
 │  └─ pmi.png
 ├─ package-lock.json
