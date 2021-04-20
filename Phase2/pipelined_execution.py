@@ -11,7 +11,6 @@ global pcs_in_order = []
 # from_ins & to_ins range from 0 to 4 (both included) (with from_ins < to_ins)
 def data_forward(mode, from_ins, to_ins, to_reg) :
 
-	global buffers
 	if mode = 'M_M' :
 		buffers[pcs_in_order[to_ins]]['memory_writeback'][] = buffers[pcs_in_order[from_ins]]['memory_writeback']
 	elif mode = 'M_E' :
@@ -43,7 +42,7 @@ def check_data_hazard(PC):
 		elif buffers[pcs_in_order[i-1]]['decode_execute']['rd'] == buffers[pcs_in_order[i]]['decode_execute']['rs2']:
 			return True, i, i-1, -1, 'rs2'
 		elif buffers[pcs_in_order[i-2]]['decode_execute']['rd'] == buffers[pcs_in_order[i]]['decode_execute']['rs1'] and buffers[pcs_in_order[i-2]]['decode_execute']['rd'] == buffers[pcs_in_order[i]]['decode_execute']['rs2']:
-			return True, i, i-1, i-2
+			return True, i, i-1, i-2, 'rs1rs2'
 		elif buffers[pcs_in_order[i-2]]['decode_execute']['rd'] == buffers[pcs_in_order[i]]['decode_execute']['rs1']:
 			return True, i, i-2, -1, 'rs1'
 		elif buffers[pcs_in_order[i-2]]['decode_execute']['rd'] == buffers[pcs_in_order[i]]['decode_execute']['rs2']:
@@ -93,12 +92,14 @@ def execute_pipeline(info_per_stage) :
 				if forwarding:
 					if from_inst1 != -1:
 						if buffers[pcs_in_order[from_ins1]]['execute_memory']:
-							data_forward('M_M', from_ins1, to_ins, to_reg+'_val')
+							data_forward('E_E', from_ins1, to_ins, to_reg[:3]+'_val')
+							if len(to_reg) > 3:
+								to_reg = to_reg[3:]
 						else:
 							stall = True
 					if from_inst2 != -1:
 						if buffers[pcs_in_order[from_ins2]]['execute_memory']:
-							data_forward('M_M', from_ins2, to_ins, to_reg + '_val')
+							data_forward('M_E', from_ins2, to_ins, to_reg+ '_val')
 						else:
 							stall = True
 				else:
@@ -108,6 +109,9 @@ def execute_pipeline(info_per_stage) :
 					info_nxt_stage.append(('d', info_per_stage[i][1]))
 					info_nxt_stage.append(('f', (PC, prev_branch)))
 					break
+				else:
+					# Update this based on Control Signals
+					info_nxt_stage.append(('e', ()))
 
 
 		elif info_per_stage[i][0] == 'e':
@@ -116,6 +120,7 @@ def execute_pipeline(info_per_stage) :
 
 		elif info_per_stage[i][0] == 'm':
 			pipeline_memory_access(info_per_stage[i][1])
+			info_nxt_stage.append(('w', ()))
 
 		elif info_per_stage[i][0] == 'w':
 			pipeline_write_back(info_per_stage[i][1])
