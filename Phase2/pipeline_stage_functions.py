@@ -23,7 +23,7 @@ def pipeline_fetch(info) :
 	        PC = "0x00000000"
 	    else:
 	        iag_output_dict = None
-	        if branch == False:
+	        if prev_branch == False:
 	            iag_output_dict = iag(PC, None, None, 1, 0)
 	        else:
 	            iag_output_dict = iag(PC, None, "0x00000000", 1, 1)
@@ -38,7 +38,7 @@ def pipeline_fetch(info) :
 
 def pipeline_decode(info) :
 
-	instruction = info
+	instruction, PC = info
 	
 	split_instruction = instruction.split()
     bin_instruction = format(int(split_instruction[0], 16), '0>32b')
