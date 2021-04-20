@@ -41,11 +41,11 @@ def flush_pipeline() :
 
 
 # info_per_stage is in the format 
-# [('f' , (pc, IR, branch))
+# [('f' , (pc, IR, prev_branch))
 # ('d' , instruction)
-# ('e' , (value1, value2, total_bits1, total_bits2, op))
-# ('m' , (MAR, MDR, num_bytes))
-# ('w' , (register_num, value)
+# ('e' , (value1, value2, total_bits1, total_bits2, op, branch))
+# ('m' , (MAR, MDR, num_bytes, branch))
+# ('w' , (register_num, value, branch)
 # 's']   ~'s' indicates a stall
 # All these will be stored in a list (of size 5), with each index representing an instruction & each new list representing a new cycle
 def execute_pipeline(info_per_stage) :

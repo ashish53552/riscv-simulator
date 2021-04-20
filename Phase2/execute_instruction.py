@@ -21,7 +21,7 @@ def identify_instruction_and_run(instruction_dict, PC):
             return PC, branch
 
         elif funct3 == '110' and funct7 == '0000000':
-            PC, branch = run_and(instruction_dict, PC)
+            PC, branch = run_or(instruction_dict, PC)
             return PC, branch
 
         elif funct3 == '001' and funct7 == '0000000':
@@ -140,7 +140,7 @@ def identify_instruction_and_run(instruction_dict, PC):
     # UJ format
     elif opc_code == '1101111':
         PC, branch = run_jal(instruction_dict, PC)
-        return PC, branch
+        return PC, branch 
 
 
 # Functions to directly run the Instruction
