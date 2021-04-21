@@ -54,18 +54,46 @@ def flush_pipeline() :
 
 	pass
 
+
+
 def input_for_execute(PC, control_signals):
-	pass
+	if control_signals['mux_alu'] == 'register_&_register' and control_signals['is_control_instruction'] = False:
+		return (PC, buffers[PC]['decode_execute']['rs1_val'], buffers[PC]['decode_execute']['rs1_val'], 32, 32, control_signals['alu_op'], control_signals)
+	
+	elif control_signals['mux_alu'] == 'register_&_immediate' and control_signals['is_control_instruction'] = False:
+		return (PC, buffers[PC]['decode_execute']['rs1_val'], buffers[PC]['decode_execute']['imm'], 32, 12, control_signals['alu_op'], control_signals)
+
+	elif control_signals['mux_alu'] == 'register_&_register_&_immediate':
+		return (PC, buffers[PC]['decode_execute']['rs2_val'], buffers[PC]['decode_execute']['imm'], 32, 12, control_signals['alu_op'], control_signals)
+		
+	elif control_signals['mux_alu'] == 'pc_&_imm':
+		return (PC, PC, buffers[PC]['decode_execute']['imm'], 32, 32, control_signals['alu_op'], control_signals)
+		
+	elif control_signals['mux_alu'] == 'only_imm':
+		return (PC, buffers[PC]['decode_execute']['imm'], hex(12), 20, 12, control_signals['alu_op'], control_signals)
+
+	elif control_signals['is_control_instruction'] = True:
+		# 2 types - bne type and jal type
+
+
 
 def input_for_memory(PC, control_signals):
-	pass
+	if control_signals['mux_memory'] = 'MAR_&_MDR':
+		return (PC, buffers[PC]['execute_memory']['value'], buffers[PC]['decode_execute']['rs1_val'], control_signals['memory_size'], control_signals)
+
+	elif control_signals['mux_memory'] = 'MAR':
+		return (PC, buffers[PC]['execute_memory']['value'], None, control_signals['memory_size'], control_signals)
+
+	return (PC, None, None, None, control_signals)
+
+
 
 # info_per_stage is in format
 # [('f' , (pc, prev_branch, branch_inst))
 # ('d' , instruction, pc)
-# ('e' , (pc, value1, value2, total_bits1, total_bits2, op, branch))
-# ('m' , (pc, MAR, MDR, num_bytes, branch))
-# ('w' , (pc, register_num, value, branch)
+# ('e' , (pc, value1, value2, total_bits1, total_bits2, op, control_signals))
+# ('m' , (pc, MAR, MDR, num_bytes, control_signals))
+# ('w' , (pc, register_num, value, control_signals))
 # All these will be stored in a list (of size 5), with each index representing an instruction & each new list representing a new cycle
 def execute_pipeline(info_per_stage, forwarding=True, branch_prediction=True) :
 
@@ -128,12 +156,18 @@ def execute_pipeline(info_per_stage, forwarding=True, branch_prediction=True) :
 
 		elif info_per_stage[i][0] == 'm':
 			PC, value, control_signals = pipeline_memory_access(info_per_stage[i][1])
-			buffers[PC]['memory_writeback'] = {'value': value}
+			if value and control_signals['mux_writeback']:
+				buffers[PC]['memory_writeback'] = {'value': value}
+			elif control_signals['mux_writeback'] == None:
+				buffers[PC]['memory_writeback'] = {'value': None}
+			elif:	
+				buffers[PC]['memory_writeback'] = {'value': buffers[PC]['execute_memory']['value']}
 			info_nxt_stage.append(('w', (PC, "x" + str(int(buffers[PC]['decode_execute']['rd'], 2)), value,control_signals)))
 
 		elif info_per_stage[i][0] == 'w':
-			pipeline_write_back(info_per_stage[i][1])
+			PC = pipeline_write_back(info_per_stage[i][1])
 			pcs_in_order.remove(PC)
+			del buffers[PC]
 			
 	if not stall:
 		if branch_prediction and branch_inst:
