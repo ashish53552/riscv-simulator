@@ -54,26 +54,32 @@ def flush_pipeline() :
 
 	pass
 
+def input_for_execute(PC, control_signals):
+	pass
+
+def input_for_memory(PC, control_signals):
+	pass
 
 # info_per_stage is in format
-# [('f' , (pc, prev_branch))
+# [('f' , (pc, prev_branch, branch_inst))
 # ('d' , instruction, pc)
 # ('e' , (pc, value1, value2, total_bits1, total_bits2, op, branch))
 # ('m' , (pc, MAR, MDR, num_bytes, branch))
 # ('w' , (pc, register_num, value, branch)
 # All these will be stored in a list (of size 5), with each index representing an instruction & each new list representing a new cycle
-def execute_pipeline(info_per_stage) :
+def execute_pipeline(info_per_stage, forwarding=True, branch_prediction=True) :
 
 	global buffers, registers_to_be_written_back
 
 	info_nxt_stage = []
 	stall = False
 	for i in range(len(info_per_stage)):
-		if info_per_stage[i][0] == 'f' :
-			_PC, IR = pipeline_fetch(info_per_stage[i][1])
+		
+		if info_per_stage[i][0] == 'f':
+			_PC, IR, branch_inst, dest_PC = pipeline_fetch(info_per_stage[i][1])
 			pcs_in_order.append(_PC)
-			buffers[PC] = {'fetch_decode' : IR, 'decode_execute' : None, 'execute_memory' : None, 'memory_writeback' : None}
-			info_nxt_stage.append(('d', (_PC, IR)))
+			buffers[_PC] = {'fetch_decode' : IR, 'decode_execute' : None, 'execute_memory' : None, 'memory_writeback' : None}
+			info_nxt_stage.append(('d', (IR, _PC)))
 
 		elif info_per_stage[i][0] == 'd' :
 			PC, control_signal, instruction_dict = pipeline_decode(info_per_stage[i][1])
@@ -86,8 +92,6 @@ def execute_pipeline(info_per_stage) :
 					rs2_val = register_file.get_register_val("x" + str(int(instruction_dict['rs2'], 2)))
 				buffers[PC]['decode_execute'] = {'rs1': instruction_dict['rs1'], 'rs2': instruction_dict['rs2'],'rd': instruction_dict['rd'], 'rs1_val': rs1_val, 'rs2_val': rs2_val, 'imm': instruction_dict['imm']}
 
-				# Update this based on Control Signals
-				info_nxt_stage.append(('e', ()))
 			else:
 				if forwarding:
 					if from_inst1 != -1:
@@ -107,27 +111,35 @@ def execute_pipeline(info_per_stage) :
 
 				if stall:
 					info_nxt_stage.append(('d', info_per_stage[i][1]))
-					info_nxt_stage.append(('f', (PC, prev_branch)))
+					if branch_prediction and branch_inst:
+						info_nxt_stage.append(('f', (dest_PC, prev_branch, branch_inst)))
+					else:
+						info_nxt_stage.append(('f', (PC, prev_branch, branch_inst)))
 					break
 				else:
 					# Update this based on Control Signals
-					info_nxt_stage.append(('e', ()))
+					info_nxt_stage.append(('e', input_for_execute(PC, control_signals)))
 
 
 		elif info_per_stage[i][0] == 'e':
-			pipeline_execute(info_per_stage[i][1])
-			info_nxt_stage.append(('m', ()))
+			PC, value, control_signals = pipeline_execute(info_per_stage[i][1])
+			buffers[PC]['execute_memory'] = {'value': value}
+			info_nxt_stage.append(('m', get_memory_input(PC, control_signals)))
 
 		elif info_per_stage[i][0] == 'm':
-			pipeline_memory_access(info_per_stage[i][1])
-			info_nxt_stage.append(('w', ()))
+			PC, value, control_signals = pipeline_memory_access(info_per_stage[i][1])
+			buffers[PC]['memory_writeback'] = {'value': value}
+			info_nxt_stage.append(('w', (PC, "x" + str(int(buffers[PC]['decode_execute']['rd'], 2)), value,control_signals)))
 
 		elif info_per_stage[i][0] == 'w':
 			pipeline_write_back(info_per_stage[i][1])
 			pcs_in_order.remove(PC)
 			
 	if not stall:
-		info_nxt_stage.append(('f', (_PC, prev_branch)))
+		if branch_prediction and branch_inst:
+			info_nxt_stage.append(('f', (dest_PC, prev_branch, branch_inst)))
+		else:
+			info_nxt_stage.append(('f', (_PC, prev_branch, branch_inst)))
 
 	return info_nxt_stage
 
