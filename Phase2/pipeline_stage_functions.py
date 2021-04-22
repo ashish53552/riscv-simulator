@@ -17,43 +17,33 @@ import instruction_encoding
 # 'flush' : True and False
 
 
-def handle_branches(PC, control_signals, instruction_dict) :
+def handle_branches(PC, control_signals, instruction_dict, values):
+
+	if check_in_bat(PC) == False:
+		if predict_taken_or_not(instruction_dict['imm']) == 'taken':
+			add_to_bat(PC, alu(PC, instruction_dict['imm'], 32, 12, 'addition'))
+		else:
+			add_to_bat(PC, alu(PC, '0x00000004', 32, 32, 'addition'))
 
 	if control_signals['mux_alu'] == 'register_&_register' :
 		value1 = values[0]
 		value2 = values[1]
 		new_pc = None
 		output = alu(value1, value2, 32, 32, control_signals['alu_op'])
+
 		if output == True :
-			if check_in_bat(PC) == True :
-				new_pc = get_bat(PC)
-				control_signals['control_instruction']['flush'] = True
-				control_signals['control_instruction']['new_pc'] = new_pc
-				return PC, control_signals, instruction_dict
-			else :
-				dest = alu(PC, instruction_dict['imm'], 32, 12, 'addition')
-				add_to_bat(PC, test)
-				new_pc = get_bat(PC)
-				control_signals['control_instruction']['flush'] = True
-				control_signals['control_instruction']['new_pc'] = new_pc
-				return PC, control_signals, instruction_dict
+			control_signals['new_pc'] = alu(PC, instruction_dict['imm'], 32, 12, 'addition')
+			return PC, control_signals, instruction_dict
+		else:
+			control_signals['new_pc'] = alu(PC, "0x00000004", 32, 32, 'addition')
+			return PC, control_signals, instruction_dict
 
 	else :
-		if check_in_bat(PC) == True :
-			new_pc = get_bat(PC)
-			control_signals['control_instruction']['flush'] = True
-			control_signals['control_instruction']['new_pc'] = new_pc
-			return PC, control_signals, instruction_dict
-		else :
-			dest = alu(PC, instruction_dict['imm'], 32, 12, 'addition')
-			add_to_bat(PC, test)
-			new_pc = get_bat(PC)
-			control_signals['control_instruction']['flush'] = True
-			control_signals['control_instruction']['new_pc'] = new_pc
-			return PC, control_signals, instruction_dict
+		control_signals['new_pc'] = alu(PC, instruction_dict['imm'], 32, 12, 'addition')
+		return PC, control_signals, instruction_dict
 
 
-def pipeline_fetch(info) :
+def pipeline_fetch(info):
 
 	PC, prev_branch, branch_inst = info
 	branch_instruction = False
@@ -115,7 +105,7 @@ def pipeline_decode(info) :
     funct3 = instruction_dict['funct3']
     funct7 = instruction_dict['funct7']
 
-    control_signals = {'mux_alu' : None, 'mux_memory' : None, 'memory_size' : 4, 'mux_writeback' : None, 'control_instruction' : False, 'flush' : False}
+    control_signals = {}
 	shift_amount = hex(12)
     # R format
     if opc_code == '0110011': # add
@@ -389,7 +379,7 @@ def pipeline_decode(info) :
     # UJ format
     elif opc_code == '1101111': # jal
         control_signals['mux_alu'] = None
-        control_signals['alu_op'] = None
+        control_signals['alu_op'] = addition
         control_signals['mux_memory'] = None
         control_signals['mux_writeback'] = 'PC'
         control_signals['is_control_instruction'] = True
@@ -397,13 +387,15 @@ def pipeline_decode(info) :
 
 
 
-
 def pipeline_execute(info) :
 
-	PC, value1, value2, total_bits1, total_bits2, op, control_signals = info
+	PC, value1, value2, imm, total_bits1, total_bits2, op, control_signals = info
 	
-	if control_signals['is_control_instruction'] == True:
-		# todo
+	if control_signals['is_control_instruction'] == True and control_signals['mux_writeback'] != 'PC':
+		decision = alu(value1, value2, total_bits1, total_bits1, op)
+		return PC, alu(PC, imm, total_bits1, total_bits2, 'addition'), control_signals
+	elif control_signals['is_control_instruction'] == True and control_signals['mux_writeback'] == 'PC':
+		return PC, {'nxt_pc': alu(value1, '0x00000004', total_bits1, total_bits1, op), 'branch_pc': alu(value1, value2, total_bits1, total_bits2, op)}, control_signals
 
 	return PC, alu(value1, value2, total_bits1, total_bits2, op), control_signals
 
