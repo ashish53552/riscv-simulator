@@ -50,12 +50,6 @@ def check_data_hazard(PC):
 	return False, -1, -1, -1, -1
 
 
-def flush_pipeline() :
-
-	pass
-
-
-
 def input_for_execute(PC, control_signals):
 	if control_signals['mux_alu'] == 'register_&_register' and control_signals['is_control_instruction'] = False:
 		return (PC, buffers[PC]['decode_execute']['rs1_val'], buffers[PC]['decode_execute']['rs1_val'], None, 32, 32, control_signals['alu_op'], control_signals)
@@ -101,7 +95,7 @@ def execute_pipeline(info_per_stage, forwarding=True, branch_prediction=True) :
 
 	# global buffers, registers_to_be_written_back
 	# buffers.clear()
-	
+
 	info_nxt_stage = []
 	stall = False
 	flush = False
