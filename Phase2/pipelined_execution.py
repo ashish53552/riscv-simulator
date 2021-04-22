@@ -105,6 +105,7 @@ def execute_pipeline(info_per_stage, forwarding=True, branch_prediction=True) :
 	info_nxt_stage = []
 	stall = False
 	flush = False
+	_PC, branch_inst, dest_PC = None, False, None
 
 	for i in range(len(info_per_stage)):
 		
@@ -120,17 +121,18 @@ def execute_pipeline(info_per_stage, forwarding=True, branch_prediction=True) :
 			ch, to_inst, from_inst1, from_inst2, to_reg = check_data_hazard(PC)
 
 			if ch == False:
-				if control_signals['is_control_instruction'] and branch_prediction and info_per_stage[i+1][1][0] != control_signals['new_pc']:
-					flush = True
-					info_nxt_stage.append(('e', input_for_execute(PC, control_signals)))
-					info_nxt_stage.append(('f', (control_signals['new_pc'], prev_branch, True)))
-					break
-				else:
 					if instruction_dict['rs1']:
 						rs1_val = register_file.get_register_val("x" + str(int(instruction_dict['rs1'], 2)))
 					if instruction_dict['rs2']:
 						rs2_val = register_file.get_register_val("x" + str(int(instruction_dict['rs2'], 2)))
 					buffers[PC]['decode_execute'] = {'rs1': instruction_dict['rs1'], 'rs2': instruction_dict['rs2'],'rd': instruction_dict['rd'], 'rs1_val': rs1_val, 'rs2_val': rs2_val, 'imm': instruction_dict['imm']}
+
+					if control_signals['is_control_instruction'] and branch_prediction and info_per_stage[i+1][1][0] != control_signals['new_pc']:
+					flush = True
+					buffers[PC]['decode_execute'] = {'rs1': instruction_dict['rs1'], 'rs2': instruction_dict['rs2'],'rd': instruction_dict['rd'], 'rs1_val': rs1_val, 'rs2_val': rs2_val, 'imm': instruction_dict['imm']}
+					info_nxt_stage.append(('e', input_for_execute(PC, control_signals)))
+					info_nxt_stage.append(('f', (control_signals['new_pc'], prev_branch, True)))
+					break
 
 			else:
 				if forwarding:
@@ -144,6 +146,7 @@ def execute_pipeline(info_per_stage, forwarding=True, branch_prediction=True) :
 									to_reg = to_reg[3:]
 							else:
 								stall = True
+								
 						if from_inst2 != -1:
 							if buffers[pcs_in_order[from_ins2]]['execute_memory']:
 								data_forward('M_E', from_ins2, to_ins, to_reg+ '_val')
@@ -186,7 +189,7 @@ def execute_pipeline(info_per_stage, forwarding=True, branch_prediction=True) :
 			
 	if not stall and not flush:
 		if branch_prediction and branch_inst:
-			info_nxt_stage.append(('f', (dest_PC, prev_branch, branch_inst)))
+			info_nxt_stage.append(('f', (dest_PC, True, branch_inst)))
 		else:
 			info_nxt_stage.append(('f', (_PC, prev_branch, branch_inst)))
 
