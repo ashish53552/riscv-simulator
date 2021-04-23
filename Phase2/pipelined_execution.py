@@ -50,12 +50,6 @@ def check_data_hazard(PC):
 	return False, -1, -1, -1, -1
 
 
-def flush_pipeline() :
-
-	pass
-
-
-
 def input_for_execute(PC, control_signals):
 	if control_signals['mux_alu'] == 'register_&_register' and control_signals['is_control_instruction'] = False:
 		return (PC, buffers[PC]['decode_execute']['rs1_val'], buffers[PC]['decode_execute']['rs1_val'], None, 32, 32, control_signals['alu_op'], control_signals)
@@ -99,9 +93,9 @@ def input_for_memory(PC, control_signals):
 
 def execute_pipeline(info_per_stage, forwarding=True, branch_prediction=True) :
 
-	global buffers, registers_to_be_written_back
+	# global buffers, registers_to_be_written_back
+	# buffers.clear()
 
-	buffers.clear()
 	info_nxt_stage = []
 	stall = False
 	flush = False
@@ -129,7 +123,7 @@ def execute_pipeline(info_per_stage, forwarding=True, branch_prediction=True) :
 
 					if control_signals['is_control_instruction'] and branch_prediction and info_per_stage[i+1][1][0] != control_signals['new_pc']:
 					flush = True
-					buffers[PC]['decode_execute'] = {'rs1': instruction_dict['rs1'], 'rs2': instruction_dict['rs2'],'rd': instruction_dict['rd'], 'rs1_val': rs1_val, 'rs2_val': rs2_val, 'imm': instruction_dict['imm']}
+					# buffers[PC]['decode_execute'] = {'rs1': instruction_dict['rs1'], 'rs2': instruction_dict['rs2'],'rd': instruction_dict['rd'], 'rs1_val': rs1_val, 'rs2_val': rs2_val, 'imm': instruction_dict['imm']}
 					info_nxt_stage.append(('e', input_for_execute(PC, control_signals)))
 					info_nxt_stage.append(('f', (control_signals['new_pc'], prev_branch, True)))
 					break
@@ -146,7 +140,7 @@ def execute_pipeline(info_per_stage, forwarding=True, branch_prediction=True) :
 									to_reg = to_reg[3:]
 							else:
 								stall = True
-								
+
 						if from_inst2 != -1:
 							if buffers[pcs_in_order[from_ins2]]['execute_memory']:
 								data_forward('M_E', from_ins2, to_ins, to_reg+ '_val')
@@ -174,12 +168,14 @@ def execute_pipeline(info_per_stage, forwarding=True, branch_prediction=True) :
 
 		elif info_per_stage[i][0] == 'm':
 			PC, value, control_signals = pipeline_memory_access(info_per_stage[i][1])
+
 			if value and control_signals['mux_writeback']:
 				buffers[PC]['memory_writeback'] = {'value': value}
 			elif control_signals['mux_writeback'] == None:
 				buffers[PC]['memory_writeback'] = {'value': None}
 			elif:	
 				buffers[PC]['memory_writeback'] = {'value': buffers[PC]['execute_memory']['value']}
+
 			info_nxt_stage.append(('w', (PC, "x" + str(int(buffers[PC]['decode_execute']['rd'], 2)), value,control_signals)))
 
 		elif info_per_stage[i][0] == 'w':
