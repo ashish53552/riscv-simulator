@@ -12,7 +12,7 @@ global pcs_in_order = []
 def data_forward(mode, from_ins, to_ins, to_reg) :
 
 	if mode = 'M_M' :
-		buffers[pcs_in_order[to_ins]]['memory_writeback'][] = buffers[pcs_in_order[from_ins]]['memory_writeback']
+		buffers[pcs_in_order[to_ins]]['execute_memory'][] = buffers[pcs_in_order[from_ins]]['memory_writeback']
 	elif mode = 'M_E' :
 		buffers[pcs_in_order[to_ins]]['decode_execute'] = buffers[pcs_in_order[from_ins]]['memory_writeback']
 	elif mode = 'E_E' :
