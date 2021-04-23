@@ -19,10 +19,46 @@ inp=inp.replace("\n","")
 inp=inp.replace("\r","")
 inp=list(inp.split()) #this file contains the data inputs
 
+### Input to be taken for knobs
+
+
+pipelining = int(Input())
+data_forwarding = int(Input())
+print_pipeline_registers = int(Input())
+print_pipeline_registers_inst_num = int(Input())
+
+if pipelining == 0 :
+    data_forwarding = 0
+    print_pipeline_registers = 0
+    print_pipeline_regisrers_inst_num = 0
+else :
+    if data_forwarding == 0 :
+        print_pipeline_registers = 0
+        print_pipeline_regisrers_inst_num = 0
+    else :
+        if print_pipeline_registers == 1 :
+            print_pipeline_regisrers_inst_num = 0
+
+
+
+### Performance Measures
+
+
+
+total_cycles, num_instructions, CPI = 0 
+num_data_transfer, num_alu, num_control = 0
+num_stalls, num_data_hazards, num_control_hazards = 0
+num_branch_mispredictions, num_stalls_data, num_stalls_control = 0
+
+
+
+###
+
 
 PC = None
 IR = None
 branch = False
+info_per_stage = {}
 
 # Storing each instruction in the text memory
 for line in code:
@@ -49,23 +85,9 @@ if len(inp) > 0:
 # # Fetching the instruction from the text memory, decoding it and performing the respective tasks
 while True:
 
-    # global PC, IR, branch
-    # print(PC)
-    # print(get_register_file())
-    PC, IR = fetch(PC, IR, branch)
-    # print("PC", PC)
-    # get_memory_file()
-    if IR == "0x00000000":
-        break
-    instruction_dict = decode(IR)
-    # print(instruction_dict)
-    PC, branch = identify_instruction_and_run(instruction_dict, PC)
-    # get_register_file()
-    # get_data_memory_file()
-    # if PC == "0x00000118":
-    #     input("Continue")
-    # cnt += 1
-    # print("cnt", cnt)
+    pass
+
+    
 
 registers = get_register_file()
 Inst_Mem = get_text_memory_file()
