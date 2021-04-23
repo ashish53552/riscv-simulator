@@ -8,24 +8,24 @@ import sys
 import json
 import re
 
-input_file=sys.argv[1]
+# input_file=sys.argv[1]
+#
+# data=json.loads(input_file)
+# code=data['code']
+# code=code.split("\n") #this will contain the list of instructions
 
-data=json.loads(input_file)
-code=data['code']
-code=code.split("\n") #this will contain the list of instructions
-
-inp=data['inp']
-inp=inp.replace("\n","")
-inp=inp.replace("\r","")
-inp=list(inp.split()) #this file contains the data inputs
+# inp=data['inp']
+# inp=inp.replace("\n","")
+# inp=inp.replace("\r","")
+# inp=list(inp.split()) #this file contains the data inputs
 
 ### Input to be taken for knobs
 
 
-pipelining = int(Input())
-data_forwarding = int(Input())
-print_pipeline_registers = int(Input())
-print_pipeline_registers_inst_num = int(Input())
+pipelining = int(Input('Pipelining? '))
+data_forwarding = int(Input('Data_Forwarding? '))
+print_pipeline_registers = int(Input('Print_Pipeline_Registers? '))
+print_pipeline_registers_inst_num = int(Input('print_pipeline_registers_inst_num? '))
 
 if pipelining == 0 :
     data_forwarding = 0
@@ -43,22 +43,19 @@ else :
 
 ### Performance Measures
 
-
-
-total_cycles, num_instructions, CPI = 0 
-num_data_transfer, num_alu, num_control = 0
-num_stalls, num_data_hazards, num_control_hazards = 0
-num_branch_mispredictions, num_stalls_data, num_stalls_control = 0
+total_cycles, CPI = 0, 0
 
 
 
 ###
-
+with open('/content/factorial(of_10_in_x26).mc', 'r') as f:
+  lines = f.read()
+code = lines.splitlines()
 
 PC = None
 IR = None
 branch = False
-info_per_stage = {}
+info_per_stage = [('f' , (None, False)]
 
 # Storing each instruction in the text memory
 for line in code:
@@ -84,22 +81,28 @@ if len(inp) > 0:
 # # cnt = 0
 # # Fetching the instruction from the text memory, decoding it and performing the respective tasks
 while True:
-
-    pass
-
+    info_per_stage = execute_pipeline(info_per_stage)
+    total_cycles+=1
+    if not info_per_stage:
+        break
     
 
 registers = get_register_file()
 Inst_Mem = get_text_memory_file()
 Data_Mem, Stack_Mem = get_data_memory_file()
 
-finalResult=OrderedDict()
-finalResult['registers']=registers
-finalResult['Inst_Mem']=Inst_Mem
-finalResult['Data_Mem']=Data_Mem
-finalResult['Stack_Mem']=Stack_Mem
+print(registers)
+print(Inst_Mem)
+print(Data_Mem)
+print(Stack_Mem)
+
+# finalResult=OrderedDict()
+# finalResult['registers']=registers
+# finalResult['Inst_Mem']=Inst_Mem
+# finalResult['Data_Mem']=Data_Mem
+# finalResult['Stack_Mem']=Stack_Mem
 
 
-print(json.dumps(finalResult))
-
-sys.stdout.flush()
+# print(json.dumps(finalResult))
+#
+# sys.stdout.flush()

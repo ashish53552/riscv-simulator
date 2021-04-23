@@ -44,7 +44,7 @@ def handle_branches(PC, control_signals, instruction_dict, values):
 
 def pipeline_fetch(info):
 
-	PC, prev_branch, branch_inst = info
+	PC, branch_inst = info
 	branch_instruction = False
 	dest_pc_branch = None
 
@@ -53,15 +53,9 @@ def pipeline_fetch(info):
 	elif PC is None:
         PC = "0x00000000"
     else:
-        iag_output_dict = None
-        if prev_branch == False:
-            iag_output_dict = iag(PC, None, None, 1, 0)
-        else:
-						# Have to update
-            iag_output_dict = iag(PC, None, "0x00000000", 1, 1)
-        PC = iag_output_dict["PC"]
+        PC = alu(PC, '0x00000004', 32, 32, 'addition')
 
-    if check_in_bat(PC) == True :
+    if check_in_bat(PC) == True:
     	dest_pc_branch = get_bat(PC)
     	branch_instruction = True
 
@@ -142,7 +136,7 @@ def pipeline_decode(info) :
             return PC, control_signals, instruction_dict
 
         elif funct3 == '010' and funct7 == '0000000': #slt
-            control_signals['mux_alu'] = 'register&_register'
+            control_signals['mux_alu'] = 'register_&_register'
         	control_signals['alu_op'] = 'set_if_less_than'
         	control_signals['mux_memory'] = None
         	control_signals['mux_writeback'] = 'alu'
@@ -198,12 +192,12 @@ def pipeline_decode(info) :
             return PC, control_signals, instruction_dict
 
         elif funct3 == '110' and funct7 == '0000001': # rem
-          control_signals['mux_alu'] = 'register&_register'
+            control_signals['mux_alu'] = 'register_&_register'
         	control_signals['alu_op'] = 'remainder'
         	control_signals['mux_memory'] = None
         	control_signals['mux_writeback'] = 'alu'
-					control_signals['is_control_instruction'] = False
-          return PC, control_signals, instruction_dict
+			control_signals['is_control_instruction'] = False
+            return PC, control_signals, instruction_dict
 
     # I format
     elif opc_code == '0010011':
@@ -327,8 +321,6 @@ def pipeline_decode(info) :
         	control_signals['mux_memory'] = None
         	control_signals['mux_writeback'] = None
         	control_signals['is_control_instruction'] = True
-					# values = [ register_file.get_register_val("x" + str(int(instruction_dict['rs1'], 2))),
-					#           register_file.get_register_val("x" + str(int(instruction_dict['rs2'], 2))) ]
         	return PC, control_signals, instruction_dict
 
         elif funct3 == '001': # bne
@@ -337,8 +329,6 @@ def pipeline_decode(info) :
         	control_signals['mux_memory'] = None
         	control_signals['mux_writeback'] = None
         	control_signals['is_control_instruction'] = True
-					# values = [ register_file.get_register_val("x" + str(int(instruction_dict['rs1'], 2))),
-					          # register_file.get_register_val("x" + str(int(instruction_dict['rs2'], 2))) ]
         	return PC, control_signals, instruction_dict
 
         elif funct3 == '100': # blt
@@ -347,8 +337,6 @@ def pipeline_decode(info) :
         	control_signals['mux_memory'] = None
         	control_signals['mux_writeback'] = None
         	control_signals['is_control_instruction'] = True
-					# values = [ register_file.get_register_val("x" + str(int(instruction_dict['rs1'], 2))),
-					#           register_file.get_register_val("x" + str(int(instruction_dict['rs2'], 2))) ]
         	return PC, control_signals, instruction_dict
 
         elif funct3 == '101': # bge
@@ -357,8 +345,6 @@ def pipeline_decode(info) :
         	control_signals['mux_memory'] = None
         	control_signals['mux_writeback'] = None
         	control_signals['is_control_instruction'] = True
-					values = [ register_file.get_register_val("x" + str(int(instruction_dict['rs1'], 2))),
-					          register_file.get_register_val("x" + str(int(instruction_dict['rs2'], 2))) ]
         	return PC, control_signals, instruction_dict 
 
     # U format
@@ -436,7 +422,6 @@ def pipeline_memory_access(info) :
 
 
 def pipeline_write_back(info) :
-	# for jalr and jalr, nxt pc in rd
 	PC, register_num, value, control_signals = info
 	
 	if control_signals['is_control_instruction'] == True and control_signals['mux_writeback'] == 'PC':
@@ -445,4 +430,4 @@ def pipeline_write_back(info) :
 	elif value:
 		register_file.update_register_val(register_num, value)
 
-	return PC
+	return PC, control_signals
