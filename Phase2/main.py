@@ -1,7 +1,7 @@
 from collections import OrderedDict
-from five_stage_execution import *
-from instruction_encoding import *
-from execute_instruction import *
+from pipeline_stage_functions import *
+from pipelined_execution import *
+from auxilliary_functions import *
 from memory_file import *
 from register_file import *
 import sys
@@ -22,22 +22,22 @@ import re
 ### Input to be taken for knobs
 
 
-pipelining = int(Input('Pipelining? '))
-data_forwarding = int(Input('Data_Forwarding? '))
-print_pipeline_registers = int(Input('Print_Pipeline_Registers? '))
-print_pipeline_registers_inst_num = int(Input('print_pipeline_registers_inst_num? '))
-
-if pipelining == 0 :
-    data_forwarding = 0
-    print_pipeline_registers = 0
-    print_pipeline_regisrers_inst_num = 0
-else :
-    if data_forwarding == 0 :
-        print_pipeline_registers = 0
-        print_pipeline_regisrers_inst_num = 0
-    else :
-        if print_pipeline_registers == 1 :
-            print_pipeline_regisrers_inst_num = 0
+# pipelining = int(Input('Pipelining? '))
+# data_forwarding = int(Input('Data_Forwarding? '))
+# print_pipeline_registers = int(Input('Print_Pipeline_Registers? '))
+# print_pipeline_registers_inst_num = int(Input('print_pipeline_registers_inst_num? '))
+#
+# if pipelining == 0 :
+#     data_forwarding = 0
+#     print_pipeline_registers = 0
+#     print_pipeline_regisrers_inst_num = 0
+# else :
+#     if data_forwarding == 0 :
+#         print_pipeline_registers = 0
+#         print_pipeline_regisrers_inst_num = 0
+#     else :
+#         if print_pipeline_registers == 1 :
+#             print_pipeline_regisrers_inst_num = 0
 
 
 
@@ -45,17 +45,15 @@ else :
 
 total_cycles, CPI = 0, 0
 
-
-
 ###
-with open('/content/factorial(of_10_in_x26).mc', 'r') as f:
+with open('../test/fun.mc', 'r') as f:
   lines = f.read()
 code = lines.splitlines()
 
-PC = None
-IR = None
-branch = False
-info_per_stage = [('f' , (None, False)]
+# PC = None
+# IR = None
+# branch = False
+info_per_stage = [('f' , (None, False))]
 
 # Storing each instruction in the text memory
 for line in code:
@@ -67,11 +65,11 @@ for line in code:
 # add_text_to_memory("0x00000000")
 
 # # Adding Data to memory (Assuming 4 byte input)
-# #print("Enter the number of elements to be added in the Data Memory :")
+inp = input("Enter the number of elements to be added in the Data Memory :")
 #num = int(inp[0])
 
 if len(inp) > 0:
-    list_of_values = inp
+    # list_of_values = inp
     for x in list_of_values:
         data = bounding_hex(int(x))
         # print(data)
@@ -81,11 +79,18 @@ if len(inp) > 0:
 # # cnt = 0
 # # Fetching the instruction from the text memory, decoding it and performing the respective tasks
 while True:
-    info_per_stage = execute_pipeline(info_per_stage)
+    print(info_per_stage)
+    info_per_stage = execute_pipeline(info_per_stage, False)
     total_cycles+=1
+    print(buffers)
+    print("cycle done:", total_cycles, "\n")
+
     if not info_per_stage:
         break
     
+tot_inst = print_required_values()
+CPI = total_cycles / tot_inst
+print("CPI: ", CPI)
 
 registers = get_register_file()
 Inst_Mem = get_text_memory_file()
