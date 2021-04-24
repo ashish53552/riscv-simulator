@@ -1,4 +1,7 @@
 from collections import OrderedDict
+import five_stage_execution as fse
+from instruction_encoding import *
+from execute_instruction import *
 from pipeline_stage_functions import *
 from pipelined_execution import *
 from auxilliary_functions import *
@@ -20,86 +23,114 @@ import re
 # inp=list(inp.split()) #this file contains the data inputs
 
 ### Input to be taken for knobs
+pipelining = int(input('Pipelining? '))
+register_after_each_cycle = int(input("Registers?"))
+
+if pipelining:
+    data_forwarding = int(input('Data_Forwarding? '))
+    print_pipeline_registers = int(input('Print_Pipeline_Registers? '))
+    req_inst = str(input('print_pipeline_registers_inst_num? '))
 
 
-# pipelining = int(Input('Pipelining? '))
-# data_forwarding = int(Input('Data_Forwarding? '))
-# print_pipeline_registers = int(Input('Print_Pipeline_Registers? '))
-# print_pipeline_registers_inst_num = int(Input('print_pipeline_registers_inst_num? '))
-#
-# if pipelining == 0 :
-#     data_forwarding = 0
-#     print_pipeline_registers = 0
-#     print_pipeline_regisrers_inst_num = 0
-# else :
-#     if data_forwarding == 0 :
-#         print_pipeline_registers = 0
-#         print_pipeline_regisrers_inst_num = 0
-#     else :
-#         if print_pipeline_registers == 1 :
-#             print_pipeline_regisrers_inst_num = 0
-
-
-
-### Performance Measures
-
-total_cycles, CPI = 0, 0
-
-###
-with open('../test/merge(4_inputs).mc', 'r') as f:
+### Input
+with open('../test/fibonacci(6th_number_in_x29).mc', 'r') as f:
   lines = f.read()
 code = lines.splitlines()
 
-# PC = None
-# IR = None
-# branch = False
-info_per_stage = [('f' , (None, False))]
-
 # Storing each instruction in the text memory
 for line in code:
-    # print(str(line).split()[1])
     instr = str(line).split()[1]
     add_text_to_memory(instr)
 
-# # To mark the end of the instructions
-# add_text_to_memory("0x00000000")
-
 # # Adding Data to memory (Assuming 4 byte input)
 inp = input("Enter the number of elements to be added in the Data Memory :")
-#num = int(inp[0])
 
 if len(inp) > 0:
-    # list_of_values = inp
     for x in inp.split():
         data = bounding_hex(int(x))
-        # print(data)
         add_data_before(data)
 
-# # get_data_memory_file()
-# # cnt = 0
-# # Fetching the instruction from the text memory, decoding it and performing the respective tasks
-while True:
-    print(info_per_stage)
-    info_per_stage = execute_pipeline(info_per_stage)
-    total_cycles+=1
-    print(buffers)
-    print("cycle done:", total_cycles, "\n")
+# To be returned to front-end as a JSON Object along with memory dictionaries
+Stats = {}
 
-    if not info_per_stage:
-        break
+if pipelining:
+    info_per_stage = [('f', (None, False))]
+    total_cycles, CPI = 0, 0
+    all_cycle_details = {}
+    req_inst_details = {}
+    Registers_per_cycle = {}
+
+    while True:
+        # print(info_per_stage)
+        info_per_stage, cycle_details, inst_details = execute_pipeline(info_per_stage, data_forwarding, req_inst)
+        if not info_per_stage:
+            break
+
+        total_cycles+=1
+
+        # print(buffers)
+        # print("cycle done:", total_cycles, "\n")
+        # print(cycle_details)
+
+        if print_pipeline_registers:
+            all_cycle_details["Cycle "+str(total_cycles)] = cycle_details
+        if inst_details:
+            req_inst_details["Cycle "+str(total_cycles)] = inst_details
+        if register_after_each_cycle:
+            Registers_per_cycle["Cycle "+str(total_cycles)] = get_register_file()
+
+
+    # if print_pipeline_registers:
+    #     print("Instruction Buffers per Cycle\n", all_cycle_details, "\n")
+    #
+    # # if inst_details:
+    # # print("REQ_INST", len(req_inst))
+    # print("Required Instruction Buffers\n", req_inst_details, "\n")
+    #
+    # print("Total Cycles", total_cycles-1)
+    Stats = print_required_values()
+    Stats['total_cycles'] = total_cycles-1
+    CPI = total_cycles / Stats['num_instructions']
+    # print("CPI: ", CPI, "\n")
+    Stats["CPI"] = CPI
+    Stats['all_cycle_details'] = all_cycle_details
+    Stats['req_inst_details'] = req_inst_details
+    Stats['register_per_cycle'] = Registers_per_cycle
+
+
+else:
+    PC = None
+    IR = None
+    branch = False
+    cycles = 0
+    Registers_per_cycle = {}
     
-tot_inst = print_required_values()
-CPI = total_cycles / tot_inst
-print("CPI: ", CPI)
+    while True:
+        PC, IR = fse.fetch(PC, IR, branch)
+        if IR == "0x00000000":
+            break
+        cycles += 1
+        instruction_dict = decode(IR)
+        PC, branch = identify_instruction_and_run(instruction_dict, PC)
+        if register_after_each_cycle:
+            Registers_per_cycle["Cycle "+str(cycles)] = get_register_file()
+
+    Stats['total_cycles'] = 5 * cycles
+    Stats['CPI'] = 5
+    Stats['num_instructions'] = cycles
+    Stats['register_per_cycle'] = Registers_per_cycle
 
 registers = get_register_file()
 Inst_Mem = get_text_memory_file()
 Data_Mem, Stack_Mem = get_data_memory_file()
 
-print(registers)
-print(Inst_Mem)
-print(Data_Mem)
-print(Stack_Mem)
+for i in Stats.keys():
+    print(i, "\n", Stats[i], "\n")
+
+print(registers,"\n")
+print(Inst_Mem,"\n")
+print(Data_Mem,"\n")
+print(Stack_Mem,"\n")
 
 # finalResult=OrderedDict()
 # finalResult['registers']=registers
@@ -109,5 +140,4 @@ print(Stack_Mem)
 
 
 # print(json.dumps(finalResult))
-#
 # sys.stdout.flush()

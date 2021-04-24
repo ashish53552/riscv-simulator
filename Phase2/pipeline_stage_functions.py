@@ -1,7 +1,7 @@
-from five_stage_execution import *
 from auxilliary_functions import *
 from branch_address_table import *
-from memory_file import *
+import instruction_encoding
+import memory_file, register_file
 
 
 # Possible Control Signals in control_signals in the function pipeline_decode :
@@ -429,7 +429,7 @@ def pipeline_memory_access(info) :
         MAR = pad_hexa(make_hex_uppercase(MAR), 8)
         MDR = pad_hexa(make_hex_uppercase(MDR), 8)
         memory_file.add_data_to_memory(MDR, MAR, num_bytes)
-        print("YES")
+        # print("YES")
         return PC, None, control_signals
 
     elif MAR != None and MDR == None:
