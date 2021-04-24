@@ -17,7 +17,7 @@ def get_bat(PC):
 
 #Static Branch Prediction (predicts 'taken' for backward branches and 'not taken' for forward branches)
 def predict_taken_or_not(imm) :
-	msb = format(int(instruction_dict['imm'], 16), '0>12b')[0]
+	msb = format(int(imm, 16), '0>12b')[0]
 	if msb == '1':
 		return 'taken'
 	return 'not taken'

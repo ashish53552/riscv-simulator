@@ -28,26 +28,30 @@ def check_data_hazard(PC):
 	if pcs_in_order[0] == PC:
 		return False, -1, -1, -1, -1
 	elif pcs_in_order[1] == PC:
-		if buffers[pcs_in_order[0]]['decode_execute']['rd'] == buffers[pcs_in_order[1]]['decode_execute']['rs1']:
+		if buffers[pcs_in_order[1]]['decode_execute']['rs1'] != '00000' and buffers[pcs_in_order[1]]['decode_execute']['rs1'] and buffers[pcs_in_order[0]]['decode_execute']['rd'] == buffers[pcs_in_order[1]]['decode_execute']['rs1']:
 			return True, 1, 0, -1, 'rs1'
-		elif buffers[pcs_in_order[0]]['decode_execute']['rd'] == buffers[pcs_in_order[1]]['decode_execute']['rs2']:
+		elif buffers[pcs_in_order[1]]['decode_execute']['rs2'] != '00000' and buffers[pcs_in_order[1]]['decode_execute']['rs2'] and buffers[pcs_in_order[0]]['decode_execute']['rd'] == buffers[pcs_in_order[1]]['decode_execute']['rs2']:
 			return True, 1, 0, -1, 'rs2'
 	else:
 		i = 0
 		for i in range(1, len(pcs_in_order)):
 			if pcs_in_order[i] == PC:
 				break
-		if buffers[pcs_in_order[i - 1]]['decode_execute']['rd'] == buffers[pcs_in_order[i]]['decode_execute']['rs1'] and buffers[pcs_in_order[i - 2]]['decode_execute']['rd'] == buffers[pcs_in_order[i]]['decode_execute']['rs2']:
+		if buffers[pcs_in_order[i]]['decode_execute']['rs1'] == None and buffers[pcs_in_order[i]]['decode_execute']['rs2'] == None:
+			return False, -1, -1, -1, -1
+		elif buffers[pcs_in_order[i]]['decode_execute']['rs1'] == '00000' and buffers[pcs_in_order[i]]['decode_execute']['rs2'] == '00000':
+			return False, -1, -1, -1, -1
+		elif buffers[pcs_in_order[i - 1]]['decode_execute']['rd'] == buffers[pcs_in_order[i]]['decode_execute']['rs1'] and buffers[pcs_in_order[i - 2]]['decode_execute']['rd'] == buffers[pcs_in_order[i]]['decode_execute']['rs2']:
 			return True, i, i - 1, i - 2, 'rs1rs2'
 		elif buffers[pcs_in_order[i - 2]]['decode_execute']['rd'] == buffers[pcs_in_order[i]]['decode_execute']['rs1'] and buffers[pcs_in_order[i - 1]]['decode_execute']['rd'] == buffers[pcs_in_order[i]]['decode_execute']['rs2']:
 			return True, i, i - 1, i - 2, 'rs2rs1'
-		elif buffers[pcs_in_order[i-1]]['decode_execute']['rd'] == buffers[pcs_in_order[i]]['decode_execute']['rs1']:
+		elif buffers[pcs_in_order[i]]['decode_execute']['rs1'] != '00000' and buffers[pcs_in_order[i]]['decode_execute']['rs1'] and buffers[pcs_in_order[i-1]]['decode_execute']['rd'] == buffers[pcs_in_order[i]]['decode_execute']['rs1']:
 			return True, i, i-1, -1, 'rs1'
-		elif buffers[pcs_in_order[i-1]]['decode_execute']['rd'] == buffers[pcs_in_order[i]]['decode_execute']['rs2']:
+		elif buffers[pcs_in_order[i]]['decode_execute']['rs2'] != '00000' and buffers[pcs_in_order[i]]['decode_execute']['rs2'] and buffers[pcs_in_order[i-1]]['decode_execute']['rd'] == buffers[pcs_in_order[i]]['decode_execute']['rs2']:
 			return True, i, i-1, -1, 'rs2'
-		elif buffers[pcs_in_order[i-2]]['decode_execute']['rd'] == buffers[pcs_in_order[i]]['decode_execute']['rs1']:
+		elif buffers[pcs_in_order[i]]['decode_execute']['rs1'] != '00000' and buffers[pcs_in_order[i]]['decode_execute']['rs1'] and buffers[pcs_in_order[i-2]]['decode_execute']['rd'] == buffers[pcs_in_order[i]]['decode_execute']['rs1']:
 			return True, i, i-2, -1, 'rs1'
-		elif buffers[pcs_in_order[i-2]]['decode_execute']['rd'] == buffers[pcs_in_order[i]]['decode_execute']['rs2']:
+		elif buffers[pcs_in_order[i]]['decode_execute']['rs2'] != '00000' and buffers[pcs_in_order[i]]['decode_execute']['rs2'] and buffers[pcs_in_order[i-2]]['decode_execute']['rd'] == buffers[pcs_in_order[i]]['decode_execute']['rs2']:
 			return True, i, i-2, -1, 'rs2'
 	return False, -1, -1, -1, -1
 
@@ -153,7 +157,11 @@ def execute_pipeline(info_per_stage, forwarding=True) :
 					# print("YES")
 					if control_signals['is_control_instruction']:
 						new_pc = handle_branches(PC, control_signals, instruction_dict, [rs1_val, rs2_val])
-						if info_per_stage[i+1][1][0] != new_pc:
+						print("NEW_PC : ", new_pc)
+						lst_pc = info_per_stage[i + 1][1][0]
+						if not check_in_bat(PC):
+							lst_pc = alu(PC, '0x00000004', 32, 32, 'addition')
+						if lst_pc != new_pc:
 							flush = True
 							info_nxt_stage.append(('e', input_for_execute(PC, control_signals)))
 							if fetch:
@@ -163,10 +171,11 @@ def execute_pipeline(info_per_stage, forwarding=True) :
 			else:
 				if forwarding:
 					if from_inst1 != -1:
-						if buffers[PC]['decode_execute']['type'] == 'MAR' and buffers[pcs_in_order[from_inst1]]['memory_writeback']:
+						if buffers[pcs_in_order[from_inst1]]['decode_execute']['type'] == 'MAR' and buffers[pcs_in_order[from_inst1]]['memory_writeback']:
 							data_forward('M_E', from_inst1, to_inst, to_reg[:3]+'_val')
-						elif buffers[PC]['decode_execute']['type'] != 'MAR' and buffers[pcs_in_order[from_inst1]]['execute_memory']:
+						elif buffers[pcs_in_order[from_inst1]]['decode_execute']['type'] != 'MAR' and buffers[pcs_in_order[from_inst1]]['execute_memory']:
 							data_forward('E_E', from_inst1, to_inst, to_reg[:3]+'_val')
+							print("BOOM")
 						else:
 							if not control_signals['is_control_instruction']:
 								num_stalls_data+=1
@@ -181,9 +190,9 @@ def execute_pipeline(info_per_stage, forwarding=True) :
 							data_hazard.add(pcs_in_order[from_inst1] + pcs_in_order[to_inst])
 
 					if from_inst2 != -1 and not stall:
-						if buffers[PC]['decode_execute']['type'] == 'MAR' and buffers[pcs_in_order[from_inst2]]['memory_writeback']:
+						if buffers[pcs_in_order[from_inst2]]['decode_execute']['type'] == 'MAR' and buffers[pcs_in_order[from_inst2]]['memory_writeback']:
 							data_forward('M_E', from_inst2, to_inst, to_reg[:3]+'_val')
-						elif buffers[PC]['decode_execute']['type'] != 'MAR' and buffers[pcs_in_order[from_inst2]]['execute_memory']:
+						elif buffers[pcs_in_order[from_inst2]]['decode_execute']['type'] != 'MAR' and buffers[pcs_in_order[from_inst2]]['execute_memory']:
 							data_forward('E_E', from_inst2, to_inst, to_reg[:3]+'_val')
 						else:
 							if not control_signals['is_control_instruction']:
@@ -196,8 +205,12 @@ def execute_pipeline(info_per_stage, forwarding=True) :
 							data_hazard.add(pcs_in_order[from_inst2] + pcs_in_order[to_inst])
 					
 					if control_signals['is_control_instruction'] and not stall:
-						new_pc = handle_branches(PC, control_signals, instruction_dict, [buffers[PC]['decode_execute']['rs1'], buffers[PC]['decode_execute']['rs2']])
-						if info_per_stage[i+1][1][0] != new_pc:
+						new_pc = handle_branches(PC, control_signals, instruction_dict, [buffers[PC]['decode_execute']['rs1_val'], buffers[PC]['decode_execute']['rs2_val']])
+						lst_pc = info_per_stage[i + 1][1][0]
+						if not check_in_bat(PC):
+							lst_pc = alu(PC, '0x00000004', 32, 32, 'addition')
+						print("NEW_PC : ", new_pc)
+						if lst_pc != new_pc:
 							flush = True
 							info_nxt_stage.append(('e', input_for_execute(PC, control_signals)))
 							if fetch:
@@ -258,6 +271,7 @@ def execute_pipeline(info_per_stage, forwarding=True) :
 			rd = None
 			if buffers[PC]['decode_execute']['rd']:
 				rd = "x" + str(int(buffers[PC]['decode_execute']['rd'], 2))
+
 			info_nxt_stage.append(('w', (PC, rd, buffers[PC]['memory_writeback']['value'], control_signals)))
 
 
@@ -272,8 +286,8 @@ def execute_pipeline(info_per_stage, forwarding=True) :
 			elif control_signals['mux_writeback'] == 'MDR' or control_signals['mux_writeback'] == None:
 				num_data_transfer += 1
 
-			pcs_in_order.remove(PC)
-			del buffers[PC]
+			pcs_in_order = pcs_in_order[1:]
+			# del buffers[PC]
 			
 	if not stall and not flush and fetch:
 		if branch_inst:

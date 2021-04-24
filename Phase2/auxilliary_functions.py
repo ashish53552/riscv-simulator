@@ -57,7 +57,7 @@ def bounding_hex(num, total_bits=32):
 def alu(value1, value2, total_bits1, total_bits2, op):
     # print("execute", value1, value2)
     value1, value2 = get_neg_values(value1, value2, total_bits1, total_bits2)
-    # print("execute", value1, value2)
+    print("execute", value1, value2)
 
     if op == 'addition':
         return bounding_hex(value1 + value2)

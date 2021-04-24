@@ -46,7 +46,7 @@ import re
 total_cycles, CPI = 0, 0
 
 ###
-with open('../test/fun.mc', 'r') as f:
+with open('../test/merge(4_inputs).mc', 'r') as f:
   lines = f.read()
 code = lines.splitlines()
 
@@ -70,7 +70,7 @@ inp = input("Enter the number of elements to be added in the Data Memory :")
 
 if len(inp) > 0:
     # list_of_values = inp
-    for x in list_of_values:
+    for x in inp.split():
         data = bounding_hex(int(x))
         # print(data)
         add_data_before(data)
@@ -80,7 +80,7 @@ if len(inp) > 0:
 # # Fetching the instruction from the text memory, decoding it and performing the respective tasks
 while True:
     print(info_per_stage)
-    info_per_stage = execute_pipeline(info_per_stage, False)
+    info_per_stage = execute_pipeline(info_per_stage)
     total_cycles+=1
     print(buffers)
     print("cycle done:", total_cycles, "\n")

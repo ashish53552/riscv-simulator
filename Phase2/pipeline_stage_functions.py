@@ -1,6 +1,7 @@
 from five_stage_execution import *
 from auxilliary_functions import *
 from branch_address_table import *
+from memory_file import *
 
 
 # Possible Control Signals in control_signals in the function pipeline_decode :
@@ -17,26 +18,35 @@ from branch_address_table import *
 
 def handle_branches(PC, control_signals, instruction_dict, values):
 
-	
-		if check_in_bat(PC) == False:
-			if predict_taken_or_not(instruction_dict['imm']) == 'taken':
-				add_to_bat(PC, alu(PC, instruction_dict['imm'], 32, 12, 'addition'))
-			else:
-				add_to_bat(PC, alu(PC, '0x00000004', 32, 32, 'addition'))
+    if check_in_bat(PC) == False:
+        if control_signals['mux_writeback']=='PC' and control_signals['mux_alu'] == 'register_&_immediate':
+            add_to_bat(PC, alu(values[0], instruction_dict['imm'], 32, 20, 'addition'))
+        else:
+            imm_bits = 12
+            if control_signals['mux_writeback']=='PC':
+                imm_bits = 20
 
-		if control_signals['mux_alu'] == 'register_&_register' :
-			value1 = values[0]
-			value2 = values[1]
-			new_pc = None
-			output = alu(value1, value2, 32, 32, control_signals['alu_op'])
+            if predict_taken_or_not(instruction_dict['imm']) == 'taken':
+                add_to_bat(PC, alu(PC, instruction_dict['imm'], 32, imm_bits, 'addition'))
+            else:
+                add_to_bat(PC, alu(PC, '0x00000004', 32, 32, 'addition'))
 
-			if output == True :
-				return alu(PC, instruction_dict['imm'], 32, 12, 'addition')
-			else:
-				return alu(PC, "0x00000004", 32, 32, 'addition')
+    if control_signals['mux_alu'] == 'register_&_register' :
+        value1 = values[0]
+        value2 = values[1]
+        new_pc = None
+        output = alu(value1, value2, 32, 32, control_signals['alu_op'])
 
-		else :
-			return alu(PC, instruction_dict['imm'], 32, 12, 'addition')
+        if output == True :
+            return alu(PC, instruction_dict['imm'], 32, 12, 'addition')
+        else:
+            return alu(PC, "0x00000004", 32, 32, 'addition')
+
+    else:
+        prev_val = PC
+        if control_signals['mux_alu'] == 'register_&_immediate':
+            prev_val = values[0]
+        return alu(prev_val, instruction_dict['imm'], 32, 20, 'addition')
 	
 
 
@@ -314,6 +324,8 @@ def pipeline_decode(info) :
     # SB format
     elif opc_code == '1100011':
         if funct3 == '000': # beq
+            val_imm = hex(int(instruction_dict['imm'], 2))
+            instruction_dict['imm'] = val_imm
             control_signals['mux_alu'] = 'register_&_register'
             control_signals['alu_op'] = 'check_if_equal'
             control_signals['mux_memory'] = None
@@ -322,6 +334,8 @@ def pipeline_decode(info) :
             return PC, control_signals, instruction_dict
 
         elif funct3 == '001': # bne
+            val_imm = hex(int(instruction_dict['imm'], 2))
+            instruction_dict['imm'] = val_imm
             control_signals['mux_alu'] = 'register_&_register'
             control_signals['alu_op'] = 'check_if_not_equal'
             control_signals['mux_memory'] = None
@@ -330,6 +344,8 @@ def pipeline_decode(info) :
             return PC, control_signals, instruction_dict
 
         elif funct3 == '100': # blt
+            val_imm = hex(int(instruction_dict['imm'], 2))
+            instruction_dict['imm'] = val_imm
             control_signals['mux_alu'] = 'register_&_register'
             control_signals['alu_op'] = 'check_if_less_than'
             control_signals['mux_memory'] = None
@@ -338,6 +354,8 @@ def pipeline_decode(info) :
             return PC, control_signals, instruction_dict
 
         elif funct3 == '101': # bge
+            val_imm = hex(int(instruction_dict['imm'], 2))
+            instruction_dict['imm'] = val_imm
             control_signals['mux_alu'] = 'register_&_register'
             control_signals['alu_op'] = 'check_if_greater_than_equal_to'
             control_signals['mux_memory'] = None
@@ -370,8 +388,10 @@ def pipeline_decode(info) :
 
     # UJ format
     elif opc_code == '1101111': # jal
+        val_imm = hex(int(instruction_dict['imm'], 2))
+        instruction_dict['imm'] = val_imm
         control_signals['mux_alu'] = None
-        control_signals['alu_op'] = addition
+        control_signals['alu_op'] = 'addition'
         control_signals['mux_memory'] = None
         control_signals['mux_writeback'] = 'PC'
         control_signals['is_control_instruction'] = True
@@ -423,10 +443,10 @@ def pipeline_memory_access(info) :
 def pipeline_write_back(info) :
 	PC, register_num, value, control_signals = info
 	
-	if control_signals['is_control_instruction'] == True and control_signals['mux_writeback'] == 'PC':
-		register_file.update_register_val(register_num, value['nxt_pc'])
+	# if control_signals['is_control_instruction'] == True and control_signals['mux_writeback'] == 'PC':
+	# 	register_file.update_register_val(register_num, value['nxt_pc'])
 
-	elif value:
+	if value:
 		register_file.update_register_val(register_num, value)
 
 	return PC, control_signals
