@@ -117,13 +117,13 @@
 
         $.post("/", data, (results, error) => { //ajax call to post the data on the app.post()
             // results=JSON.parse(results);
-            // console.log(results);
+            console.log(results);
             var registers = results.registers;
             var inst_mem = results.Inst_Mem;
             var data_mem = results.Data_Mem;
             var stack_mem = results.Stack_Mem;
             var keys = Object.keys(registers);
-            var values = Object.values(registers);
+            var values = Object.values(registers);  
             for (var i = 0; i < Object.keys(registers).length; i++) {
                 text = '<li><div><label class="dropdown-label">' + keys[i] +
                     '</label><input disabled placeholder="' + values[i] +

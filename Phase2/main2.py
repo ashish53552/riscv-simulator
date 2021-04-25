@@ -95,7 +95,7 @@ if pipelining:
     Stats["CPI"] = CPI
     Stats['all_cycle_details'] = all_cycle_details
     Stats['req_inst_details'] = req_inst_details
-    Stats['register_per_cycle'] = Registers_per_cycle
+   # Stats['register_per_cycle'] = Registers_per_cycle
 
 
 else:
@@ -139,10 +139,10 @@ for i in Stats.keys():
 #    if not Stats[i]:
 #         print("YES")
 
-print(registers,"\n")
-print(Inst_Mem,"\n")
-print(Data_Mem,"\n")
-print(Stack_Mem,"\n")
+# print(registers,"\n")
+# print(Inst_Mem,"\n")
+# print(Data_Mem,"\n")
+# print(Stack_Mem,"\n")
 
 # finalResult=OrderedDict()
 # finalResult['registers']=registers

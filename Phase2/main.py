@@ -26,12 +26,13 @@ inp=list(inp.split()) #this file contains the data inputs
 ### Input to be taken for knobs
 pipelining =int(data['pipelining'])
 register_after_each_cycle =int(data['register_after_each_cycle'])
-
+f = open("Phase2\\inp.txt", "w")
+f.write(json.dumps(data))
+f.close()
 if pipelining:
     data_forwarding = int(data['data_forwarding'])
     print_pipeline_registers =int(data['print_pipeline_registers'])
-    req_inst = int(data['req_inst'])
-
+    req_inst = data['req_inst']
 
 ### Input
 # with open('../test/fibonacci(6th_number_in_x29).mc', 'r') as f:
@@ -62,7 +63,6 @@ if pipelining:
     all_cycle_details = {}
     req_inst_details = {}
     Registers_per_cycle = {}
-
     while True:
         # print(info_per_stage)
         info_per_stage, cycle_details, inst_details = execute_pipeline(info_per_stage, data_forwarding, req_inst)
@@ -154,7 +154,7 @@ finalResult['Stack_Mem']=Stack_Mem
 finalResult['Stats']=Stats
 
 print(json.dumps(finalResult))
-f = open("demofile3.txt", "w")
+f = open("Phase2\\test.txt", "w")
 f.write(json.dumps(finalResult))
 f.close()
 sys.stdout.flush()
