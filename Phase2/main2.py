@@ -11,32 +11,31 @@ import sys
 import json
 import re
 
-input_file=sys.argv[1]
+# input_file=sys.argv[1]
+#
+# data=json.loads(input_file)
+# code=data['code']
+# code=code.split("\n") #this will contain the list of instructions
 
-
-data=json.loads(input_file)
-code=data['code']
-code=code.split("\n") #this will contain the list of instructions
-
-inp=data['inp']
-inp=inp.replace("\n","")
-inp=inp.replace("\r","")
-inp=list(inp.split()) #this file contains the data inputs
+# inp=data['inp']
+# inp=inp.replace("\n","")
+# inp=inp.replace("\r","")
+# inp=list(inp.split()) #this file contains the data inputs
 
 ### Input to be taken for knobs
-pipelining =int(data['pipelining'])
-register_after_each_cycle =int(data['register_after_each_cycle'])
+pipelining = int(input('Pipelining? '))
+register_after_each_cycle = int(input("Registers?"))
 
 if pipelining:
-    data_forwarding = int(data['data_forwarding'])
-    print_pipeline_registers =int(data['print_pipeline_registers'])
-    req_inst = int(data['req_inst'])
+    data_forwarding = int(input('Data_Forwarding? '))
+    print_pipeline_registers = int(input('Print_Pipeline_Registers? '))
+    req_inst = str(input('print_pipeline_registers_inst_num? '))
 
 
 ### Input
-# with open('../test/fibonacci(6th_number_in_x29).mc', 'r') as f:
-#   lines = f.read()
-# code = lines.splitlines()
+with open('E:\\College\\CS204\\Main Project\\RISC-V-Simulator\\test\\fibonacci(6th_number_in_x29).mc', 'r') as f:
+  lines = f.read()
+code = lines.splitlines()
 
 # Storing each instruction in the text memory
 for line in code:
@@ -44,13 +43,11 @@ for line in code:
     add_text_to_memory(instr)
 
 # # Adding Data to memory (Assuming 4 byte input)
-# inp = input("Enter the number of elements to be added in the Data Memory :")
+inp = input("Enter the number of elements to be added in the Data Memory :")
 
 if len(inp) > 0:
-    list_of_values = inp
-    for x in list_of_values:
+    for x in inp.split():
         data = bounding_hex(int(x))
-        # print(data)
         add_data_before(data)
 
 # To be returned to front-end as a JSON Object along with memory dictionaries
@@ -135,26 +132,26 @@ registers = get_register_file()
 Inst_Mem = get_text_memory_file()
 Data_Mem, Stack_Mem = get_data_memory_file()
 
-# for i in Stats.keys():
-#    # print(i, "\n", Stats[i], "\n")
+for i in Stats.keys():
+    # if type(Stats[i])==int:
+    #     continue
+    print(i, "\n", Stats[i], "\n")
 #    if not Stats[i]:
-#        del Stats[i]
+#         print("YES")
 
-# print(registers,"\n")
-# print(Inst_Mem,"\n")
-# print(Data_Mem,"\n")
-# print(Stack_Mem,"\n")
+print(registers,"\n")
+print(Inst_Mem,"\n")
+print(Data_Mem,"\n")
+print(Stack_Mem,"\n")
+
+# finalResult=OrderedDict()
+# finalResult['registers']=registers
+# finalResult['Inst_Mem']=Inst_Mem
+# finalResult['Data_Mem']=Data_Mem
+# finalResult['Stack_Mem']=Stack_Mem
 
 
-finalResult=OrderedDict()
-finalResult['registers']=registers
-finalResult['Inst_Mem']=Inst_Mem
-finalResult['Data_Mem']=Data_Mem
-finalResult['Stack_Mem']=Stack_Mem
-finalResult['Stats']=Stats
+# print(json.dumps(finalResult))
+# sys.stdout.flush()
 
-print(json.dumps(finalResult))
-f = open("demofile3.txt", "w")
-f.write(json.dumps(finalResult))
-f.close()
-sys.stdout.flush()
+### Input

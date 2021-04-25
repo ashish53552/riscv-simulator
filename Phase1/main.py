@@ -78,6 +78,6 @@ finalResult['Data_Mem']=Data_Mem
 finalResult['Stack_Mem']=Stack_Mem
 
 
-print(json.dumps(finalResult))
+print(json.dumps(str(finalResult)))
 
 sys.stdout.flush()
