@@ -33,7 +33,7 @@ if pipelining:
 
 
 ### Input
-with open('../test/fibonacci(6th_number_in_x29).mc', 'r') as f:
+with open('../test/factorial(of_10_in_x26).mc', 'r') as f:
   lines = f.read()
 code = lines.splitlines()
 
@@ -104,6 +104,7 @@ else:
     branch = False
     cycles = 0
     Registers_per_cycle = {}
+    Stats['num_alu'], Stats['num_control'], Stats['num_data_transfer'] = 0, 0, 0
     
     while True:
         PC, IR = fse.fetch(PC, IR, branch)
@@ -111,7 +112,14 @@ else:
             break
         cycles += 1
         instruction_dict = decode(IR)
-        PC, branch = identify_instruction_and_run(instruction_dict, PC)
+        PC, branch, br, data_t = identify_instruction_and_run(instruction_dict, PC)
+        if data_t:
+            Stats['num_data_transfer'] += 1
+        elif br:
+            Stats['num_control'] += 1
+            # print(PC)
+        else:
+            Stats['num_alu'] += 1
         if register_after_each_cycle:
             Registers_per_cycle["Cycle "+str(cycles)] = get_register_file()
 
