@@ -12,12 +12,15 @@ A Simulator for a 32 bit RISC-V Instruction Set Architecture (ISA).
 #### Phase 2
 	Divyansh Srivastava	2018MEB1009	Hazard Detection Unit, Overall Datapath in the Pipeline	
 	Vikram Setty		2018MED1010	New Control Circuitry for the Entire Pipelined Implementation	
-	Ashish Kaushik		2018MMB1279	Auxilliary Pipeline Fuctions & GUI
+	Ashish Kaushik		2018MMB1279	Auxilliary Pipeline Functions & GUI
 	Shrish Tripathi		2018MMB1294	Auxilliary Pipeline Functions & GUI
 	Hrishikesh Pawar	2018MEB1241	Buffer Implementation	
 	
 ### Phase 1
   The **Simulator** executes a sequence of machine code instructions to mimic the basic data and control path of RISC-V ISA.
+  
+### Phase 2
+  The **Simulator** is enabled with pipelining capabilities, equipped with data-forwarding & static branch prediction mechanisms, with statistics related to run time, CPI, number of hazards, etc vsisble for executions under different conditions enabled in the GUI.
       
 ### Technology Stack
 	Python 3 (for development of the simulator)
