@@ -116,6 +116,8 @@
         //console.log(data); uncomment this to check the return data on frontend
 
         $.post("/", data, (results, error) => { //ajax call to post the data on the app.post()
+            // results=JSON.parse(results);
+            // console.log(results);
             var registers = results.registers;
             var inst_mem = results.Inst_Mem;
             var data_mem = results.Data_Mem;
