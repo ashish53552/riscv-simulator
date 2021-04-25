@@ -293,10 +293,12 @@ def execute_pipeline(info_per_stage, forwarding=True, req_PC = None) :
 			num_instructions+=1
 			if control_signals['is_control_instruction']:
 				num_control += 1
-			elif control_signals['mux_writeback'] == 'alu':
+				# print(PC)
+			elif not control_signals['is_control_instruction'] and control_signals['mux_writeback'] == 'alu':
 				num_alu += 1
 			elif control_signals['mux_writeback'] == 'MDR' or control_signals['mux_writeback'] == None:
 				num_data_transfer += 1
+
 
 			pcs_in_order = pcs_in_order[1:]
 			# del buffers[PC]
