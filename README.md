@@ -3,11 +3,18 @@
 A Simulator for a 32 bit RISC-V Instruction Set Architecture (ISA).
 
 ### Team Information & Contributions
+#### Phase 1
 	Divyansh Srivastava	2018MEB1009	Instructions for SB, U Format & Memory Organization	
 	Vikram Setty		2018MED1010	Instructions for UJ Format, Five Stage Execution & IAG		
 	Ashish Kaushik		2018MMB1279	Instructions for I Format & GUI
 	Shrish Tripathi		2018MMB1294	Instructions for S Format & GUI
-	Hrishikesh Pawar	2018MEB1241	Instructions for R Format, Register & PMI Organization	
+	Hrishikesh Pawar	2018MEB1241	Instructions for R Format, Register & PMI Organization
+#### Phase 2
+	Divyansh Srivastava	2018MEB1009	Hazard Detection Unit, Overall Datapath in the Pipeline	
+	Vikram Setty		2018MED1010	New Control Circuitry for the Entire Pipelined Implementation	
+	Ashish Kaushik		2018MMB1279	Auxilliary Pipeline Fuctions & GUI
+	Shrish Tripathi		2018MMB1294	Auxilliary Pipeline Functions & GUI
+	Hrishikesh Pawar	2018MEB1241	Buffer Implementation	
 	
 ### Phase 1
   The **Simulator** executes a sequence of machine code instructions to mimic the basic data and control path of RISC-V ISA.
@@ -102,13 +109,3 @@ RISC-V-Simulator
 ###### The output format in the GUI is in the following format :
 	Register Data 	: 32 Registers with their Corresponding 32 bit Hexadecimal Values
 	Memory Data 	: Text, Data & Stack Memory Segments in Little Endian Format
-
-### Datapath for the Execution of a Single Machine Code Instruction
-The overall datapath (with control signals) corresponding to the execution of a single instruction looks like (corresponding code in Phase1/five_stage_execution.py)<br>
-<center><img src="img/datapath.png" height="300"></center><br>
-The Instruction Adress Generator (IAG) for calculating the next program counter (PC) while executing instructions can be visualised as (corresponding code in Phase1/iag.py)<br>
-<center><img src="img/iag.png" height="300"></center><br>
-The processor-memory interface for transfer of data between all the registers in the simulated processor and the memory can be depicted by<br>
-<center><img src="img/pmi.png" height="300"></center>
-<br>
-Source : Slides from CS204 : Computer Architecture by Dr. T.V. Kalyan (IIT Ropar)
