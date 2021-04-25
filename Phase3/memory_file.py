@@ -8,7 +8,19 @@ text_pointer = "0x00000000"
 data_pointer = "0x10000000"
 stack_pointer = "0x7FFFFFF0"
 
+
+###   This data needs to be integrated into the main program
+
+
 cache_size = None, cache_block_size = None, blocks_per_set = None, block_placement_type = None
+
+
+num_memory_accesses = 0
+num_cache_hits = 0
+num_cache_misses = 0
+
+
+###
 
 #instruction_cache = {}
 #data_cache = {}
@@ -120,73 +132,40 @@ def get_data_memory_file():
 # Functions to make the instruction and data caches
 # Both cache_size and cache_block_size are specified in bytes
 
-def make_instruction_cache(cache_size, cache_block_size, blocks_per_set, block_placement_type) :
+def make_cache(cache_size, cache_block_size, blocks_per_set, block_placement_type) :
 
-    instruction_cache = []          # 1D (for direct mapped) & 2D (for set & fully associative) list storing the data
-    instruction_tag_array = []      # 1D (for direct mapped) & 2D (for set & fully associative) list storing the tags of each block
+    cache = []                      # 1D (for direct mapped) & 2D (for set & fully associative) list storing the data
+    tag_array = []                  # 1D (for direct mapped) & 2D (for set & fully associative) list storing the tags of each block
     block_validity = []             # 1D (for direct mapped) & 2D (for set & fully associative) list indicating whether that block has stored any data or not
     block_status = []               # 1D (for direct mapped) & 2D (for set & fully associative) list storing status (as per LRU policy)of each block in a set
 
     if block_placement_type = 'set_associative' or  block_placement_type = 'fully_associative':
         if block_placement_type = 'fully_associative' :
             blocks_per_set = cache_size//cache_block_size
-        for i in range(cache_size/(cache_block_size*blocks_per_set)) :
-            instruction_cache.append([])
-            instruction_tag_array.append([])
+        for i in range(cache_size//(cache_block_size*blocks_per_set)) :
+            cache.append([])
+            tag_array.append([])
             block_validity.append([])
             block_status.append([])
             status_initializer = 0
             for j in range(blocks_per_set) :
-                instruction_cache[i].append('00'*cache_block_size)
-                instruction_tag_array[i].append('0x' + '0'*8)
+                cache[i].append('00'*cache_block_size)
+                tag_array[i].append('0x' + '0'*8)
                 block_validity[i].append('invalid')
                 block_status[i].append(status_initializer)
                 status_initializer += 1
 
     elif block_placement_type = 'direct_mapped' :
-        for i in range(cache_size/cache_block_size) :
-            instruction_cache.append('00'*cache_block_size)
-            instruction_tag_array.append('0x' + '0'*8)
+        for i in range(cache_size//cache_block_size) :
+            cache.append('00'*cache_block_size)
+            tag_array.append('0x' + '0'*8)
             block_validity[i].append('invalid')
 
-    return instruction_cache, instruction_tag_array, block_validity, block_status
-
-
-
-def make_data_cache(cache_size, cache_block_size, blocks_per_set, block_placement_type) :
-
-    data_cache = []                 # 1D (for direct mapped) & 2D (for set & fully associative) list storing the data
-    data_tag_array = []             # 1D (for direct mapped) & 2D (for set & fully associative) list storing the tags of each block
-    block_validity = []             # 1D (for direct mapped) & 2D (for set & fully associative) list indicating whether that block has stored any data or not
-    block_status = []               # 1D (for direct mapped) & 2D (for set & fully associative) list storing status (as per LRU policy)of each block in a set
-
-    if block_placement_type = 'set_associative' or  block_placement_type = 'fully_associative':
-        if block_placement_type = 'fully_associative' :
-            blocks_per_set = cache_size//cache_block_size
-        for i in range(cache_size/(cache_block_size*blocks_per_set)) :
-            data_cache.append([])
-            data_tag_array.append([])
-            block_validity.append([])
-            block_status.append([])
-            status_initializer = 0
-            for j in range(blocks_per_set) :
-                data_cache[i].append('00'*cache_block_size)
-                data_tag_array[i].append('0x' + '0'*8)
-                block_validity[i].append('invalid')
-                block_status[i].append(status_initializer)
-                status_initializer += 1
-
-    elif block_placement_type = 'direct_mapped' :
-        for i in range(cache_size/cache_block_size) :
-            data_cache.append('00'*cache_block_size)
-            data_tag_array.append('0x' + '0'*8)
-            block_validity[i].append('invalid')
-
-    return data_cache, data_tag_array, block_validity, block_status
+    return cache, tag_array, block_status, block_validity
 
 
 instruction_cache = {}
-data = make_instruction_cache(cache_size, cache_block_size, blocks_per_set, block_placement_type)
+data = make_cache(cache_size, cache_block_size, blocks_per_set, block_placement_type)
 instruction_cache['cache'] = data[0]
 instruction_cache['tag_array'] = data[1]
 instruction_cache['block_status'] = data[2]
@@ -194,7 +173,7 @@ instruction_cache['block_validity'] = data[3]
 
 
 data_cache = {}
-data = make_instruction_cache(cache_size, cache_block_size, blocks_per_set, block_placement_type)
+data = make_cache(cache_size, cache_block_size, blocks_per_set, block_placement_type)
 data_cache['cache'] = data[0]
 data_cache['tag_array'] = data[1]
 data_cache['block_status'] = data[2]
@@ -202,16 +181,18 @@ data_cache['block_validity'] = data[3]
 
 
 
-def get_tag_index_offest(read_address,cache_block_size,num_blocks,blocks_per_set,block_placement_type) :
+def get_tag_index_offest(actual_address,cache_block_size,num_blocks,blocks_per_set,block_placement_type) :
+
+    # All units are in bytes
 
     block_size_bits = cache_block_size*8
-    address_int = int(read_address,16)
+    address_int = int(actual_address,16)
     tag = bounding_hex(block_size_bits*(address_int//block_size_bits))
     if block_placement_type = 'direct_mapped' :
         index = None
     else :
         index = (address_int//block_size_bits)%(num_blocks//blocks_per_set)
-    offset = (int(read_address,16)-int(tag,16))//8                          # Offest is read in the number of bytes
+    offset = (int(actual_address,16)-int(tag,16))//8                          
     return tag, index, offset
 
 
@@ -224,6 +205,9 @@ def read_block_from_memory(tag_address,cache_block_size) :
 # Reads from the caches following LRU Policy
 
 def read_from_instruction_cache(read_address, index, offest, num_bytes, cache_size, cache_block_size, blocks_per_set, block_placement_type)
+
+    global num_memory_accesses, num_cache_hits, num_cache_misses
+    num_memory_accesses += 1
 
     final_data = None
 
@@ -243,6 +227,7 @@ def read_from_instruction_cache(read_address, index, offest, num_bytes, cache_si
                 break
 
         if match_found == True :
+            num_cache_hits += 1
             final_data = '0x' + instruction_cache['cache'][index][way_number][offest:offset+num_bytes*2]
             initial_status = instruction_cache['block_status'][index][way_number]
             for i in range(blocks_per_set) :
@@ -251,6 +236,7 @@ def read_from_instruction_cache(read_address, index, offest, num_bytes, cache_si
             instruction_cache['block_status'][index][way_number] = blocks_per_set - 1
             return final_data
         else :
+            num_cache_misses += 1
             final_data = get_data_from_memory(bounding_hex(int(read_address,16)+offest), num_bytes)
             block_of_data = read_block_from_memory(read_address,cache_block_size)
             for i in range(blocks_per_set) :
@@ -277,9 +263,11 @@ def read_from_instruction_cache(read_address, index, offest, num_bytes, cache_si
             break
 
         if match_found == True :
+            num_cache_hits += 1
             final_data = '0x' + instruction_cache['cache'][index][offest:offset+num_bytes*2]
             return final_data
         else :
+            num_cache_misses += 1
             final_data = get_data_from_memory(bounding_hex(int(read_address,16)+offest), num_bytes)
             block_of_data = read_block_from_memory(read_address,cache_block_size)
             instruction_cache['tag_array'][index] = read_address
@@ -292,6 +280,9 @@ def read_from_instruction_cache(read_address, index, offest, num_bytes, cache_si
 
 
 def read_from_data_cache(read_address, index, offest, num_bytes, cache_size, cache_block_size, blocks_per_set, block_placement_type)
+
+    global num_memory_accesses, num_cache_hits, num_cache_misses
+    num_memory_accesses += 1
 
     final_data = None
 
@@ -311,6 +302,7 @@ def read_from_data_cache(read_address, index, offest, num_bytes, cache_size, cac
                 break
 
         if match_found == True :
+            num_cache_hits += 1
             final_data = '0x' + data_cache['cache'][index][way_number][offest:offset+num_bytes*2]
             initial_status = data_cache['block_status'][index][way_number]
             for i in range(blocks_per_set) :
@@ -319,6 +311,7 @@ def read_from_data_cache(read_address, index, offest, num_bytes, cache_size, cac
             data_cache['block_status'][index][way_number] = blocks_per_set - 1
             return final_data
         else :
+            num_cache_misses += 1
             final_data = get_data_from_memory(bounding_hex(int(read_address,16)+offest), num_bytes)
             block_of_data = read_block_from_memory(read_address,cache_block_size)
             for i in range(blocks_per_set) :
@@ -345,9 +338,11 @@ def read_from_data_cache(read_address, index, offest, num_bytes, cache_size, cac
             break
 
         if match_found == True :
+            num_cache_hits += 1
             final_data = '0x' + data_cache['cache'][index][offest:offset+num_bytes*2]
             return final_data
         else :
+            num_cache_misses += 1
             final_data = get_data_from_memory(bounding_hex(int(read_address,16)+offest), num_bytes)
             block_of_data = read_block_from_memory(read_address,cache_block_size)
             data_cache['tag_array'][index] = read_address
@@ -358,6 +353,9 @@ def read_from_data_cache(read_address, index, offest, num_bytes, cache_size, cac
 
 
 def write_to_instruction_cache(read_address, index, offest, num_bytes, new_data, cache_size, cache_block_size, blocks_per_set, block_placement_type) :
+
+    global num_memory_accesses, num_cache_hits, num_cache_misses
+    num_memory_accesses += 1
 
     if block_placement_type = 'set_associative' or block_placament_type = 'fully_associative' :
 
@@ -375,6 +373,7 @@ def write_to_instruction_cache(read_address, index, offest, num_bytes, new_data,
                 break
 
         if match_found == True :
+            num_cache_hits += 1
             initial_status = instruction_cache['block_status'][index][way_number]
             for i in range(blocks_per_set) :
                 if instruction_cache['block_status'][index][i] > initial_status :
@@ -383,6 +382,7 @@ def write_to_instruction_cache(read_address, index, offest, num_bytes, new_data,
             instruction_cache['cache'][index][way_number][offest:offset+num_bytes*2] = new_data[-(num_bytes*2):]
             add_data_to_memory(new_data[-(num_bytes*2):],bounding_hex(int(read_address,16)+offest),num_bytes)
         else :
+            num_cache_misses += 1
             add_data_to_memory(new_data[-(num_bytes*2):],bounding_hex(int(read_address,16)+offest),num_bytes)
             block_of_data = read_block_from_memory(read_address,cache_block_size)
             for i in range(blocks_per_set) :
@@ -408,9 +408,11 @@ def write_to_instruction_cache(read_address, index, offest, num_bytes, new_data,
             break
 
         if match_found == True :
+            num_cache_hits += 1
             instruction_cache['cache'][index][offest:offset+num_bytes*2] = new_data[-(num_bytes*2):]
             add_data_to_memory(new_data[-(num_bytes*2):],bounding_hex(int(read_address,16)+offest),num_bytes)
         else :
+            num_cache_misses += 1
             add_data_to_memory(new_data[-(num_bytes*2):],bounding_hex(int(read_address,16)+offest),num_bytes)
             block_of_data = read_block_from_memory(read_address,cache_block_size)
             instruction_cache['tag_array'][index] = read_address
@@ -421,6 +423,9 @@ def write_to_instruction_cache(read_address, index, offest, num_bytes, new_data,
 
 
 def write_to_data_cache(read_address, index, offest, num_bytes, new_data, cache_size, cache_block_size, blocks_per_set, block_placement_type) :
+
+    global num_memory_accesses, num_cache_hits, num_cache_misses
+    num_memory_accesses += 1
 
     if block_placement_type = 'set_associative' or block_placament_type = 'fully_associative' :
 
@@ -438,6 +443,7 @@ def write_to_data_cache(read_address, index, offest, num_bytes, new_data, cache_
                 break
 
         if match_found == True :
+            num_cache_hits += 1
             initial_status = data_cache['block_status'][index][way_number]
             for i in range(blocks_per_set) :
                 if data_cache['block_status'][index][i] > initial_status :
@@ -446,6 +452,7 @@ def write_to_data_cache(read_address, index, offest, num_bytes, new_data, cache_
             data_cache['cache'][index][way_number][offest:offset+num_bytes*2] = new_data[-(num_bytes*2):]
             add_data_to_memory(new_data[-(num_bytes*2):],bounding_hex(int(read_address,16)+offest),num_bytes)
         else :
+            num_cache_misses += 1
             add_data_to_memory(new_data[-(num_bytes*2):],bounding_hex(int(read_address,16)+offest),num_bytes)
             block_of_data = read_block_from_memory(read_address,cache_block_size)
             for i in range(blocks_per_set) :
@@ -471,9 +478,11 @@ def write_to_data_cache(read_address, index, offest, num_bytes, new_data, cache_
             break
 
         if match_found == True :
+            num_cache_hits += 1
             data_cache['cache'][index][offest:offset+num_bytes*2] = new_data[-(num_bytes*2):]
             add_data_to_memory(new_data[-(num_bytes*2):],bounding_hex(int(read_address,16)+offest),num_bytes)
         else :
+            num_cache_misses += 1
             add_data_to_memory(new_data[-(num_bytes*2):],bounding_hex(int(read_address,16)+offest),num_bytes)
             block_of_data = read_block_from_memory(read_address,cache_block_size)
             data_cache['tag_array'][index] = read_address
