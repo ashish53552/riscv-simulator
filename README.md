@@ -90,18 +90,16 @@ RISC-V-Simulator
 	* app.js - Main file combining frontend and backend(both express and python components) of the Simulator. 
 
 ### How to Execute
-   * The simulator is deployed at https://sheltered-journey-97920.herokuapp.com/#
 
-   * For running it *locally* **(Python and Node Required)**<br>
+   * For running it *locally* **(Python)**<br>
   ```
 		git clone "repo url"
-		npm install
-		node app.js
+		# open terminal and navigate to the Phase 2 folder and run 
+		python main2.py
   ```
-         Now the simulator can be accessed at http://localhost:80/
-	 
-   * Once the webpage is started, paste the machine code in the code window. You can optionally provide data directly to data memory from the input window like in case of codes like for bubble and merge sort. This accepts *space seperated values in decimal format*. You can optionally set the knobs to enable or disable pipelining and data forwarding. Additional knobs are also available to print all the pipeline buffer/register values, or their values for a particular instruction (which can be mentioned by typing it's program counter (PC) in the format *0xABCDEFGH* or in a capitalized 8 digit hexadecimal format). Then click on submit and check the registers and memory sections after program execution.
-	
+        
+   * The simulator is deployed at https://sheltered-journey-97920.herokuapp.com/#
+   * The various input will be asked for the nobs and PC for specific instruction and all the stats will be displayed in the terminal and the debug info (pipeline register info etc.) will be stored in a file named "debug_info.txt" for our reference.
 ### Instructions Supported
 	R-Type:
 		add, and, or, sll, slt, sra, srl, sub, xor, mul, div, rem
@@ -129,5 +127,5 @@ RISC-V-Simulator
 ###### The output format in the GUI is in the following format :
 	Register Data 	: 32 Registers with their Corresponding 32 bit Hexadecimal Values
 	Memory Data 	: Text, Data & Stack Memory Segments in Little Endian Format
-	Stats           : In case of pipeline implementations, features like CPI, number of hazard etc.
-	Debug Info      : Details of interstage buffers after each cycle and buffer values of a given instruction (using its PC) in various cycles.
+    Stats           : In case of pipeline implementations, features like CPI, number of hazard etc.
+    Debug Info      : Details of interstage buffers after each cycle and buffer values of a given instruction (using its PC) in various cycles

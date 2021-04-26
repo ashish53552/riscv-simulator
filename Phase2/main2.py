@@ -10,6 +10,7 @@ from register_file import *
 import sys
 import json
 import re
+import os
 
 # input_file=sys.argv[1]
 #
@@ -23,18 +24,18 @@ import re
 # inp=list(inp.split()) #this file contains the data inputs
 
 ### Input to be taken for knobs
+print("Enter 1 for yes 0 for no")
 pipelining = int(input('Pipelining? '))
-register_after_each_cycle = int(input("Registers?"))
+register_after_each_cycle = int(input("Registers File? "))
 
 if pipelining:
     data_forwarding = int(input('Data_Forwarding? '))
     print_pipeline_registers = int(input('Print_Pipeline_Registers? '))
-    req_inst = str(input('print_pipeline_registers_inst_num? '))
-
+    req_inst = str(input('Print_pipeline_registers_for_inst_with_PC_in_format(0x0000000A)? (Leave Empty if not required)'))
 
 ### Input
-with open('E:\\College\\CS204\\Main Project\\RISC-V-Simulator\\test\\fibonacci(6th_number_in_x29).mc', 'r') as f:
-  lines = f.read()
+with open('../test/factorial(of_10_in_x26).mc', 'r') as f:
+    lines = f.read()
 code = lines.splitlines()
 
 # Storing each instruction in the text memory
@@ -66,19 +67,18 @@ if pipelining:
         if not info_per_stage:
             break
 
-        total_cycles+=1
+        total_cycles += 1
 
         # print(buffers)
         # print("cycle done:", total_cycles, "\n")
         # print(cycle_details)
 
         if print_pipeline_registers:
-            all_cycle_details["Cycle "+str(total_cycles)] = cycle_details
+            all_cycle_details["Cycle " + str(total_cycles)] = cycle_details
         if inst_details:
-            req_inst_details["Cycle "+str(total_cycles)] = inst_details
+            req_inst_details["Cycle " + str(total_cycles)] = inst_details
         if register_after_each_cycle:
-            Registers_per_cycle["Cycle "+str(total_cycles)] = get_register_file()
-
+            Registers_per_cycle["Cycle " + str(total_cycles)] = get_register_file()
 
     # if print_pipeline_registers:
     #     print("Instruction Buffers per Cycle\n", all_cycle_details, "\n")
@@ -89,13 +89,13 @@ if pipelining:
     #
     # print("Total Cycles", total_cycles-1)
     Stats = print_required_values()
-    Stats['total_cycles'] = total_cycles-1
+    Stats['total_cycles'] = total_cycles - 1
     CPI = total_cycles / Stats['num_instructions']
     # print("CPI: ", CPI, "\n")
     Stats["CPI"] = CPI
     Stats['all_cycle_details'] = all_cycle_details
     Stats['req_inst_details'] = req_inst_details
-   # Stats['register_per_cycle'] = Registers_per_cycle
+    Stats['register_per_cycle'] = Registers_per_cycle
 
 
 else:
@@ -105,7 +105,7 @@ else:
     cycles = 0
     Registers_per_cycle = {}
     Stats['num_alu'], Stats['num_control'], Stats['num_data_transfer'] = 0, 0, 0
-    
+
     while True:
         PC, IR = fse.fetch(PC, IR, branch)
         if IR == "0x00000000":
@@ -121,7 +121,7 @@ else:
         else:
             Stats['num_alu'] += 1
         if register_after_each_cycle:
-            Registers_per_cycle["Cycle "+str(cycles)] = get_register_file()
+            Registers_per_cycle["Cycle " + str(cycles)] = get_register_file()
 
     Stats['total_cycles'] = 5 * cycles
     Stats['CPI'] = 5
@@ -132,17 +132,32 @@ registers = get_register_file()
 Inst_Mem = get_text_memory_file()
 Data_Mem, Stack_Mem = get_data_memory_file()
 
+os.remove("debug_info.txt")
+file_d = open("debug_info.txt", 'a')
 for i in Stats.keys():
-    # if type(Stats[i])==int:
-    #     continue
-    print(i, "\n", Stats[i], "\n")
-#    if not Stats[i]:
-#         print("YES")
+    if type(Stats[i]) == int or type(Stats[i]) == float:
+        print(i, "\n", Stats[i], "\n")
+    elif Stats[i]:
+        # print(i,"\n")
+        file_d.write("\n")
+        file_d.write(i+"\n")
+        for j in Stats[i]:
+            # print(j, "\n", Stats[i][j], "\n")
+            file_d.write(j+"\n"+str(Stats[i][j])+"\n")
 
-# print(registers,"\n")
-# print(Inst_Mem,"\n")
-# print(Data_Mem,"\n")
-# print(Stack_Mem,"\n")
+def print_output(x):
+    for i in x:
+        print(i, " : ", x[i])
+    print("\n")
+
+print("Registers\n")
+print_output(registers)
+print("Instruction Memory\n")
+print_output(Inst_Mem)
+print("Data Memory\n")
+print_output(Data_Mem)
+print("Stack Memory\n")
+print_output(Stack_Mem)
 
 # finalResult=OrderedDict()
 # finalResult['registers']=registers
@@ -153,5 +168,3 @@ for i in Stats.keys():
 
 # print(json.dumps(finalResult))
 # sys.stdout.flush()
-
-### Input
