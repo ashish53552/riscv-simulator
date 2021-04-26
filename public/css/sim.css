@@ -83,8 +83,8 @@
 table {
     
     position:absolute;
-    top:50px;
-    right:0px;
+    /* top:50px; */
+    /* right:0px; */
     width:210px;
     margin-right: 0px;
     font-family:  New,Courier,monospace;
@@ -136,3 +136,58 @@ table {
       font-weight: bolder;
   }
   
+ .new_table{
+    position:absolute;
+   right:530px;
+    width:250px;
+    margin-right: 20px;
+    margin-top:20px;
+    font-family:  New,Courier,monospace;
+    border: 1px solid lightgray;
+    border-collapse: collapse;
+
+  }
+  .new_window_side{
+    margin-top: 20px;
+    margin-right:0px;
+    right:0px;
+    /* left:300px; */
+    width:200px;
+    min-height:700px;
+    -ms-overflow-style: none;  /* IE and Edge
+    scrollbar-width: none;   */
+
+  }
+  .debug{
+    background: url(http://i.imgur.com/2cOaJ.png);
+    background-attachment: local;
+    position:absolute;
+    background-repeat: no-repeat;
+    min-height: 600px;
+    width:700px;
+    padding-left: 30px;
+    margin-left: 800px;
+    margin-right:0px;
+    margin-top: 20px;
+    /* overflow:scroll; */
+    font-family:  New,Courier,monospace;
+    
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  
+  }
+
+  .stats{
+    /* margin-top: 20px; */
+    top:92px;
+    right:250px;
+    position:absolute;
+    font-family:  New,Courier,monospace;
+    font-size: 15px;
+    left:67%;
+    
+
+  }
+.myDynamicTable{
+    margin-right:100px;
+    position:absolute;
+  }

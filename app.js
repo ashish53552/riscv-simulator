@@ -17,7 +17,16 @@ app.use(bodyParser.urlencoded({
 app.get('/', (req, res) => {
     res.render('index');
 });
-
+// app.post("/popup",(req,res)=>{
+//     let data = fs.readFileSync('Phase2/test.txt', 'utf8');
+//     //res.send(data);
+//     res.render('popup');
+// })
+// app.get("/dataApi",(req,res)=>{
+//     let data = fs.readFileSync('Phase2/test.txt', 'utf8');
+//     data=JSON.parse(data);
+//     res.send(data);
+// })
 app.post('/',(req,res)=>{
     //console.log(req.body); uncomment this to check the input at console
     //calling python child process
@@ -48,6 +57,11 @@ app.post('/',(req,res)=>{
         // console.log(JSON.parse(data))
             data=JSON.parse(data)
             data.input_params=input_params;
+            // fs.writeFile('popup.txt', JSON.stringify(data), function (err) {
+            //     if (err) throw err;
+            //     console.log('Saved!');
+            // });
+              
             res.send(data)
         } catch (err) {
             console.error(err)

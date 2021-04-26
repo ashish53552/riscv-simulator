@@ -234,5 +234,189 @@ submitDialogue.addEventListener('click', (event) => {
 });
 show_stats.addEventListener('click',(event)=>{
     console.log(results);
+    
+let Table = [
+   
+    { Information:"Total Cycles", Count: results.Stats.total_cycles, }, 
+    { Information:"Total instructions executed", Count: results.Stats.num_instructions, },
+    { Information: "CPI", Count: results.Stats.CPI},
+    { Information: "Data Trasfer Instructions", Count: results.Stats.num_data_trasfer, },
+    { Information: "ALU instructions", Count:results.Stats.num_alu,  }, 
+    {Information: "Control instructions", Count: results.Stats.num_control, },
+    {Information:"Stalls", Count:results.Stats.num_stalls,},
+    {Information:"Data Hazards", Count:results.Stats.num_data_hazards, },
+    {Information:"Control Hazards", Count:results.Stats.num_control_hazards, },
+    {Information:"Branch misprediction", Count:results.Stats_num_branch_mispredictions, },
+    {Information:"Stalls due to data hazards", Count:results.Stats.num_stalls_data, },
+    {Information:"Stalls due to control hazards", Count:results.Stats.num_stalls_control, },
+  ];
+    console.log(Table);
+    // function generateTableHead(table, data) {
+    //   let thead = table.createTHead();
+    //   let row = thead.insertRow();
+    //   for (let key of data) {
+    //     let th = document.createElement("th");
+    //     let text = document.createTextNode(key);
+    //     th.appendChild(text);
+    //     row.appendChild(th);
+    //   }
+    // }
+    
+    // function generateTable(table, data) {
+    //   for (let element of data) {
+    //     let row = table.insertRow();
+    //     for (key in element) {
+    //       let cell = row.insertCell();
+    //       let text = document.createTextNode(element[key]);
+    //       cell.appendChild(text);
+    //     }
+    //   }
+    // }
+  
+  
+  
+    function addTable() {
+        var myTableDiv = document.getElementById("myDynamicTable");
+      
+        var table = document.createElement('TABLE');
+        table.border = '1';
+      
+        var tableBody = document.createElement('TBODY');
+        table.appendChild(tableBody);
+      
+        for (var i = 0; i < 12; i++) {
+          var tr = document.createElement('TR');
+          tableBody.appendChild(tr);
+      
+        //   for (var j = 0; j < 2; j++) {
+            var td = document.createElement('TD');
+            td.width = '75';
+            td.appendChild(document.createTextNode(Table[i]['Information']));
+            tr.appendChild(td);
+            var td = document.createElement('TD');
+            td.width = '75';
+            td.appendChild(document.createTextNode(Table[i]['Count']));
+            tr.appendChild(td);
+        //   }
+        }
+        myTableDiv.appendChild(table);
+      }
+      addTable();
+      var myWindow;
+        
+      function openWin() {
+      var add = "C:\\Users\\SHRISH\\Downloads\\RISC-V-Simulator-main\\public\\p2.HTML";
+        myWindow = window.open(add, "myWindow", "width=800,height=600");
+      //   var html = "<html><head></head><body>Hello, <b>"+"</b>.";
+      //     html += "How are you today?</body></html>"
+      //   myWindow.document.write(html);
+      }
+  
+  
+  
+    
+    // let table = document.querySelector("table");
+    // let data = Object.keys(Table[0]);
+    // generateTableHead(table, data);
+    // generateTable(table, Table);
+  
+  
+  
+  
+  
+  //  ------------------------------------------
+  
+  var show = "";
+  
+  function print_register_per_cycle(){
+    var temp  = results.Stats.register_per_cycle;
+    for(var key in temp){
+      show+=(key+"\n");
+      for(var v in temp[key])
+      {
+          show+='\t';
+        show+=(v+": ");
+        show+=(temp[key][v]+"\n");
+      }
+    }
+  };
+  function print_req_inst_details(){
+    var temp  = results.Stats.req_inst_details;
+    for(var key in temp){
+      show+=(key+"\n");
+      for(var v in temp[key])
+      {
+        show+="\t";
+        show+=(v+": ");
+        show+=(temp[key][v]+"\n");
+      }
+    }
+  
+  
+  };
+  function print_all_cycle_details()
+  {
+    var temp  = results.Stats.all_cycle_details;
+    for(var key in temp){
+      show+=(key+"\n");
+      for(var v in temp[key])
+      {   
+         if(v.includes('fetch'))
+         {
+            show+="\t";
+            show+=(v+": ");
+            show+=(temp[key][v]+"\n");
+         }
+          else{
+              show+="\t";
+            show+=(v+": ");
+          for(t in temp[key][v]){
+          show+="\t";
+        show+=(t+": ");
+        show+=(temp[key][v][t]+"\n");
+    }
+      
+          }
+      
+    }
+  }
+};
+  
+  var condn = results.input_params;
+  console.log(condn);
+  console.log(condn.req_ins);
+  console.log(print_pipeline_registers);
+  console.log(register_after_each_cycle);
+//   console.l
+  if(condn.req_ins!=undefined)
+  {
+    console.log("yes");
+    print_req_inst_details();
+  }
+  else if(condn.print_pipeline_registers=="1"){
+      console.log("Yes");
+  print_all_cycle_details();
+}
+  else if(condn.register_after_each_cycle=="1"){
+      console.log("YES");
+  print_register_per_cycle();};
+  
+  console.log(show);
+  
+  var x = document.getElementById('mm');
+  
+  x.innerHTML = show;
+    
 });
 
+
+
+
+// let Table = [
+//     {name:"Ss", score:5,},
+//     {name:"Ss", score:5,},
+//     {name:"Ss", score:5,},
+    
+    
+    
+//   ];
