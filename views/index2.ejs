@@ -29,25 +29,37 @@
                 style="width: 65%; height: 10%;"></textarea>
         </div>
         <button type="button" id="submitButton" class="btn btn-outline-primary submit-button">Submit</button>
+
+
+
         <div class="stats">
-            <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" name="pipelining" id="pipelining">
-                <label class="form-check-label" for="flexSwitchCheckDefault">Pippeline</label>
-            </div>
-            <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" name="data_forwarding" id="data_forwarding">
-                <label class="form-check-label" for="flexSwitchCheckDefault">data forwarding</label>
-            </div>
-        
-            <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" name="register_after_each_cycle" id="register_after_each_cycle">
-                <label class="form-check-label" for="flexSwitchCheckDefault">reg. per cycle</label>
-            </div>
-            <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" name="print_pipeline_registers" value="0" id="print_pipeline_registers">
-                <label class="form-check-label" for="flexSwitchCheckDefault">pipeline reg.</label>
-            </div>
-            <input placeholder = "PC" id="req_inst" name="req_inst">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="pipelining" value="" id="pipelining">
+                <label class="form-check-label" for="flexCheckDefault">
+                  pipeline
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                <label class="form-check-label" for="flexCheckDefault">
+                  data forwarding
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                <label class="form-check-label" for="flexCheckDefault">
+                  reg. per cycle
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                <label class="form-check-label" for="flexCheckDefault">
+                pipeline reg. 
+                </label>
+              </div>
+              
+           
+            <input placeholder = "PC">
              <button onclick="openWin()">show stats</button>
            </div>
            
@@ -117,7 +129,7 @@
     const data_forwarding = document.querySelector("#data_forwarding");
     const register_after_each_cycle = document.querySelector("#register_after_each_cycle");
     const print_pipeline_registers = document.querySelector("#print_pipeline_registers");
-    const req_inst=document.querySelector("#req_inst");
+    const req_inst=document.querySelector("#print_pipeline_registers");
     const register_values = document.querySelector("#register-values");
     const data_values = document.querySelector("#data-values");
     const instruction_values = document.querySelector("#instruction-values");
@@ -139,18 +151,18 @@
         var data = {};
         data.code = code.value.replace(/^\s*[\r\n]/gm, "")
         data.inp = inp.value.replace(/^\s*[\r\n]/gm, "")
-        data.pipelining=$('#pipelining').is(":checked")?1:0;
-        data.data_forwarding=$('#data_forwarding').is(":checked")?1:0;
-        data.req_inst=req_inst.value;
-        data.register_after_each_cycle=$('#register_after_each_cycle').is(":checked")?1:0;
-        data.print_pipeline_registers=$('#print_pipeline_registers').is(":checked")?1:0;
-   //     console.log(data);
+        data.pipelining=$('#pipelining').is(":checked")
+        // data.data_forwarding=data_forwarding.value;
+        // data.req_inst=req_inst.value;
+        // data.register_after_each_cycle=register_after_each_cycle.value;
+        // data.print_pipeline_registers=print_pipeline_registers.value;
+         console.log(data);
 
         //console.log(data); uncomment this to check the return data on frontend
 
         $.post("/", data, (results, error) => { //ajax call to post the data on the app.post()
             // results=JSON.parse(results);
-           console.log(results);
+            console.log(results);
             var registers = results.registers;
             var inst_mem = results.Inst_Mem;
             var data_mem = results.Data_Mem;
@@ -196,6 +208,7 @@
 
                 instruction_values.insertAdjacentHTML('beforeend', text);
             }
+                   console.log(results.Stats);
                    
 
 

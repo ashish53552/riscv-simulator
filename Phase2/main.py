@@ -33,7 +33,8 @@ if pipelining:
     data_forwarding = int(data['data_forwarding'])
     print_pipeline_registers =int(data['print_pipeline_registers'])
     req_inst = data['req_inst']
-
+    print(json.dumps(data))
+sys.stdout.flush()
 ### Input
 # with open('../test/fibonacci(6th_number_in_x29).mc', 'r') as f:
 #   lines = f.read()
@@ -153,8 +154,7 @@ finalResult['Data_Mem']=Data_Mem
 finalResult['Stack_Mem']=Stack_Mem
 finalResult['Stats']=Stats
 
-print(json.dumps(finalResult))
 f = open("Phase2\\test.txt", "w")
 f.write(json.dumps(finalResult))
 f.close()
-sys.stdout.flush()
+# sys.stdout.flush()
