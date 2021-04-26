@@ -48,7 +48,7 @@
                 <label class="form-check-label" for="flexSwitchCheckDefault">pipeline reg.</label>
             </div>
             <input placeholder = "PC" id="req_inst" name="req_inst">
-             <button onclick="openWin()">show stats</button>
+             <button id="show_stats">show stats</button>
            </div>
            
         <div class="side">
@@ -108,123 +108,223 @@
 </script>
 
 <script>
-    // DOM 
-    const outputDialogue = document.querySelector("#output");
-    const submitDialogue = document.querySelector("#submitButton");
-    const code = document.querySelector("#code");
-    const inp = document.querySelector("#inp");
-    const pipelining = document.querySelector("#pipelining");
-    const data_forwarding = document.querySelector("#data_forwarding");
-    const register_after_each_cycle = document.querySelector("#register_after_each_cycle");
-    const print_pipeline_registers = document.querySelector("#print_pipeline_registers");
-    const req_inst=document.querySelector("#req_inst");
-    const register_values = document.querySelector("#register-values");
-    const data_values = document.querySelector("#data-values");
-    const instruction_values = document.querySelector("#instruction-values");
-    const stack_values = document.querySelector("#stack-values");
-    const reg_toggle = document.querySelector("#reg-toggle");
+//     // DOM 
+//     const outputDialogue = document.querySelector("#output");
+//     const submitDialogue = document.querySelector("#submitButton");
+//     const code = document.querySelector("#code");
+//     const inp = document.querySelector("#inp");
+//     const pipelining = document.querySelector("#pipelining");
+//     const data_forwarding = document.querySelector("#data_forwarding");
+//     const register_after_each_cycle = document.querySelector("#register_after_each_cycle");
+//     const print_pipeline_registers = document.querySelector("#print_pipeline_registers");
+//     const req_inst=document.querySelector("#req_inst");
+//     const register_values = document.querySelector("#register-values");
+//     const data_values = document.querySelector("#data-values");
+//     const instruction_values = document.querySelector("#instruction-values");
+//     const stack_values = document.querySelector("#stack-values");
+//     const reg_toggle = document.querySelector("#reg-toggle");
 
-    //adding event listeners
-    submitDialogue.addEventListener('click', (event) => {
-        var text;
-        alert("Your code has been submitted successfully\nPlease check the Registers/Memory");
-        $('#register-values').empty();
-        $('#data-values').empty();
-        $('#stack-values').empty();
-        $('#instruction-values').empty();
-        text = '<tr><th>address</th><th>+0</th><th>+1</th><th>+2</th><th>+3</th></tr>'
-        data_values.insertAdjacentHTML('beforeend', text);
-        instruction_values.insertAdjacentHTML('beforeend', text);
-        stack_values.insertAdjacentHTML('beforeend', text);
-        var data = {};
-        data.code = code.value.replace(/^\s*[\r\n]/gm, "")
-        data.inp = inp.value.replace(/^\s*[\r\n]/gm, "")
-        data.pipelining=$('#pipelining').is(":checked")?1:0;
-        data.data_forwarding=$('#data_forwarding').is(":checked")?1:0;
-        data.req_inst=req_inst.value;
-        data.register_after_each_cycle=$('#register_after_each_cycle').is(":checked")?1:0;
-        data.print_pipeline_registers=$('#print_pipeline_registers').is(":checked")?1:0;
-   //     console.log(data);
+// //     submitDialogue.addEventListener('click', (event) => {
+// //         var text;
+// //         alert("Your code has been submitted successfully\nPlease check the Registers/Memory");
+// //         $('#register-values').empty();
+// //         $('#data-values').empty();
+// //         $('#stack-values').empty();
+// //         $('#instruction-values').empty();
+// //         text = '<tr><th>address</th><th>+0</th><th>+1</th><th>+2</th><th>+3</th></tr>'
+// //         data_values.insertAdjacentHTML('beforeend', text);
+// //         instruction_values.insertAdjacentHTML('beforeend', text);
+// //         stack_values.insertAdjacentHTML('beforeend', text);
+// //         var data = {};
+// //         data.code = code.value.replace(/^\s*[\r\n]/gm, "")
+// //         data.inp = inp.value.replace(/^\s*[\r\n]/gm, "")
+// //         data.pipelining=$('#pipelining').is(":checked")?1:0;
+// //         data.data_forwarding=$('#data_forwarding').is(":checked")?1:0;
+// //         data.req_inst=req_inst.value;
+// //         data.register_after_each_cycle=$('#register_after_each_cycle').is(":checked")?1:0;
+// //         data.print_pipeline_registers=$('#print_pipeline_registers').is(":checked")?1:0;
+// //    //     console.log(data);
 
-        //console.log(data); uncomment this to check the return data on frontend
+// //         //console.log(data); uncomment this to check the return data on frontend
 
-        $.post("/", data, (results, error) => { //ajax call to post the data on the app.post()
-            // results=JSON.parse(results);
-           console.log(results);
-            var registers = results.registers;
-            var inst_mem = results.Inst_Mem;
-            var data_mem = results.Data_Mem;
-            var stack_mem = results.Stack_Mem;
-            var keys = Object.keys(registers);
-            var values = Object.values(registers);  
-            for (var i = 0; i < Object.keys(registers).length; i++) {
-                text = '<li><div><label class="dropdown-label">' + keys[i] +
-                    '</label><input disabled placeholder="' + values[i] +
-                    '" class="dropdown-input"></div></li>';
-                register_values.insertAdjacentHTML('beforeend', text);
-            }
+// //         $.post("/", data, (results, error) => { //ajax call to post the data on the app.post()
+// //             // results=JSON.parse(results);
+// //            console.log(results);
+// //             var registers = results.registers;
+// //             var inst_mem = results.Inst_Mem;
+// //             var data_mem = results.Data_Mem;
+// //             var stack_mem = results.Stack_Mem;
+// //             var keys = Object.keys(registers);
+// //             var values = Object.values(registers);  
+// //             for (var i = 0; i < Object.keys(registers).length; i++) {
+// //                 text = '<li><div><label class="dropdown-label">' + keys[i] +
+// //                     '</label><input disabled placeholder="' + values[i] +
+// //                     '" class="dropdown-input"></div></li>';
+// //                 register_values.insertAdjacentHTML('beforeend', text);
+// //             }
 
-            keys = Object.keys(data_mem);
-            values = Object.values(data_mem);
-            for (var i = 0; i < keys.length; i += 4) {
+// //             keys = Object.keys(data_mem);
+// //             values = Object.values(data_mem);
+// //             for (var i = 0; i < keys.length; i += 4) {
 
-                text = '<tr><td>' + keys[i] + '</td>'
-                for (var j = 0; j < 4; j++) {
-                    if (values[i + j]) {
-                        text += '<td>' + values[i + j] + '</td>'
-                    } else {
-                        text += '<td>00</td>'
-                    }
-                }
-                text += '</tr>'
-                data_values.insertAdjacentHTML('beforeend', text);
-            }
+// //                 text = '<tr><td>' + keys[i] + '</td>'
+// //                 for (var j = 0; j < 4; j++) {
+// //                     if (values[i + j]) {
+// //                         text += '<td>' + values[i + j] + '</td>'
+// //                     } else {
+// //                         text += '<td>00</td>'
+// //                     }
+// //                 }
+// //                 text += '</tr>'
+// //                 data_values.insertAdjacentHTML('beforeend', text);
+// //             }
 
-            keys = Object.keys(inst_mem);
-            values = Object.values(inst_mem);
-            for (var i = 0; i < keys.length; i += 4) {
+// //             keys = Object.keys(inst_mem);
+// //             values = Object.values(inst_mem);
+// //             for (var i = 0; i < keys.length; i += 4) {
 
-                text = '<tr><td>' + keys[i] + '</td>'
-                for (var j = 0; j < 4; j++) {
-                    if (values[i + j]) {
-                        text += '<td>' + values[i + j] + '</td>'
-                    } else {
-                        text += '<td>00</td>'
-                    }
-                }
-                text += '</tr>'
+// //                 text = '<tr><td>' + keys[i] + '</td>'
+// //                 for (var j = 0; j < 4; j++) {
+// //                     if (values[i + j]) {
+// //                         text += '<td>' + values[i + j] + '</td>'
+// //                     } else {
+// //                         text += '<td>00</td>'
+// //                     }
+// //                 }
+// //                 text += '</tr>'
 
-                instruction_values.insertAdjacentHTML('beforeend', text);
-            }
+// //                 instruction_values.insertAdjacentHTML('beforeend', text);
+// //             }
                    
 
 
 
 
-            keys = Object.keys(stack_mem);
-            values = Object.values(stack_mem);
-            for (var i = 0; i < keys.length; i += 4) {
+// //             keys = Object.keys(stack_mem);
+// //             values = Object.values(stack_mem);
+// //             for (var i = 0; i < keys.length; i += 4) {
 
-                text = '<tr><td>' + keys[i] + '</td>'
-                for (var j = 0; j < 4; j++) {
-                    if (values[i + j]) {
-                        text += '<td>' + values[i + j] + '</td>'
-                    } else {
-                        text += '<td>00</td>'
-                    }
-                }
-                text += '</tr>'
-                stack_values.insertAdjacentHTML('beforeend', text);
-            }
+// //                 text = '<tr><td>' + keys[i] + '</td>'
+// //                 for (var j = 0; j < 4; j++) {
+// //                     if (values[i + j]) {
+// //                         text += '<td>' + values[i + j] + '</td>'
+// //                     } else {
+// //                         text += '<td>00</td>'
+// //                     }
+// //                 }
+// //                 text += '</tr>'
+// //                 stack_values.insertAdjacentHTML('beforeend', text);
+// //             }
 
-        }).done(function(){
-            console.log("success");
-        }).fail(function (xhr, status, error) {
-            // error handling
-            console.log(error);
-        });
-    });
+// //         }).done(function(){
+// //             console.log("success");
+// //         }).fail(function (xhr, status, error) {
+// //             // error handling
+// //             console.log(error);
+// //         });
+// //         setTimeout(() => {
+// //             console.log(cont)
+// //         }, (2000));
+        
+// //     });
+// submitDialogue.addEventListener('click', (event) => {
+//         var text;
+//         alert("Your code has been submitted successfully\nPlease check the Registers/Memory");
+//         $('#register-values').empty();
+//         $('#data-values').empty();
+//         $('#stack-values').empty();
+//         $('#instruction-values').empty();
+//         text = '<tr><th>address</th><th>+0</th><th>+1</th><th>+2</th><th>+3</th></tr>'
+//         data_values.insertAdjacentHTML('beforeend', text);
+//         instruction_values.insertAdjacentHTML('beforeend', text);
+//         stack_values.insertAdjacentHTML('beforeend', text);
+//         var data = {};
+//         data.code = code.value.replace(/^\s*[\r\n]/gm, "")
+//         data.inp = inp.value.replace(/^\s*[\r\n]/gm, "")
+//         data.pipelining=$('#pipelining').is(":checked")?1:0;
+//         data.data_forwarding=$('#data_forwarding').is(":checked")?1:0;
+//         data.req_inst=req_inst.value;
+//         data.register_after_each_cycle=$('#register_after_each_cycle').is(":checked")?1:0;
+//         data.print_pipeline_registers=$('#print_pipeline_registers').is(":checked")?1:0;
+//    //     console.log(data);
 
+//         //console.log(data); uncomment this to check the return data on frontend
+//         var results;
+//         $.ajax({url:"/",type:'POST', data:data,async:false,success: (response, status) => { //ajax call to post the data on the app.post()
+//             // results=JSON.parse(results);
+//           //  console.log(results);
+//             console.log(status);
+//             results=response;
+//         },error:(xhr,status,error)=>{
+//             console.log("Web request terminated with xhr:"+xhr+"status: "+status+ " error: "+error);
+//         }});
+//         var registers = results.registers;
+//             var inst_mem = results.Inst_Mem;
+//             var data_mem = results.Data_Mem;
+//             var stack_mem = results.Stack_Mem;
+//             var keys = Object.keys(registers);
+//             var values = Object.values(registers);  
+//             for (var i = 0; i < Object.keys(registers).length; i++) {
+//                 text = '<li><div><label class="dropdown-label">' + keys[i] +
+//                     '</label><input disabled placeholder="' + values[i] +
+//                     '" class="dropdown-input"></div></li>';
+//                 register_values.insertAdjacentHTML('beforeend', text);
+//             }
+
+//             keys = Object.keys(data_mem);
+//             values = Object.values(data_mem);
+//             for (var i = 0; i < keys.length; i += 4) {
+
+//                 text = '<tr><td>' + keys[i] + '</td>'
+//                 for (var j = 0; j < 4; j++) {
+//                     if (values[i + j]) {
+//                         text += '<td>' + values[i + j] + '</td>'
+//                     } else {
+//                         text += '<td>00</td>'
+//                     }
+//                 }
+//                 text += '</tr>'
+//                 data_values.insertAdjacentHTML('beforeend', text);
+//             }
+
+//             keys = Object.keys(inst_mem);
+//             values = Object.values(inst_mem);
+//             for (var i = 0; i < keys.length; i += 4) {
+
+//                 text = '<tr><td>' + keys[i] + '</td>'
+//                 for (var j = 0; j < 4; j++) {
+//                     if (values[i + j]) {
+//                         text += '<td>' + values[i + j] + '</td>'
+//                     } else {
+//                         text += '<td>00</td>'
+//                     }
+//                 }
+//                 text += '</tr>'
+
+//                 instruction_values.insertAdjacentHTML('beforeend', text);
+//             }
+                   
+
+
+
+
+//             keys = Object.keys(stack_mem);
+//             values = Object.values(stack_mem);
+//             for (var i = 0; i < keys.length; i += 4) {
+
+//                 text = '<tr><td>' + keys[i] + '</td>'
+//                 for (var j = 0; j < 4; j++) {
+//                     if (values[i + j]) {
+//                         text += '<td>' + values[i + j] + '</td>'
+//                     } else {
+//                         text += '<td>00</td>'
+//                     }
+//                 }
+//                 text += '</tr>'
+//                 stack_values.insertAdjacentHTML('beforeend', text);
+//             }
+//             console.log(results);
+//     });
 </script>
 
 
