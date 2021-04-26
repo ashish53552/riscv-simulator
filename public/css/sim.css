@@ -110,6 +110,17 @@ table {
     background-color:grey !important;
   }
    */
+   .stats{
+    /* margin-top: 20px; */
+    top:92px;
+    right:250px;
+    position:absolute;
+    font-family:  New,Courier,monospace;
+    font-size: 15px;
+    left:67%;
+    
+
+  }
  th {
     
     background-color: white;
