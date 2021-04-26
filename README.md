@@ -129,3 +129,5 @@ RISC-V-Simulator
 ###### The output format in the GUI is in the following format :
 	Register Data 	: 32 Registers with their Corresponding 32 bit Hexadecimal Values
 	Memory Data 	: Text, Data & Stack Memory Segments in Little Endian Format
+        Stats           : In case of pipeline implementations, features like CPI, number of hazard etc.
+        Debug Info      : Details of interstage buffers after each cycle and buffer values of a given instruction (using its PC) in various cycles
