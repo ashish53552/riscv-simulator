@@ -20,7 +20,7 @@ A Simulator for a 32 bit RISC-V Instruction Set Architecture (ISA).
   The **Simulator** executes a sequence of machine code instructions to mimic the basic data and control path of RISC-V ISA.
   
 ### Phase 2
-  The **Simulator** is enabled with pipelining capabilities, equipped with data-forwarding & static branch prediction mechanisms, with statistics related to run time, CPI, number of hazards, etc visible for executions under different conditions enabled in the GUI.
+  The **Simulator** is enabled with pipelining capabilities, equipped with data-forwarding & static branch prediction mechanisms, with statistics related to CPI, number of hazards, number of branch mispredictions, etc visible for executions under different conditions enabled in the GUI.
       
 ### Technology Stack
 	Python 3 (for development of the simulator)
@@ -45,6 +45,22 @@ RISC-V-Simulator
 │  ├─ main.py
 │  ├─ memory_file.py
 │  └─ register_file.py
+├─ Phase2
+|  ├─ auxilliary_functions.py
+|  ├─ branch_address_table.py
+|  ├─ demofile3.txt
+│  ├─ execute_instruction.py
+│  ├─ five_stage_execution.py
+│  ├─ iag_file.py
+|  ├─ inp.txt
+│  ├─ instruction_encoding.py
+│  ├─ main.py
+|  ├─ main2.py
+│  ├─ memory_file.py
+|  ├─ pipeline_stage_functions.py
+|  ├─ pipelined_execution.py
+|  ├─ register_file.py
+│  └─ test.txt
 ├─ Procfile
 ├─ public
 │  ├─ css
@@ -67,6 +83,7 @@ RISC-V-Simulator
 
 
 	* Phase1 - Contains the python files for various stages like instruction decoding, five stage execution, memory file, register file.
+	* Phase2 - Contains the python files for executing a set of instructuions in a pipelined fashion with data forwarding and static branch prediction techniques.
 	* test - Contains few testcases to test the validity of the simulator.
 	* public - Contains CSS and JS components of the front-end of the GUI.
 	* views - Contains the Express.js and JS components for the back-end of the GUI.
@@ -83,7 +100,7 @@ RISC-V-Simulator
   ```
          Now the simulator can be accessed at http://localhost:80/
 	 
-   * Once the webpage is started, paste the machine code in the code window. You can optionally provide data directly to data memory from the input window like in case of bubble and merge sort. This accepts *space seperated values in decimal format*. Then click on submit and check the registers and memory sections.
+   * Once the webpage is started, paste the machine code in the code window. You can optionally provide data directly to data memory from the input window like in case of codes like for bubble and merge sort. This accepts *space seperated values in decimal format*. You can optionally set the knobs to enable or disable pipelining and data forwarding. Additional knobs are also available to print all the pipeline buffer/register values, or their values for a particular instruction (which can be mentioned by typing it's program counter (PC) in the format *0xABCDEFGH* or in a capitalized 8 digit hexadecimal format). Then click on submit and check the registers and memory sections after program execution.
 	
 ### Instructions Supported
 	R-Type:
@@ -112,3 +129,5 @@ RISC-V-Simulator
 ###### The output format in the GUI is in the following format :
 	Register Data 	: 32 Registers with their Corresponding 32 bit Hexadecimal Values
 	Memory Data 	: Text, Data & Stack Memory Segments in Little Endian Format
+	Stats           : In case of pipeline implementations, features like CPI, number of hazard etc.
+	Debug Info      : Details of interstage buffers after each cycle and buffer values of a given instruction (using its PC) in various cycles.

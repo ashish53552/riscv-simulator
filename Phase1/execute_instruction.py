@@ -21,7 +21,7 @@ def identify_instruction_and_run(instruction_dict, PC):
             return PC, branch
 
         elif funct3 == '110' and funct7 == '0000000':
-            PC, branch = run_and(instruction_dict, PC)
+            PC, branch = run_or(instruction_dict, PC)
             return PC, branch
 
         elif funct3 == '001' and funct7 == '0000000':
