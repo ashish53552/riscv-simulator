@@ -77,7 +77,7 @@ def fetch(PC, IR, branch):
             iag_output_dict = iag(PC, None, "0x00000000", 1, 1)
         PC = iag_output_dict["PC"]
 
-    IR = memory_file.get_data_from_memory(PC, 4)
+    IR = memory_file.read_data_from_memory(PC, 4, 'instruction_cache')
 
     return (PC, IR)
 
@@ -176,12 +176,14 @@ def memory_access(MAR, MDR, num_bytes):
         # print("MAR", MAR, "MDR", MDR)
         MAR = pad_hexa(make_hex_uppercase(MAR), 8)
         MDR = pad_hexa(make_hex_uppercase(MDR), 8)
-        memory_file.add_data_to_memory(MDR, MAR, num_bytes)
+        # memory_file.add_data_to_memory(MDR, MAR, num_bytes)
+        memory_file.write_data_from_memory(MDR, MAR, num_bytes, 'data_cache')
         return None
 
     elif MAR != None and MDR == None:
         pad_hexa(make_hex_uppercase(MAR), 8)
-        MDR = memory_file.get_data_from_memory(MAR, num_bytes)
+        # MDR = memory_file.get_data_from_memory(MAR, num_bytes)
+        MDR = memory_file.read_data_from_memory(MAR, num_bytes, 'data_cache')
         return MDR
 
 

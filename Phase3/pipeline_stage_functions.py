@@ -67,8 +67,8 @@ def pipeline_fetch(info):
         dest_pc_branch = get_bat(PC)
         branch_instruction = True
 
-    IR = memory_file.get_data_from_memory(PC, 4)
-
+    # IR = memory_file.get_data_from_memory(PC, 4)
+    IR = memory_file.read_data_from_memory(PC, 4, 'instruction_cache')
     return (PC, IR, branch_instruction, dest_pc_branch)
 
 
@@ -428,13 +428,15 @@ def pipeline_memory_access(info) :
         # print("MAR", MAR, "MDR", MDR)
         MAR = pad_hexa(make_hex_uppercase(MAR), 8)
         MDR = pad_hexa(make_hex_uppercase(MDR), 8)
-        memory_file.add_data_to_memory(MDR, MAR, num_bytes)
+        memory_file.write_data_from_memory(MDR, MAR, num_bytes, 'data_cache')
+        # memory_file.add_data_to_memory(MDR, MAR, num_bytes)
         # print("YES")
         return PC, None, control_signals
 
     elif MAR != None and MDR == None:
         pad_hexa(make_hex_uppercase(MAR), 8)
-        MDR = memory_file.get_data_from_memory(MAR, num_bytes)
+        # MDR = memory_file.get_data_from_memory(MAR, num_bytes)
+        MDR = memory_file.read_data_from_memory(MAR, num_bytes, 'data_cache')
         return PC, MDR, control_signals
 
     return PC, None, control_signals

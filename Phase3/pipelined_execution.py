@@ -126,7 +126,7 @@ def execute_pipeline(info_per_stage, forwarding=True, req_PC = None) :
 		
 		if info_per_stage[i][0] == 'f':
 			_PC, IR, branch_inst, dest_PC = pipeline_fetch(info_per_stage[i][1])
-			if memory_file.get_data_from_memory(_PC, 4) == '0x00000000':
+			if memory_file.read_data_from_memory(_PC, 4, 'instruction_cache') == '0x00000000':
 				fetch = False
 				continue
 			pcs_in_order.append(_PC)

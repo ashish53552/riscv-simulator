@@ -11,7 +11,6 @@ stack_pointer = "0x7FFFFFF0"
 
 ###   This data needs to be integrated into the main program
 
-
 cache_size = None, cache_block_size = None, blocks_per_set = None, block_placement_type = None
 
 
