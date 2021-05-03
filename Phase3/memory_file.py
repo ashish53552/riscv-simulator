@@ -275,7 +275,6 @@ def read_from_instruction_cache(read_address, index, offest, num_bytes) :
 
         if instruction_cache['tag_array'][index] == read_address and instruction_cache['block_validity'][index] != 'invalid' :
             match_found = True
-            break
 
         if match_found == True :
             num_cache_hits += 1
@@ -364,7 +363,6 @@ def read_from_data_cache(read_address, index, offest, num_bytes) :
 
         if data_cache['tag_array'][index] == read_address and data_cache['block_validity'][index] != 'invalid' :
             match_found = True
-            break
 
         if match_found == True :
             num_cache_hits += 1
@@ -449,7 +447,6 @@ def write_to_data_cache(read_address, index, offest, num_bytes, new_data) :
 
         if data_cache['tag_array'][index] == read_address and data_cache['block_validity'][index] != 'invalid' :
             match_found = True
-            break
 
         if match_found == True :
             num_cache_hits += 1
