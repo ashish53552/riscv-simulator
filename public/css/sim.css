@@ -137,11 +137,6 @@ table {
   }
   
  .new_table{
-    position:absolute;
-   right:530px;
-    width:250px;
-    margin-right: 20px;
-    margin-top:20px;
     font-family:  New,Courier,monospace;
     border: 1px solid lightgray;
     border-collapse: collapse;
@@ -166,7 +161,7 @@ table {
     min-height: 600px;
     width:700px;
     padding-left: 30px;
-    margin-left: 800px;
+    /* margin-left: 800px; */
     margin-right:0px;
     margin-top: 20px;
     /* overflow:scroll; */

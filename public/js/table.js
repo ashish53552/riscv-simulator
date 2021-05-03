@@ -109,7 +109,9 @@ function print_all_cycle_details()
 };
 
 var condn = results.input_params;
-if(condn.req_ins!='')
+console.log(results)
+console.log(condn)
+if(condn.req_inst!='')
 {
   print_req_inst_details();
 }
