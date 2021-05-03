@@ -265,7 +265,7 @@ def read_from_instruction_cache(read_address, index, offest, num_bytes) :
                 if i == way_number :
                     continue
                 instruction_cache['block_status'][index][i] -= 1
-            instruction_cache['block_status'][index][way_number] = block_index - 1
+            instruction_cache['block_status'][index][way_number] = blocks_per_set - 1
             return final_data
 
     else :
@@ -353,7 +353,7 @@ def read_from_data_cache(read_address, index, offest, num_bytes) :
                 if i == way_number :
                     continue
                 data_cache['block_status'][index][i] -= 1
-            data_cache['block_status'][index][way_number] = block_index - 1
+            data_cache['block_status'][index][way_number] = blocks_per_set- 1
             return final_data
 
     else :
@@ -438,7 +438,7 @@ def write_to_data_cache(read_address, index, offest, num_bytes, new_data) :
                 if i == way_number :
                     continue
                 data_cache['block_status'][index][i] -= 1
-            data_cache['block_status'][index][way_number] = block_index - 1
+            data_cache['block_status'][index][way_number] = blocks_per_set - 1
 
     else :
 
