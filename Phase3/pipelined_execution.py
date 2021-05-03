@@ -10,6 +10,7 @@ num_stalls, num_data_hazards, num_control_hazards, num_branch_mispredictions = 0
 num_stalls_data, num_stalls_control = 0, 0
 fetch = True
 lst_hazard = ""
+inst_cache_stats, data_cache_stats = [], []
 
 # Function to enable data forwarding
 # Modes can either be 'M_M', 'M_E', 'E_E', 'M_D', 'E_D'
@@ -129,6 +130,7 @@ def execute_pipeline(info_per_stage, forwarding=True, req_PC = None) :
 			if memory_file.read_data_from_memory(_PC, 4, 'instruction_cache') == '0x00000000':
 				fetch = False
 				continue
+			
 			pcs_in_order.append(_PC)
 			buffers[_PC] = {'fetch_decode' : IR, 'decode_execute' : None, 'execute_memory' : None, 'memory_writeback' : None}
 			if _PC == req_PC:

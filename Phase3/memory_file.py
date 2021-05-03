@@ -10,10 +10,14 @@ stack_pointer = "0x7FFFFFF0"
 
 
 ###   This data needs to be integrated into the main program
-
-cache_size = None, cache_block_size = None, blocks_per_set = None, block_placement_type = None, victim_block_counter = 0, victim_block = [], block_access_counter = 0, block_access = []
-
-
+cache_size = 128
+cache_block_size = 16
+blocks_per_set = 2
+block_placement_type = 'set_associative'
+victim_block_counter = 0
+victim_block = []
+block_access_counter = 0
+block_access = []
 num_memory_accesses = 0
 num_cache_hits = 0
 num_cache_misses = 0
@@ -140,8 +144,8 @@ def make_cache() :
     block_validity = []             # 1D (for direct mapped) & 2D (for set & fully associative) list indicating whether that block has stored any data or not
     block_status = []               # 1D (for direct mapped) & 2D (for set & fully associative) list storing status (as per LRU policy)of each block in a set
 
-    if block_placement_type = 'set_associative' or  block_placement_type = 'fully_associative':
-        if block_placement_type = 'fully_associative' :
+    if block_placement_type == 'set_associative' or  block_placement_type == 'fully_associative':
+        if block_placement_type == 'fully_associative' :
             blocks_per_set = cache_size//cache_block_size
         for i in range(cache_size//(cache_block_size*blocks_per_set)) :
             cache.append([])
@@ -156,7 +160,7 @@ def make_cache() :
                 block_status[i].append(status_initializer)
                 status_initializer += 1
 
-    elif block_placement_type = 'direct_mapped' :
+    elif block_placement_type == 'direct_mapped' :
         for i in range(cache_size//cache_block_size) :
             cache.append('00'*cache_block_size)
             tag_array.append('0x' + '0'*8)
@@ -190,7 +194,7 @@ def get_tag_index_offest(actual_address) :
     block_size_bits = cache_block_size*8
     address_int = int(actual_address,16)
     tag = bounding_hex(block_size_bits*(address_int//block_size_bits))
-    if block_placement_type = 'direct_mapped' :
+    if block_placement_type == 'direct_mapped' :
         index = None
     else :
         index = (address_int//block_size_bits)%(num_blocks//blocks_per_set)
@@ -215,9 +219,9 @@ def read_from_instruction_cache(read_address, index, offest, num_bytes) :
 
     final_data = None
 
-    if block_placement_type = 'set_associative' or block_placament_type = 'fully_associative' :
+    if block_placement_type == 'set_associative' or block_placament_type == 'fully_associative' :
 
-        if block_placement_type = 'fully_associative' :
+        if block_placement_type == 'fully_associative' :
             blocks_per_set = cache_size//cache_block_size
             index = 0
 
@@ -304,9 +308,9 @@ def read_from_data_cache(read_address, index, offest, num_bytes) :
 
     final_data = None
 
-    if block_placement_type = 'set_associative' or block_placament_type = 'fully_associative' :
+    if block_placement_type == 'set_associative' or block_placament_type == 'fully_associative' :
 
-        if block_placement_type = 'fully_associative' :
+        if block_placement_type == 'fully_associative' :
             blocks_per_set = cache_size//cache_block_size
             index = 0
 
@@ -390,9 +394,9 @@ def write_to_data_cache(read_address, index, offest, num_bytes, new_data) :
     global cache_size, cache_block_size, blocks_per_set, block_placement_type, num_memory_accesses, num_cache_hits, num_cache_misses, victim_block_counter, victim_block, block_access_counter, block_access
     num_memory_accesses += 1
 
-    if block_placement_type = 'set_associative' or block_placament_type = 'fully_associative' :
+    if block_placement_type == 'set_associative' or block_placament_type == 'fully_associative' :
 
-        if block_placement_type = 'fully_associative' :
+        if block_placement_type == 'fully_associative' :
             blocks_per_set = cache_size//cache_block_size
             index = 0
 
@@ -511,14 +515,14 @@ def show_instruction_cache_data() :
     valid_data = []
     num_blocks = cache_size//cache_block_size
 
-    if block_placament_type = 'direct_mapped' :
+    if block_placement_type == 'direct_mapped' :
         for index in range(num_blocks) :
             if instruction_cache['block_validity'][index] == 'valid' :
                 valid_data.append([instruction_cache['tag_array'][index].copy(),instruction_cache['cache'][index].copy()])
         return valid_data
 
     else :
-        if block_placament_type = 'fully_associative' :
+        if block_placement_type == 'fully_associative' :
             blocks_per_set = num_blocks
         num_sets = num_blocks//blocks_per_set
         for index in range(num_sets) :
@@ -528,7 +532,7 @@ def show_instruction_cache_data() :
         return valid_data
 
 
-def show_instruction_cache_data() :
+def show_data_cache_data() :
 
     global cache_size, cache_block_size, blocks_per_set, block_placement_type
 
@@ -536,14 +540,14 @@ def show_instruction_cache_data() :
     valid_data = []
     num_blocks = cache_size//cache_block_size
 
-    if block_placament_type = 'direct_mapped' :
+    if block_placement_type == 'direct_mapped' :
         for index in range(num_blocks) :
             if data_cache['block_validity'][index] == 'valid' :
                 valid_data.append([data_cache['tag_array'][index].copy(),data_cache['cache'][index].copy()])
         return valid_data
 
     else :
-        if block_placament_type = 'fully_associative' :
+        if block_placement_type == 'fully_associative' :
             blocks_per_set = num_blocks
         num_sets = num_blocks//blocks_per_set
         for index in range(num_sets) :
