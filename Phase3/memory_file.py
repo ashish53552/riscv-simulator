@@ -243,19 +243,19 @@ def read_from_instruction_cache(read_address, index, offest, num_bytes) :
                     instruction_cache['block_status'][index][i] -= 1
             instruction_cache['block_status'][index][way_number] = blocks_per_set - 1
             block_access_counter += 1
-            block_access.append(instruction_cache['cache'][index][way_number].copy())
+            block_access.append(instruction_cache['cache'][index][way_number])
             return final_data
         else :
             num_cache_misses += 1
             final_data = get_data_from_memory(bounding_hex(int(read_address,16)+offest), num_bytes)
-            block_of_data = read_block_from_memory(read_address,cache_block_size)
+            block_of_data = read_block_from_memory(read_address)
             block_access_counter += 1
-            block_access.append(block_of_data.copy())
+            block_access.append(block_of_data)
             for i in range(blocks_per_set) :
                 if instruction_cache['block_status'][index][i] == 0 :
                     if instruction_cache['block_validity'][index][i] == 'valid' :
                         victim_block_counter += 1
-                        victim_block.append(instruction_cache['cache'][index][i].copy())
+                        victim_block.append(instruction_cache['cache'][index][i])
                     instruction_cache['block_validity'][index][i] = 'valid'
                     instruction_cache['tag_array'][index][i] = read_address
                     instruction_cache['cache'][index][i] = block_of_data
@@ -280,17 +280,17 @@ def read_from_instruction_cache(read_address, index, offest, num_bytes) :
             num_cache_hits += 1
             final_data = '0x' + instruction_cache['cache'][index][offest:offset+num_bytes*2]
             block_access_counter += 1
-            block_access.append(instruction_cache['cache'][index].copy())
+            block_access.append(instruction_cache['cache'][index])
             return final_data
         else :
             num_cache_misses += 1
             final_data = get_data_from_memory(bounding_hex(int(read_address,16)+offest), num_bytes)
             block_of_data = read_block_from_memory(read_address,cache_block_size)
             block_access_counter += 1
-            block_access.append(block_of_data.copy())
+            block_access.append(block_of_data)
             if instruction_cache['block_validity'][index] == 'valid' :
                 victim_block_counter += 1
-                victim_block.append(instruction_cache['cache'][index].copy())
+                victim_block.append(instruction_cache['cache'][index])
             instruction_cache['tag_array'][index] = read_address
             instruction_cache['cache'][index] = block_of_data
             instruction_cache['block_validity'][index] = 'valid'
@@ -331,19 +331,19 @@ def read_from_data_cache(read_address, index, offest, num_bytes) :
                     data_cache['block_status'][index][i] -= 1
             data_cache['block_status'][index][way_number] = blocks_per_set - 1
             block_access_counter += 1
-            block_access.append(data_cache['cache'][index][way_number].copy())
+            block_access.append(data_cache['cache'][index][way_number])
             return final_data
         else :
             num_cache_misses += 1
             final_data = get_data_from_memory(bounding_hex(int(read_address,16)+offest), num_bytes)
             block_of_data = read_block_from_memory(read_address,cache_block_size)
             block_access_counter += 1
-            block_access.append(block_of_data.copy())
+            block_access.append(block_of_data)
             for i in range(blocks_per_set) :
                 if data_cache['block_status'][index][i] == 0 :
                     if data_cache['block_validity'][index][i] == 'valid' :
                         victim_block_counter += 1
-                        victim_block.append(data_cache['cache'][index][i].copy())
+                        victim_block.append(data_cache['cache'][index][i])
                     data_cache['block_validity'][index][i] = 'valid'
                     data_cache['tag_array'][index][i] = read_address
                     data_cache['cache'][index][i] = block_of_data
@@ -368,17 +368,17 @@ def read_from_data_cache(read_address, index, offest, num_bytes) :
             num_cache_hits += 1
             final_data = '0x' + data_cache['cache'][index][offest:offset+num_bytes*2]
             block_access_counter += 1
-            block_access.append(data_cache['cache'][index].copy())
+            block_access.append(data_cache['cache'][index])
             return final_data
         else :
             num_cache_misses += 1
             final_data = get_data_from_memory(bounding_hex(int(read_address,16)+offest), num_bytes)
             block_of_data = read_block_from_memory(read_address,cache_block_size)
             block_access_counter += 1
-            block_access.append(block_of_data.copy())
+            block_access.append(block_of_data)
             if data_cache['block_validity'][index] == 'valid' :
                 victim_block_counter += 1
-                victim_block.append(data_cache['cache'][index].copy())
+                victim_block.append(data_cache['cache'][index])
             data_cache['tag_array'][index] = read_address
             data_cache['cache'][index] = block_of_data
             data_cache['block_validity'][index] = 'valid'
@@ -416,19 +416,19 @@ def write_to_data_cache(read_address, index, offest, num_bytes, new_data) :
             data_cache['block_status'][index][way_number] = blocks_per_set - 1
             data_cache['cache'][index][way_number][offest:offset+num_bytes*2] = new_data[-(num_bytes*2):]
             block_access_counter += 1
-            block_access.append(data_cache['cache'][index][way_number].copy())
+            block_access.append(data_cache['cache'][index][way_number])
             add_data_to_memory(new_data[-(num_bytes*2):],bounding_hex(int(read_address,16)+offest),num_bytes)
         else :
             num_cache_misses += 1
             add_data_to_memory(new_data[-(num_bytes*2):],bounding_hex(int(read_address,16)+offest),num_bytes)
             block_of_data = read_block_from_memory(read_address,cache_block_size)
             block_access_counter += 1
-            block_access.append(block_of_data.copy())
+            block_access.append(block_of_data)
             for i in range(blocks_per_set) :
                 if data_cache['block_status'][index][i] == 0 :
                     if data_cache['block_validity'][index][i] == 'valid' :
                         victim_block_counter += 1
-                        victim_block.append(data_cache['cache'][index][i].copy())
+                        victim_block.append(data_cache['cache'][index][i])
                     data_cache['block_validity'][index][i] = 'valid'
                     data_cache['tag_array'][index][i] = read_address
                     data_cache['cache'][index][i] = block_of_data
@@ -452,17 +452,17 @@ def write_to_data_cache(read_address, index, offest, num_bytes, new_data) :
             num_cache_hits += 1
             data_cache['cache'][index][offest:offset+num_bytes*2] = new_data[-(num_bytes*2):]
             block_access_counter += 1
-            block_access.append(data_cache['cache'][index].copy())
+            block_access.append(data_cache['cache'][index])
             add_data_to_memory(new_data[-(num_bytes*2):],bounding_hex(int(read_address,16)+offest),num_bytes)
         else :
             num_cache_misses += 1
             add_data_to_memory(new_data[-(num_bytes*2):],bounding_hex(int(read_address,16)+offest),num_bytes)
             block_of_data = read_block_from_memory(read_address,cache_block_size)
             block_access_counter += 1
-            block_access.append(block_of_data.copy())
+            block_access.append(block_of_data)
             if data_cache['block_validity'][index] == 'valid' :
                 victim_block_counter += 1
-                victim_block.append(data_cache['cache'][index].copy())
+                victim_block.append(data_cache['cache'][index])
             data_cache['tag_array'][index] = read_address
             data_cache['cache'][index] = block_of_data
             data_cache['block_validity'][index] = 'valid'
@@ -515,7 +515,7 @@ def show_instruction_cache_data() :
     if block_placement_type == 'direct_mapped' :
         for index in range(num_blocks) :
             if instruction_cache['block_validity'][index] == 'valid' :
-                valid_data.append([instruction_cache['tag_array'][index].copy(),instruction_cache['cache'][index].copy()])
+                valid_data.append([instruction_cache['tag_array'][index],instruction_cache['cache'][index]])
         return valid_data
 
     else :
@@ -525,7 +525,7 @@ def show_instruction_cache_data() :
         for index in range(num_sets) :
             for way_number in range(blocks_per_set) :
                 if instruction_cache['block_validity'][index][way_number] == 'valid' :
-                    valid_data.append([instruction_cache['tag_array'][index][way_number].copy(),instruction_cache['cache'][index][way_number].copy()])
+                    valid_data.append([instruction_cache['tag_array'][index][way_number],instruction_cache['cache'][index][way_number]])
         return valid_data
 
 
@@ -540,7 +540,7 @@ def show_data_cache_data() :
     if block_placement_type == 'direct_mapped' :
         for index in range(num_blocks) :
             if data_cache['block_validity'][index] == 'valid' :
-                valid_data.append([data_cache['tag_array'][index].copy(),data_cache['cache'][index].copy()])
+                valid_data.append([data_cache['tag_array'][index],data_cache['cache'][index]])
         return valid_data
 
     else :
@@ -550,7 +550,7 @@ def show_data_cache_data() :
         for index in range(num_sets) :
             for way_number in range(blocks_per_set) :
                 if data_cache['block_validity'][index][way_number] == 'valid' :
-                    valid_data.append([data_cache['tag_array'][index][way_number].copy(),data_cache['cache'][index][way_number].copy()])
+                    valid_data.append([data_cache['tag_array'][index][way_number],data_cache['cache'][index][way_number]])
         return valid_data
 
 
