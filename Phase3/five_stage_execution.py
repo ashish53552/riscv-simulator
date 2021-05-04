@@ -177,7 +177,7 @@ def memory_access(MAR, MDR, num_bytes):
         MAR = pad_hexa(make_hex_uppercase(MAR), 8)
         MDR = pad_hexa(make_hex_uppercase(MDR), 8)
         # memory_file.add_data_to_memory(MDR, MAR, num_bytes)
-        memory_file.write_data_from_memory(MDR, MAR, num_bytes, 'data_cache')
+        memory_file.write_data_to_memory(MDR, MAR, num_bytes, 'data_cache')
         return None
 
     elif MAR != None and MDR == None:

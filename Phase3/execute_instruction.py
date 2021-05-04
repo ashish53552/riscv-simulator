@@ -14,133 +14,133 @@ def identify_instruction_and_run(instruction_dict, PC):
     if opc_code == '0110011':
         if funct3 == '000' and funct7 == '0000000':
             PC, branch = run_add(instruction_dict, PC)
-            return PC, branch
+            return PC, branch, False , False
 
         elif funct3 == '111' and funct7 == '0000000':
             PC, branch = run_and(instruction_dict, PC)
-            return PC, branch
+            return PC, branch, False, False
 
         elif funct3 == '110' and funct7 == '0000000':
-            PC, branch = run_and(instruction_dict, PC)
-            return PC, branch
+            PC, branch = run_or(instruction_dict, PC)
+            return PC, branch, False, False
 
         elif funct3 == '001' and funct7 == '0000000':
             PC, branch = run_sll(instruction_dict, PC)
-            return PC, branch
+            return PC, branch, False, False
 
         elif funct3 == '010' and funct7 == '0000000':
             PC, branch = run_slt(instruction_dict, PC)
-            return PC, branch
+            return PC, branch, False, False
 
         elif funct3 == '101' and funct7 == '0100000':
             PC, branch = run_sra(instruction_dict, PC)
-            return PC, branch
+            return PC, branch, False, False
 
         elif funct3 == '101' and funct7 == '0000000':
             PC, branch = run_srl(instruction_dict, PC)
-            return PC, branch
+            return PC, branch, False, False
 
         elif funct3 == '000' and funct7 == '0100000':
             PC, branch = run_sub(instruction_dict, PC)
-            return PC, branch
+            return PC, branch, False, False
 
         elif funct3 == '100' and funct7 == '0000000':
             PC, branch = run_xor(instruction_dict, PC)
-            return PC, branch
+            return PC, branch, False, False
 
         elif funct3 == '000' and funct7 == '0000001':
             PC, branch = run_mul(instruction_dict, PC)
-            return PC, branch
+            return PC, branch, False, False
 
         elif funct3 == '100' and funct7 == '0000001':
             PC, branch = run_div(instruction_dict, PC)
-            return PC, branch
+            return PC, branch, False, False
 
         elif funct3 == '110' and funct7 == '0000001':
             PC, branch = run_rem(instruction_dict, PC)
-            return PC, branch
+            return PC, branch, False, False
 
     # I format
     elif opc_code == '0010011':
         if funct3 == '000':
             PC, branch = run_addi(instruction_dict, PC)
-            return PC, branch
+            return PC, branch, False, False
 
         elif funct3 == '111':
             PC, branch = run_andi(instruction_dict, PC)
-            return PC, branch
+            return PC, branch, False, False
 
 
         elif funct3 == '110':
             PC, branch = run_ori(instruction_dict, PC)
-            return PC, branch
+            return PC, branch, False, False
 
     # I format
     elif opc_code == '0000011':
         if funct3 == '000':
             PC, branch = run_lb(instruction_dict, PC)
-            return PC, branch
+            return PC, branch, False, True
 
         elif funct3 == '001':
             PC, branch = run_lh(instruction_dict, PC)
-            return PC, branch
+            return PC, branch, False, True
 
         elif funct3 == '010':
             PC, branch = run_lw(instruction_dict, PC)
-            return PC, branch
+            return PC, branch, False, True
 
     # I format
     elif opc_code == '1100111':
         if funct3 == '000':
             PC, branch = run_jalr(instruction_dict, PC)
-            return PC, branch
+            return PC, branch, True, False
 
     # S format
     elif opc_code == '0100011':
         if funct3 == '000':
             PC, branch = run_sb(instruction_dict, PC)
-            return PC, branch
+            return PC, branch, False, True
 
         elif funct3 == '010':
             PC, branch = run_sw(instruction_dict, PC)
-            return PC, branch
+            return PC, branch, False, True
 
         elif funct3 == '010':
             PC, branch = run_sh(instruction_dict, PC)
-            return PC, branch
+            return PC, branch, False, True
 
     # SB format
     elif opc_code == '1100011':
         if funct3 == '000':
             PC, branch = run_beq(instruction_dict, PC)
-            return PC, branch
+            return PC, branch, True, False
 
         elif funct3 == '001':
             PC, branch = run_bne(instruction_dict, PC)
-            return PC, branch
+            return PC, branch, True, False
 
         elif funct3 == '100':
             PC, branch = run_blt(instruction_dict, PC)
-            return PC, branch
+            return PC, branch, True, False
 
         elif funct3 == '101':
             PC, branch = run_bge(instruction_dict, PC)
-            return PC, branch
+            return PC, branch, True, False
 
     # U format
     elif opc_code == '0010111':
         PC, branch = run_auipc(instruction_dict, PC)
-        return PC, branch
+        return PC, branch, False, False
 
     # U format
     elif opc_code == '0110111':
         PC, branch = run_lui(instruction_dict, PC)
-        return PC, branch
+        return PC, branch, False, False
 
     # UJ format
     elif opc_code == '1101111':
         PC, branch = run_jal(instruction_dict, PC)
-        return PC, branch
+        return PC, branch, True, False
 
 
 # Functions to directly run the Instruction
@@ -648,18 +648,3 @@ def run_lui(instruction_dict, PC):
     write_back(rd, val_imm)
 
     return PC, False
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
