@@ -126,14 +126,14 @@ def execute_pipeline(info_per_stage, forwarding=True, req_PC = None) :
 	for i in range(len(info_per_stage)):
 		
 		if info_per_stage[i][0] == 'f':
-			print("NEW FETCH")
+			# print("NEW FETCH")
 			_PC, IR, branch_inst, dest_PC = pipeline_fetch(info_per_stage[i][1])
 			if memory_file.read_data_from_memory(_PC, 4, 'instruction_cache') == '0x00000000':
 				fetch = False
 				continue
 			
 			pcs_in_order.append(_PC)
-			print("PC and IR", _PC, IR, "\n")
+			# print("PC and IR", _PC, IR, "\n")
 			buffers[_PC] = {'fetch_decode' : IR, 'decode_execute' : None, 'execute_memory' : None, 'memory_writeback' : None}
 			if _PC == req_PC:
 				inst_details[_PC+"_fetch_decode"] = buffers[_PC]['fetch_decode']

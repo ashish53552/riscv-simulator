@@ -34,7 +34,7 @@ if pipelining:
     req_inst = str(input('Print_pipeline_registers_for_inst_with_PC_in_format(0x0000000A)? (Leave Empty if not required)'))
 
 ### Input
-with open('../test/factorial(of_10_in_x26).mc', 'r') as f:
+with open('../test/merge(4_inputs).mc', 'r') as f:
     lines = f.read()
 code = lines.splitlines()
 
@@ -64,7 +64,7 @@ if pipelining:
 
     while True:
         # print(info_per_stage)
-        print(memory)
+        # print(memory)
         info_per_stage, cycle_details, inst_details = execute_pipeline(info_per_stage, data_forwarding, req_inst)
         if not info_per_stage:
             break
@@ -72,7 +72,7 @@ if pipelining:
         total_cycles += 1
 
         # print(buffers)
-        print("cycle done:", total_cycles, "\n")
+        # print("cycle done:", total_cycles, "\n")
         # print(cycle_details)
 
         if print_pipeline_registers:
