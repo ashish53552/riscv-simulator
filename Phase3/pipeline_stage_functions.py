@@ -428,7 +428,7 @@ def pipeline_memory_access(info) :
         # print("MAR", MAR, "MDR", MDR)
         MAR = pad_hexa(make_hex_uppercase(MAR), 8)
         MDR = pad_hexa(make_hex_uppercase(MDR), 8)
-        memory_file.write_data_from_memory(MDR, MAR, num_bytes, 'data_cache')
+        memory_file.write_data_to_memory(MDR, MAR, num_bytes, 'data_cache')
         # memory_file.add_data_to_memory(MDR, MAR, num_bytes)
         # print("YES")
         return PC, None, control_signals

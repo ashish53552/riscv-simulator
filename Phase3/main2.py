@@ -60,9 +60,11 @@ if pipelining:
     all_cycle_details = {}
     req_inst_details = {}
     Registers_per_cycle = {}
+    
 
     while True:
         # print(info_per_stage)
+        print(memory)
         info_per_stage, cycle_details, inst_details = execute_pipeline(info_per_stage, data_forwarding, req_inst)
         if not info_per_stage:
             break
@@ -70,7 +72,7 @@ if pipelining:
         total_cycles += 1
 
         # print(buffers)
-        # print("cycle done:", total_cycles, "\n")
+        print("cycle done:", total_cycles, "\n")
         # print(cycle_details)
 
         if print_pipeline_registers:

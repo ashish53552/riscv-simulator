@@ -2,6 +2,7 @@ from collections import OrderedDict
 from auxilliary_functions import *
 
 #memory is a dictionary with key=location in hex-string and value=data in hex-string
+global memory
 memory = OrderedDict()
 
 text_pointer = "0x00000000"
@@ -86,16 +87,26 @@ def add_data_to_memory(data, location, no_of_byte):
 
 # Getting values for a given memory location and the number of bytes, can be used for lw, lh, lb
 def get_data_from_memory(location, no_of_byte):
+    print("LOC", location)
     if location in memory.keys():
-        value = ""
+        value, final_value = "", ""
         for i in reversed(range(no_of_byte)):
-            value = memory[location] + value
+            if location in memory.keys():
+                value = memory[location] + value
+            else:
+                value = "00" + value
+                print("FF")
             location = "0x" + format((int(location, 16) + 1), "0>8x").upper()
-
-        value = "0x"+format(value, "0>8")
-        return value
+            if i%4==0:
+                print(value)
+                value = format(value, "0>8")
+                final_value += value
+                value=""
+        final_value = "0x"+final_value
+        # print("BLOCK", final_value)
+        return final_value
     # print("Error")
-    return "0x00000000"
+    return "0x"+ format("0", "0>"+str(no_of_byte))
 
 
 
@@ -186,16 +197,16 @@ data_cache['block_validity'] = data[3]
 
 
 
-def get_tag_index_offest(actual_address) :
+def get_tag_index_offset(actual_address) :
 
     global cache_size, cache_block_size, blocks_per_set, block_placement_type
     num_blocks = cache_size//cache_block_size
 
-    block_size_bits = cache_block_size*8
-    address_int = int(actual_address,16)
-    tag = bounding_hex(block_size_bits*(address_int//block_size_bits))
-    index = (address_int//block_size_bits)%(num_blocks//blocks_per_set)
-    offset = int((int(actual_address,16)-int(tag,16))/8)
+    # block_size_bits = cache_block_size*8 # 128
+    address_int = int(actual_address,16) # 4
+    tag = bounding_hex(cache_block_size*(address_int//cache_block_size)) #
+    index = (address_int//cache_block_size)%(num_blocks//blocks_per_set)
+    offset = int(int(actual_address,16)-int(tag,16))*2
     return tag, index, offset
 
 
@@ -245,7 +256,6 @@ def read_from_instruction_cache(read_address, index, offset, num_bytes) :
         else :
             num_cache_misses += 1
             print(int(read_address, 16) + offset * 8)
-            final_data = get_data_from_memory(bounding_hex(int(read_address,16)+offset*8), num_bytes)
             block_of_data = read_block_from_memory(read_address)
             block_access_counter += 1
             block_access.append(block_of_data)
@@ -264,6 +274,7 @@ def read_from_instruction_cache(read_address, index, offset, num_bytes) :
                     continue
                 instruction_cache['block_status'][index][i] -= 1
             instruction_cache['block_status'][index][way_number] = blocks_per_set - 1
+            final_data = '0x' + instruction_cache['cache'][index][way_number][offset:offset+num_bytes*2]
             return final_data
 
     else :
@@ -282,7 +293,6 @@ def read_from_instruction_cache(read_address, index, offset, num_bytes) :
             return final_data
         else :
             num_cache_misses += 1
-            final_data = get_data_from_memory(bounding_hex(int(read_address,16)+offset*8), num_bytes)
             block_of_data = read_block_from_memory(read_address,cache_block_size)
             block_access_counter += 1
             block_access.append(block_of_data)
@@ -292,6 +302,7 @@ def read_from_instruction_cache(read_address, index, offset, num_bytes) :
             instruction_cache['tag_array'][index] = read_address
             instruction_cache['cache'][index] = block_of_data[2:]
             instruction_cache['block_validity'][index] = 'valid'
+            final_data = '0x' + instruction_cache['cache'][index][offset:offset + num_bytes * 2]
             return final_data
 
 
@@ -322,7 +333,7 @@ def read_from_data_cache(read_address, index, offset, num_bytes) :
 
         if match_found == True :
             num_cache_hits += 1
-            final_data = '0x' + data_cache['cache'][index][way_number][offset:offset+num_bytes*2]
+            final_data = '0x' + format(data_cache['cache'][index][way_number][offset:offset+num_bytes*2], "0>8")
             initial_status = data_cache['block_status'][index][way_number]
             for i in range(blocks_per_set) :
                 if data_cache['block_status'][index][i] > initial_status :
@@ -333,7 +344,6 @@ def read_from_data_cache(read_address, index, offset, num_bytes) :
             return final_data
         else :
             num_cache_misses += 1
-            final_data = get_data_from_memory(bounding_hex(int(read_address,16)+offset*8), num_bytes)
             block_of_data = read_block_from_memory(read_address,cache_block_size)
             block_access_counter += 1
             block_access.append(block_of_data)
@@ -352,6 +362,7 @@ def read_from_data_cache(read_address, index, offset, num_bytes) :
                     continue
                 data_cache['block_status'][index][i] -= 1
             data_cache['block_status'][index][way_number] = blocks_per_set- 1
+            final_data = '0x' + format(data_cache['cache'][index][way_number][offset:offset + num_bytes * 2], "0>8")
             return final_data
 
     else :
@@ -364,13 +375,12 @@ def read_from_data_cache(read_address, index, offset, num_bytes) :
 
         if match_found == True :
             num_cache_hits += 1
-            final_data = '0x' + data_cache['cache'][index][offset:offset+num_bytes*2]
+            final_data = '0x' + format(data_cache['cache'][index][way_number][offset:offset+num_bytes*2], "0>8")
             block_access_counter += 1
             block_access.append(data_cache['cache'][index])
             return final_data
         else :
             num_cache_misses += 1
-            final_data = get_data_from_memory(bounding_hex(int(read_address,16)+offset*8), num_bytes)
             block_of_data = read_block_from_memory(read_address,cache_block_size)
             block_access_counter += 1
             block_access.append(block_of_data)
@@ -380,6 +390,7 @@ def read_from_data_cache(read_address, index, offset, num_bytes) :
             data_cache['tag_array'][index] = read_address
             data_cache['cache'][index] = block_of_data[2:]
             data_cache['block_validity'][index] = 'valid'
+            final_data = '0x' + format(data_cache['cache'][index][way_number][offset:offset + num_bytes * 2], "0>8")
             return final_data
 
 
@@ -412,14 +423,16 @@ def write_to_data_cache(read_address, index, offset, num_bytes, new_data) :
                 if data_cache['block_status'][index][i] > initial_status :
                     data_cache['block_status'][index][i] -= 1
             data_cache['block_status'][index][way_number] = blocks_per_set - 1
-            data_cache['cache'][index][way_number][offset:offset+num_bytes*2] = new_data[-(num_bytes*2):]
+            data_cache['cache'][index][way_number] = data_cache['cache'][index][way_number][:offset] + new_data[-(num_bytes*2):] + data_cache['cache'][index][way_number][offset+num_bytes*2:]
             block_access_counter += 1
             block_access.append(data_cache['cache'][index][way_number])
+            print("WRITE", new_data[-(num_bytes*2):],bounding_hex(int(read_address,16)+offset*8),num_bytes)
             add_data_to_memory(new_data[-(num_bytes*2):],bounding_hex(int(read_address,16)+offset*8),num_bytes)
         else :
             num_cache_misses += 1
+            print("WRITE", new_data[-(num_bytes * 2):], bounding_hex(int(read_address, 16) + offset * 8), num_bytes)
             add_data_to_memory(new_data[-(num_bytes*2):],bounding_hex(int(read_address,16)+offset*8),num_bytes)
-            block_of_data = read_block_from_memory(read_address,cache_block_size)
+            block_of_data = read_block_from_memory(read_address)
             block_access_counter += 1
             block_access.append(block_of_data)
             for i in range(blocks_per_set) :
@@ -448,7 +461,7 @@ def write_to_data_cache(read_address, index, offset, num_bytes, new_data) :
 
         if match_found == True :
             num_cache_hits += 1
-            data_cache['cache'][index][offset:offset+num_bytes*2] = new_data[-(num_bytes*2):]
+            data_cache['cache'][index] = data_cache['cache'][index][:offset] + new_data[-(num_bytes*2):] + data_cache['cache'][index][offset+num_bytes*2:]
             block_access_counter += 1
             block_access.append(data_cache['cache'][index])
             add_data_to_memory(new_data[-(num_bytes*2):],bounding_hex(int(read_address,16)+offset*8),num_bytes)
@@ -471,7 +484,7 @@ def read_data_from_memory(actual_address, num_bytes, cache_type) :
     global cache_size, cache_block_size, blocks_per_set, block_placement_type
 
     num_blocks = cache_size//cache_block_size
-    tag, index, offset = get_tag_index_offest(actual_address)
+    tag, index, offset = get_tag_index_offset(actual_address)
     print("tag", tag, "Index", index, "Offset", offset)
     if cache_type == 'instruction_cache' :
         print("INST_CACHE", instruction_cache)
@@ -485,7 +498,7 @@ def write_data_to_memory(new_data, actual_address, num_bytes, cache_type) :
     global cache_size, cache_block_size, blocks_per_set, block_placement_type
 
     num_blocks = cache_size//cache_block_size
-    tag, index, offset = get_tag_index_offest(actual_address)
+    tag, index, offset = get_tag_index_offset(actual_address)
     if cache_type == 'data_cache' :
         return write_to_data_cache(tag, index, offset, num_bytes, new_data)
 
