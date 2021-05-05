@@ -9,7 +9,7 @@ function myFunction(){
   },error:(xhr,status,error)=>{
       console.log("Web request terminated with xhr:"+xhr+"status: "+status+ " error: "+error);
   }});
-  console.log(results);
+  console.log("ram", results);
 
 let Table = [
     {Information:"", Count:0},
@@ -52,12 +52,6 @@ let Table = [
     }
   }
 
-
-
-
-
-
-
   
   let table = document.getElementById("new_tab");
   let data = Object.keys(Table[0]);
@@ -73,37 +67,65 @@ let Table = [
 var show = "";
 function print_register_per_cycle(){
   var temp  = results.Stats.register_per_cycle;
+  
   for(var key in temp){
-    show+=(key+"\n"+"\t");
+    show+=("\n"+key+": ");
     for(var v in temp[key])
     {
-      show+=(v+": ");
-      show+=(temp[key][v]+"\n\t");
+      show+=("\n\t"+v+": ");
+      for(var k in temp[key][v]){
+        show+=("\n\t\t"+k+": ");
+      show+=("  "+temp[key][v][k]+"; ");
+    }
     }
   }
+ 
 };
 function print_req_inst_details(){
   var temp  = results.Stats.req_inst_details;
+
   for(var key in temp){
-    show+=(key+"\n"+"\t");
+    show+=("\n"+key+": ");
+   
     for(var v in temp[key])
     {
-      show+=(v+": ");
-      show+=(temp[key][v]+"\n\t");
+      show+=("\n\t"+v+": ");
+      if(v.includes('fetch_decode'))
+      {
+        show+=("\n\t"+temp[key][v]+": ");
+        break;
+      }
+      for(var k in temp[key][v]){
+
+        show+=("\n\t\t"+k+": ");
+       
+
+      show+=("  "+temp[key][v][k]+"; ");
+    }
     }
   }
-
 
 };
 function print_all_cycle_details()
 {
+ 
   var temp  = results.Stats.all_cycle_details;
+ 
+  
   for(var key in temp){
-    show+=(key+"\n"+"\t");
+    show+=("\n"+key+": ");
     for(var v in temp[key])
     {
-      show+=(v+": ");
-      show+=(temp[key][v]+"\n\t");
+      show+=("\n\t"+v+": ");
+      if(v.includes('fetch_decode'))
+      {
+        show+=(""+temp[key][v]+"; ");
+        break;
+      }
+      for(var k in temp[key][v]){
+        show+=("\n\t\t"+k+": ");
+      show+=("  "+temp[key][v][k]+"; ");
+    }
     }
   }
 };
@@ -124,4 +146,11 @@ print_register_per_cycle();
 var x = document.getElementById('mm');
 
 x.innerHTML = show;
+
+
+// ---------------------------------------------------
+
+
+
 }
+  

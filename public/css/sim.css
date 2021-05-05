@@ -1,188 +1,209 @@
 .textarea{
-    background: url(http://i.imgur.com/2cOaJ.png);
-    background-attachment: local;
-    background-repeat: no-repeat;
-    padding-left: 35px;
-    padding-top: 10px;
-    border-color:#ccc;
-    width: 65%; 
-    min-height: 500px;
+  background: url(http://i.imgur.com/2cOaJ.png);
+  background-attachment: local;
+  background-repeat: no-repeat;
+  padding-left: 35px;
+  padding-top: 10px;
+  border-color:#ccc;
+  width: 65%; 
+  min-height: 500px;
 }
 .editor{
-    margin-top: 10px;
-    padding-left: 30px;
+  margin-top: 10px;
+  padding-left: 30px;
 }
 .submit-button{
-    position: relative;
-    margin-left: 30px;
-    margin-top: 5px;
-    
+  position: relative;
+  margin-left: 30px;
+  margin-top: 5px;
+  
 }
 
 .header{
-    text-align: center;
-    font-family: 'Ubuntu';
-    font-weight: 700;
-    font-size: 30px;
-    background-color:skyblue;
+  text-align: center;
+  font-family: 'Ubuntu';
+  font-weight: 700;
+  font-size: 30px;
+  background-color:skyblue;
 }
 .side{
-    position:absolute;
-    font-family:  New,Courier,monospace;
-    top:92px;
-    height:600px;
-   overflow:scroll;
-   
-    /* width:300px; */
-    right:80px;
-    /* Hide scrollbar for IE, Edge and Firefox */
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  
-    /* padding:50px; */
-    /* margin-right: 10px; */
+  position:absolute;
+  font-family:  New,Courier,monospace;
+  top:92px;
+  height:600px;
+ overflow:scroll;
+ 
+  /* width:300px; */
+  right:80px;
+  /* Hide scrollbar for IE, Edge and Firefox */
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  
+  /* padding:50px; */
+  /* margin-right: 10px; */
 
 }
 .side::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
 /* .dropdown{
-    
+  
 } */
 
 .dropdown-label{
-    display:inline;
-    font-family:  New,Courier,monospace;
-    font-weight: 400;
-    font-size:.85rem;
-    padding: 10px;
+  display:inline;
+  font-family:  New,Courier,monospace;
+  font-weight: 400;
+  font-size:.85rem;
+  padding: 10px;
 }
 .dropdown-input{
-    display:inline;
-    width:210px;
+  display:inline;
+  width:210px;
 }
 .key{
-    
-     height: 568px;
-    /* overflow: auto; */
+  
+   height: 568px;
+  /* overflow: auto; */
 
 }
 .memory-table{
-    position:absolute;
-    left:0px;
+  position:absolute;
+  left:0px;
 }
 .memory-dropButtons{
-    border:none;
-   text-decoration:none;
-   color:black;
-   /* display: inli; */
+  border:none;
+ text-decoration:none;
+ color:black;
+ /* display: inli; */
 }
 .memory-dropButtons:hover{
-    color:#66FF66;
+  color:#66FF66;
 }
 table {
-    
-    position:absolute;
-    /* top:50px; */
-    /* right:0px; */
-    width:210px;
-    margin-right: 0px;
-    font-family:  New,Courier,monospace;
-    border: 1px solid lightgray;
-    border-collapse: collapse;
-}
-  table, th, td {
-   
-    border: none;
-  }
-  th, td {
-    
-    padding: 6px;
-    text-align: left;
-   
-  }
-  /* tr:nth-child(even) {
-   
-    background-color: #eee  !important;
-  }
-  tr:nth-child(odd) {
-   
-    background-color:grey !important;
-  }
-   */
-   .stats{
-    /* margin-top: 20px; */
-    top:92px;
-    right:250px;
-    position:absolute;
-    font-family:  New,Courier,monospace;
-    font-size: 15px;
-    left:67%;
-    
-
-  }
- th {
-    
-    background-color: white;
-    color: black;
-
-  }
-  th:hover{
-      color: #66FF66;
-
-  }
-  tr:hover{
-      color:peru;
-      font-weight: bolder;
-  }
   
- .new_table{
-    font-family:  New,Courier,monospace;
-    border: 1px solid lightgray;
-    border-collapse: collapse;
+  position:absolute;
+  top:50px; 
+  right:0px;
+  width:210px;
+  margin-right: 0px;
+  font-family:  New,Courier,monospace;
+  border: 1px solid lightgray;
+  border-collapse: collapse;
+}
+table, th, td {
+ 
+  border: none;
+}
+th, td {
+  
+  padding: 6px;
+  text-align: left;
+ 
+}
+/* tr:nth-child(even) {
+ 
+  background-color: #eee  !important;
+}
+tr:nth-child(odd) {
+ 
+  background-color:grey !important;
+}
+ */
+ .stats{
+  /* margin-top: 20px; */
+  top:92px;
+  right:250px;
+  position:absolute;
+  font-family:  New,Courier,monospace;
+  font-size: 15px;
+  left:67%;
+  
 
-  }
-  .new_window_side{
-    margin-top: 20px;
-    margin-right:0px;
-    right:0px;
-    /* left:300px; */
-    width:200px;
-    min-height:700px;
-    -ms-overflow-style: none;  /* IE and Edge
-    scrollbar-width: none;   */
+}
+th {
+  
+  background-color: white;
+  color: black;
 
-  }
-  .debug{
-    background: url(http://i.imgur.com/2cOaJ.png);
-    background-attachment: local;
-    position:absolute;
-    background-repeat: no-repeat;
-    min-height: 600px;
-    width:700px;
-    padding-left: 30px;
-    /* margin-left: 800px; */
-    margin-right:0px;
-    margin-top: 20px;
-    /* overflow:scroll; */
-    font-family:  New,Courier,monospace;
-    
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  
-  }
+}
+th:hover{
+    color: #66FF66;
 
-  .stats{
-    /* margin-top: 20px; */
-    top:92px;
-    right:250px;
-    position:absolute;
-    font-family:  New,Courier,monospace;
-    font-size: 15px;
-    left:67%;
-    
+}
+tr:hover{
+    color:peru;
+    font-weight: bolder;
+}
 
-  }
-.myDynamicTable{
-    margin-right:100px;
-    position:absolute;
-  }
+.new_table{
+  font-family:  New,Courier,monospace;
+  border: 1px solid lightgray;
+  border-collapse: collapse;
+  margin-top: 10px;
+  /* width:%; */
+  margin-right: 0px;
+}
+.new_window_side{
+  margin-left: 0%;
+  /* left:300px; */
+  
+  padding-left: 0% ;
+  min-height:700px;
+  -ms-overflow-style: none;  /* IE and Edge
+  scrollbar-width: none;   */
+
+}
+.debug{
+  background: url(http://i.imgur.com/2cOaJ.png);
+  background-attachment: local;
+  position:absolute;
+  background-repeat: no-repeat;
+  min-height: 50%;
+  width:40%;
+  padding-left: 30px;
+ 
+  /* margin-right:600px; */
+
+  margin-top: 50px;
+  /* overflow:scroll; */
+  font-family:  New,Courier,monospace;
+  
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  
+}
+.new_debug{
+background: url(http://i.imgur.com/2cOaJ.png);
+background-attachment: local;
+position:absolute;
+background-repeat: no-repeat;
+min-height: 40%;
+width:40%;
+padding-left: 30px;
+/* margin-left: 800px; */
+
+
+margin-top: 30%;
+/* overflow:scroll; */
+font-family:  New,Courier,monospace;
+
+-ms-overflow-style: none;  /* IE and Edge */
+scrollbar-width: none;  
+}
+
+.stats{
+  /* margin-top: 20px; */
+  top:92px;
+  right:250px;
+  position:absolute;
+  font-family:  New,Courier,monospace;
+  font-size: 14px;
+  left:67%;
+  width:12.5%;
+  
+
+}
+/* .myDynamicTable{
+  margin-right:100px;
+  position:absolute;
+} */

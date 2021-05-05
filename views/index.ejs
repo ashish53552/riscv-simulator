@@ -48,6 +48,46 @@
                 <label class="form-check-label" for="flexSwitchCheckDefault">pipeline reg.</label>
             </div>
             <input placeholder = "PC" id="req_inst" name="req_inst">
+
+            <div class="form-group">
+                <label for="exampleFormControlSelect1">Instruct.cache block placement type</label>
+                <select id="a" class="form-control" style="height:30px;">
+                  <option value="1">1:Direct Mapped</option>
+                  <option value="2">2:fully_Associative</option>
+                  <option value="3">3:Set_associative</option>
+                </select>
+                <label for="Cache Size">Ins.cache size:</label><br>
+                <input  class = "form-control" style="height:25px;" placeholder="In Bytes" id="b" name="b" type="number" value=""><br>
+
+                <label for="Block Size">Ins.cache block size:</label><br>
+                <input  class = "form-control" style="height:25px;" placeholder="In Bytes" id="c" type="number" name="instruction_cache_block_size" value=""><br>
+
+                <label for="Cache Size">Instruction Cache Block Size per set:</label><br>
+                <input id="d" class = "form-control" style="height:25px;" placeholder="" value=""><br>
+                
+                <label for="Data">Data Cache Block Placement Type</label>
+                <select id="e" class="form-control" style="height:30px;">
+                  <option value="1">1:Direct Mapped</option>
+                  <option value="2"> 2:fully_Associative</option>
+                  <option value="3">3:Set_associative</option>
+                </select>
+
+                <label for="Data Cache Size">Data Cache Size:</label><br>
+                <input id="f"  class = "form-control" style="height:25px;" placeholder="In Bytes" type="number" value=""><br>
+
+               
+                <label for="Data Cache Size">Data Cache Block Size per set:</label><br>
+                <input id="g" class = "form-control" style="height:25px;" placeholder="Bytes" type = "number" value=""><br>
+                
+                <label for="Data Block Size">Data Cache Block Placement Type:</label><br>
+                <input id="h"  class = "form-control" value="" style="height:25px;"><br>
+
+
+
+            </div>
+
+
+
              <button onclick=openWin() id="show_stats">show stats</button>
            </div>
            
