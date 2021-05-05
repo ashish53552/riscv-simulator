@@ -48,7 +48,7 @@ h = str(input('data_cache_block_placement_type? (Leave empty it not applicable)'
 load_memory_attributes(a, b, c, d, e, f, g, h)
 
 ### Input
-with open('../test/merge(4_inputs).mc', 'r') as f:
+with open('../test/bubble_sort(10_inputs).mc', 'r') as f:
     lines = f.read()
 code = lines.splitlines()
 
@@ -78,7 +78,7 @@ if pipelining:
     block_accessed_details = {}
 
     while True:
-        # print(info_per_stage)
+        # print(info_per_stage,"\n")
         # print(memory)
         info_per_stage, cycle_details, inst_details = execute_pipeline(info_per_stage, data_forwarding, req_inst)
         if not info_per_stage:
@@ -93,9 +93,9 @@ if pipelining:
         accessed_bl = show_block_accesses()
 
         if victim:
-            victim_detail['Cycle ' + str(total_cycles)] = victim[0]
+            victim_detail['Cycle ' + str(total_cycles)] = victim
         if accessed_bl:
-            block_accessed_details['Cycle ' + str(total_cycles)] = accessed_bl[0]
+            block_accessed_details['Cycle ' + str(total_cycles)] = accessed_bl
 
         if print_pipeline_registers:
             all_cycle_details["Cycle " + str(total_cycles)] = cycle_details
@@ -154,9 +154,9 @@ else:
         accessed_bl = show_block_accesses()
 
         if victim:
-            victim_detail['Cycle ' + str(cycles)] = victim[0]
+            victim_detail['Cycle ' + str(cycles)] = victim
         if accessed_bl:
-            block_accessed_details['Cycle ' + str(cycles)] = accessed_bl[0]
+            block_accessed_details['Cycle ' + str(cycles)] = accessed_bl
 
     Stats['total_cycles'] = 5 * cycles
     Stats['CPI'] = 5
@@ -166,7 +166,8 @@ else:
     Stats['accessed_blocks'] = block_accessed_details
 
 Stats = get_memory_stats(Stats)
-
+Stats["instruction_cache"] = show_instruction_cache_data()
+Stats["data_cache"] = show_data_cache_data()
 registers = get_register_file()
 Inst_Mem = get_text_memory_file()
 Data_Mem, Stack_Mem = get_data_memory_file()
@@ -180,9 +181,12 @@ for i in Stats.keys():
         # print(i,"\n")
         file_d.write("\n")
         file_d.write(i + "\n")
-        for j in Stats[i]:
-            # print(j, "\n", Stats[i][j], "\n")
-            file_d.write(j + "\n" + str(Stats[i][j]) + "\n")
+        file_d.write(json.dumps(Stats[i], indent = 4))
+        # for j in Stats[i]:
+        #     # print(j, "\n", Stats[i][j], "\n")
+        #     file_d.write(j + "\n")
+        #     file_d.write(json.dumps({Stats[i][j]}))
+        #     file_d.write("\n")
 
 
 def print_output(x):
@@ -190,11 +194,14 @@ def print_output(x):
         print(i, " : ", x[i])
     print("\n")
 
-
-print("Accessed_Blocks\n")
-print_output(Stats['accessed_blocks'])
-print("Victim Blocks\n")
-print_output(Stats['victim_blocks'])
+# print("Accessed_Blocks\n")
+# print_output(Stats['accessed_blocks'])
+# print("Victim Blocks\n")
+# print_output(Stats['victim_blocks'])
+# print("Instruction Cache after execution\n")
+# print(Stats["instruction_cache"])
+# print("Data Cache after execution\n")
+# print(Stats["data_cache"])
 print("Registers\n")
 print_output(registers)
 print("Instruction Memory\n")
