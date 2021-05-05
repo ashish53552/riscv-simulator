@@ -10,6 +10,7 @@ from register_file import *
 import sys
 import json
 import re
+import os
 
 # input_file=sys.argv[1]
 #
@@ -23,18 +24,32 @@ import re
 # inp=list(inp.split()) #this file contains the data inputs
 
 ### Input to be taken for knobs
+print("Enter 1 for yes 0 for no")
 pipelining = int(input('Pipelining? '))
-register_after_each_cycle = int(input("Registers?"))
+register_after_each_cycle = int(input("Registers File? "))
 
 if pipelining:
     data_forwarding = int(input('Data_Forwarding? '))
     print_pipeline_registers = int(input('Print_Pipeline_Registers? '))
-    req_inst = str(input('print_pipeline_registers_inst_num? '))
+    req_inst = str(
+        input('Print_pipeline_registers_for_inst_with_PC_in_format(0x0000000A)? (Leave Empty if not required)'))
 
+a = int(input(
+    'inst_cache_block_placement_type(Put the corresponding number)? [1: direct_mapped, 2: fully_associative, 3: set_associative] '))
+b = int(input('inst_cache_size? (bytes)'))
+c = int(input('inst_cache_block_size? (bytes)'))
+d = str(input('inst_cache_blocks_per_set? (Leave empty it not applicable)'))
+e = int(input(
+    'data_cache_block_placement_type(Put the corresponding number)? [1: direct_mapped, 2: fully_associative, 3: set_associative] '))
+f = int(input('data_cache_size? (bytes)'))
+g = int(input('data_cache_blocks_per_set? (bytes)'))
+h = str(input('data_cache_block_placement_type? (Leave empty it not applicable)'))
+
+load_memory_attributes(a, b, c, d, e, f, g, h)
 
 ### Input
-with open('../test/fibonacci(6th_number_in_x29).mc', 'r') as f:
-  lines = f.read()
+with open('../test/merge(4_inputs).mc', 'r') as f:
+    lines = f.read()
 code = lines.splitlines()
 
 # Storing each instruction in the text memory
@@ -59,26 +74,35 @@ if pipelining:
     all_cycle_details = {}
     req_inst_details = {}
     Registers_per_cycle = {}
+    victim_detail = {}
+    block_accessed_details = {}
 
     while True:
         # print(info_per_stage)
+        # print(memory)
         info_per_stage, cycle_details, inst_details = execute_pipeline(info_per_stage, data_forwarding, req_inst)
         if not info_per_stage:
             break
 
-        total_cycles+=1
+        total_cycles += 1
 
         # print(buffers)
         # print("cycle done:", total_cycles, "\n")
         # print(cycle_details)
+        victim = show_victim_blocks()
+        accessed_bl = show_block_accesses()
+
+        if victim:
+            victim_detail['Cycle ' + str(total_cycles)] = victim[0]
+        if accessed_bl:
+            block_accessed_details['Cycle ' + str(total_cycles)] = accessed_bl[0]
 
         if print_pipeline_registers:
-            all_cycle_details["Cycle "+str(total_cycles)] = cycle_details
+            all_cycle_details["Cycle " + str(total_cycles)] = cycle_details
         if inst_details:
-            req_inst_details["Cycle "+str(total_cycles)] = inst_details
+            req_inst_details["Cycle " + str(total_cycles)] = inst_details
         if register_after_each_cycle:
-            Registers_per_cycle["Cycle "+str(total_cycles)] = get_register_file()
-
+            Registers_per_cycle["Cycle " + str(total_cycles)] = get_register_file()
 
     # if print_pipeline_registers:
     #     print("Instruction Buffers per Cycle\n", all_cycle_details, "\n")
@@ -89,14 +113,15 @@ if pipelining:
     #
     # print("Total Cycles", total_cycles-1)
     Stats = print_required_values()
-    Stats['total_cycles'] = total_cycles-1
+    Stats['total_cycles'] = total_cycles - 1
     CPI = total_cycles / Stats['num_instructions']
     # print("CPI: ", CPI, "\n")
     Stats["CPI"] = CPI
     Stats['all_cycle_details'] = all_cycle_details
     Stats['req_inst_details'] = req_inst_details
     Stats['register_per_cycle'] = Registers_per_cycle
-
+    Stats['victim_blocks'] = victim_detail
+    Stats['accessed_blocks'] = block_accessed_details
 
 else:
     PC = None
@@ -104,33 +129,80 @@ else:
     branch = False
     cycles = 0
     Registers_per_cycle = {}
-    
+    Stats['num_alu'], Stats['num_control'], Stats['num_data_transfer'] = 0, 0, 0
+    victim_detail = {}
+    block_accessed_details = {}
+
     while True:
         PC, IR = fse.fetch(PC, IR, branch)
         if IR == "0x00000000":
             break
         cycles += 1
         instruction_dict = decode(IR)
-        PC, branch = identify_instruction_and_run(instruction_dict, PC)
+        PC, branch, br, data_t = identify_instruction_and_run(instruction_dict, PC)
+        if data_t:
+            Stats['num_data_transfer'] += 1
+        elif br:
+            Stats['num_control'] += 1
+            # print(PC)
+        else:
+            Stats['num_alu'] += 1
         if register_after_each_cycle:
-            Registers_per_cycle["Cycle "+str(cycles)] = get_register_file()
+            Registers_per_cycle["Cycle " + str(cycles)] = get_register_file()
+
+        victim = show_victim_blocks()
+        accessed_bl = show_block_accesses()
+
+        if victim:
+            victim_detail['Cycle ' + str(cycles)] = victim[0]
+        if accessed_bl:
+            block_accessed_details['Cycle ' + str(cycles)] = accessed_bl[0]
 
     Stats['total_cycles'] = 5 * cycles
     Stats['CPI'] = 5
     Stats['num_instructions'] = cycles
     Stats['register_per_cycle'] = Registers_per_cycle
+    Stats['victim_blocks'] = victim_detail
+    Stats['accessed_blocks'] = block_accessed_details
+
+Stats = get_memory_stats(Stats)
 
 registers = get_register_file()
 Inst_Mem = get_text_memory_file()
 Data_Mem, Stack_Mem = get_data_memory_file()
 
+os.remove("debug_info.txt")
+file_d = open("debug_info.txt", 'a')
 for i in Stats.keys():
-    print(i, "\n", Stats[i], "\n")
+    if type(Stats[i]) == int or type(Stats[i]) == float:
+        print(i, "\n", Stats[i], "\n")
+    elif Stats[i]:
+        # print(i,"\n")
+        file_d.write("\n")
+        file_d.write(i + "\n")
+        for j in Stats[i]:
+            # print(j, "\n", Stats[i][j], "\n")
+            file_d.write(j + "\n" + str(Stats[i][j]) + "\n")
 
-print(registers,"\n")
-print(Inst_Mem,"\n")
-print(Data_Mem,"\n")
-print(Stack_Mem,"\n")
+
+def print_output(x):
+    for i in x:
+        print(i, " : ", x[i])
+    print("\n")
+
+
+print("Accessed_Blocks\n")
+print_output(Stats['accessed_blocks'])
+print("Victim Blocks\n")
+print_output(Stats['victim_blocks'])
+print("Registers\n")
+print_output(registers)
+print("Instruction Memory\n")
+print_output(Inst_Mem)
+print("Data Memory\n")
+print_output(Data_Mem)
+print("Stack Memory\n")
+print_output(Stack_Mem)
 
 # finalResult=OrderedDict()
 # finalResult['registers']=registers

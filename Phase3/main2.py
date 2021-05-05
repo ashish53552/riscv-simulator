@@ -10,7 +10,6 @@ from register_file import *
 import sys
 import json
 import re
-import os
 
 # input_file=sys.argv[1]
 #
@@ -24,17 +23,16 @@ import os
 # inp=list(inp.split()) #this file contains the data inputs
 
 ### Input to be taken for knobs
-print("Enter 1 for yes 0 for no")
 pipelining = int(input('Pipelining? '))
-register_after_each_cycle = int(input("Registers File? "))
+register_after_each_cycle = int(input("Registers?"))
 
 if pipelining:
     data_forwarding = int(input('Data_Forwarding? '))
     print_pipeline_registers = int(input('Print_Pipeline_Registers? '))
-    req_inst = str(input('Print_pipeline_registers_for_inst_with_PC_in_format(0x0000000A)? (Leave Empty if not required)'))
+    req_inst = str(input('print_pipeline_registers_inst_num? '))
 
 ### Input
-with open('../test/factorial(of_10_in_x26).mc', 'r') as f:
+with open('../test/fibonacci(6th_number_in_x29).mc', 'r') as f:
     lines = f.read()
 code = lines.splitlines()
 
@@ -104,7 +102,6 @@ else:
     branch = False
     cycles = 0
     Registers_per_cycle = {}
-    Stats['num_alu'], Stats['num_control'], Stats['num_data_transfer'] = 0, 0, 0
 
     while True:
         PC, IR = fse.fetch(PC, IR, branch)
@@ -112,14 +109,7 @@ else:
             break
         cycles += 1
         instruction_dict = decode(IR)
-        PC, branch, br, data_t = identify_instruction_and_run(instruction_dict, PC)
-        if data_t:
-            Stats['num_data_transfer'] += 1
-        elif br:
-            Stats['num_control'] += 1
-            # print(PC)
-        else:
-            Stats['num_alu'] += 1
+        PC, branch = identify_instruction_and_run(instruction_dict, PC)
         if register_after_each_cycle:
             Registers_per_cycle["Cycle " + str(cycles)] = get_register_file()
 
@@ -132,32 +122,13 @@ registers = get_register_file()
 Inst_Mem = get_text_memory_file()
 Data_Mem, Stack_Mem = get_data_memory_file()
 
-os.remove("debug_info.txt")
-file_d = open("debug_info.txt", 'a')
 for i in Stats.keys():
-    if type(Stats[i]) == int or type(Stats[i]) == float:
-        print(i, "\n", Stats[i], "\n")
-    elif Stats[i]:
-        # print(i,"\n")
-        file_d.write("\n")
-        file_d.write(i+"\n")
-        for j in Stats[i]:
-            # print(j, "\n", Stats[i][j], "\n")
-            file_d.write(j+"\n"+str(Stats[i][j])+"\n")
+    print(i, "\n", Stats[i], "\n")
 
-def print_output(x):
-    for i in x:
-        print(i, " : ", x[i])
-    print("\n")
-
-print("Registers\n")
-print_output(registers)
-print("Instruction Memory\n")
-print_output(Inst_Mem)
-print("Data Memory\n")
-print_output(Data_Mem)
-print("Stack Memory\n")
-print_output(Stack_Mem)
+print(registers, "\n")
+print(Inst_Mem, "\n")
+print(Data_Mem, "\n")
+print(Stack_Mem, "\n")
 
 # finalResult=OrderedDict()
 # finalResult['registers']=registers

@@ -428,7 +428,7 @@ def pipeline_memory_access(info) :
         # print("MAR", MAR, "MDR", MDR)
         MAR = pad_hexa(make_hex_uppercase(MAR), 8)
         MDR = pad_hexa(make_hex_uppercase(MDR), 8)
-        memory_file.write_data_from_memory(MDR, MAR, num_bytes, 'data_cache')
+        memory_file.write_data_to_memory(MDR, MAR, num_bytes, 'data_cache')
         # memory_file.add_data_to_memory(MDR, MAR, num_bytes)
         # print("YES")
         return PC, None, control_signals
@@ -443,12 +443,12 @@ def pipeline_memory_access(info) :
 
 
 def pipeline_write_back(info) :
-	PC, register_num, value, control_signals = info
-	
-	# if control_signals['is_control_instruction'] == True and control_signals['mux_writeback'] == 'PC':
-	# 	register_file.update_register_val(register_num, value['nxt_pc'])
+    PC, register_num, value, control_signals = info
 
-	if value:
-		register_file.update_register_val(register_num, value)
+    # if control_signals['is_control_instruction'] == True and control_signals['mux_writeback'] == 'PC':
+    # 	register_file.update_register_val(register_num, value['nxt_pc'])
+    # print("WB", register_num, value)
+    if value:
+        register_file.update_register_val(register_num, value)
 
-	return PC, control_signals
+    return PC, control_signals
