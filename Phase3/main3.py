@@ -30,12 +30,13 @@ f = open("Phase2\\inp.txt", "w")
 f.write(json.dumps(data))
 f.close()
 
+print(data)
+sys.stdout.flush()
 if pipelining:
     data_forwarding = int(data['data_forwarding'])
     print_pipeline_registers =int(data['print_pipeline_registers'])
     req_inst = data['req_inst']
-    print(json.dumps(data))
-sys.stdout.flush()
+
 
 a = int(data['a'])
 b = int(data['b'])
@@ -62,8 +63,10 @@ for line in code:
 #inp = input("Enter the number of elements to be added in the Data Memory :")
 
 if len(inp) > 0:
-    for x in inp.split():
+    list_of_values = inp
+    for x in list_of_values:
         data = bounding_hex(int(x))
+        # print(data)
         add_data_before(data)
 
 # To be returned to front-end as a JSON Object along with memory dictionaries
@@ -173,6 +176,9 @@ registers = get_register_file()
 Inst_Mem = get_text_memory_file()
 Data_Mem, Stack_Mem = get_data_memory_file()
 
+f = open("Phase2\\t3.txt", "w")
+f.write(json.dumps(Stats))
+f.close()
 # os.remove("debug_info.txt")
 # file_d = open("debug_info.txt", 'a')
 # for i in Stats.keys():

@@ -72,15 +72,16 @@ submitDialogue.addEventListener('click', (event) => {
     //console.log(data); uncomment this to check the return data on frontend
 
     $.ajax({url:"/",type:'POST', data:data,async:false,success: (response, status) => { //ajax call to post the data on the app.post()
-        // results=JSON.parse(results);
+        // response=JSON.parse(response);
         //  console.log(results);
         console.log(status);
         results=response;
-        console.log(results);
+        // console.log(results);
     },error:(xhr,status,error)=>{
         console.log("Web request terminated with xhr:"+xhr+"status: "+status+ " error: "+error);
     }});
     
+    console.log(results);
     var registers = results.registers;
         var inst_mem = results.Inst_Mem;
         var data_mem = results.Data_Mem;
@@ -145,9 +146,9 @@ submitDialogue.addEventListener('click', (event) => {
             }
             text += '</tr>'
             stack_values.insertAdjacentHTML('beforeend', text);
-        }
+       }
 
-        console.log(results);
+       // console.log(results);
 });
 
 function openWin() {

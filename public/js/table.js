@@ -2,7 +2,7 @@
 function myFunction(){
   var results; 
     $.ajax({url:"/dataApi",type:'GET',async:false,success: (response, status) => { //ajax call to post the data on the app.post()
-      // results=JSON.parse(results);
+      // response=JSON.parse(response);
       //  console.log(results);
       console.log(status);
       results=response;

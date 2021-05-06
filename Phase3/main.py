@@ -48,7 +48,7 @@ h = str(input('data_cache_block_placement_type? (Leave empty it not applicable)'
 load_memory_attributes(a, b, c, d, e, f, g, h)
 
 ### Input
-with open('../test/bubble_sort(10_inputs).mc', 'r') as f:
+with open('E:\\College\\CS204\\Main Project\\RISC-V-Simulator\\test\\bubble_sort(10_inputs).mc', 'r') as f:
     lines = f.read()
 code = lines.splitlines()
 

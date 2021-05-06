@@ -49,29 +49,30 @@ app.post('/',(req,res)=>{
         var data;
         try {
             data = fs.readFileSync('Phase2/test.txt', 'utf8')
-        //    console.log(JSON.parse(data))
+          // console.log(JSON.parse(data))
             data=JSON.parse(data)
             data.input_params=input_params;
             fs.writeFile('Phase2/popup.txt', JSON.stringify(data), function (err) {
                 if (err) throw err;
                 console.log('Saved!');
             });
+            // res.send({somedata:'json'});
               
             res.send(data)
         } catch (err) {
             console.error(err)
         }
     });
-    // pythonProcess.stderr.on('data', (data) => {
-    //     console.error(`child stderr:\n${data}`);
-    //   });
+    pythonProcess.stderr.on('data', (data) => {
+        console.error(`child stderr:\n${data}`);
+      });
     // //parsing the response from std.out.flush()
-    // pythonProcess.stdout.on('data', (data) => {
-    // //    data.input_params=input_params;
-    //   //  console.log(JSON.parse(data)); uncomment this to check the output of the python file at console
-    //    // dumping the data to the frontend ajax call
-    //    console.log(data.toString())
-    // });
+    pythonProcess.stdout.on('data', (data) => {
+    //    data.input_params=input_params;
+      //  console.log(JSON.parse(data)); uncomment this to check the output of the python file at console
+       // dumping the data to the frontend ajax call
+       console.log(data.toString())
+    });
     // res.send({some:'json'});
 
     
