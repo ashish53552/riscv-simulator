@@ -26,7 +26,7 @@ inp=list(inp.split()) #this file contains the data inputs
 ## Input to be taken for knobs
 pipelining =int(data['pipelining'])
 register_after_each_cycle =int(data['register_after_each_cycle'])
-f = open("Phase2\\inp.txt", "w")
+f = open("Phase2/inp.txt", "w")
 f.write(json.dumps(data))
 f.close()
 
@@ -176,7 +176,7 @@ registers = get_register_file()
 Inst_Mem = get_text_memory_file()
 Data_Mem, Stack_Mem = get_data_memory_file()
 
-f = open("Phase2\\t3.txt", "w")
+f = open("Phase2/t3.txt", "w")
 f.write(json.dumps(Stats))
 f.close()
 # os.remove("debug_info.txt")
@@ -225,6 +225,6 @@ finalResult['Data_Mem']=Data_Mem
 finalResult['Stack_Mem']=Stack_Mem
 finalResult['Stats']=Stats
 
-f = open("Phase2\\test.txt", "w")
+f = open("Phase2/test.txt", "w")
 f.write(json.dumps(finalResult))
 f.close()

@@ -12,19 +12,26 @@ function myFunction(){
   console.log("ram", results);
 
 let Table = [
-    {Information:"", Count:0},
     { Information:"Total Cycles", Count: results.Stats.total_cycles, }, 
     { Information:"Total instructions executed", Count: results.Stats.num_instructions, },
     { Information: "CPI", Count: results.Stats.CPI},
-    { Information: "Data Trasfer Instructions", Count: results.Stats.num_data_trasfer, },
+    { Information: "Data Trasfer Instructions", Count: results.Stats.num_data_transfer, },
     { Information: "ALU instructions", Count:results.Stats.num_alu,  }, 
-    {Information: "Control instructions", Count: results.Stats.num_control, },
+    { Information: "Control instructions", Count: results.Stats.num_control, },
     {Information:"Stalls", Count:results.Stats.num_stalls,},
     {Information:"Data Hazards", Count:results.Stats.num_data_hazards, },
     {Information:"Control Hazards", Count:results.Stats.num_control_hazards, },
-    {Information:"Branch misprediction", Count:results.Stats_num_branch_mispredictions, },
+    {Information:"Branch misprediction", Count:results.Stats.num_branch_mispredictions, },
     {Information:"Stalls due to data hazards", Count:results.Stats.num_stalls_data, },
     {Information:"Stalls due to control hazards", Count:results.Stats.num_stalls_control, },
+    {Information:"Number of data cache  hits", Count:results.Stats.num_data_cache_hits, },
+    {Information:"Number of data cache  misses", Count:results.Stats.num_data_cache_misses, },
+    {Information:"Number of data memory accesses", Count:results.Stats.num_data_memory_accesses, },
+    {Information:"Number of data memory hitrate", Count:results.Stats.num_data_memory_hitrate, },
+    {Information:"Number of instruction cache hits", Count:results.Stats.num_inst_cache_hits, },
+    {Information:"Number of of instruction cache misses", Count:results.Stats.num_inst_cache_misses, },
+    {Information:"Number of instruction memory accesses", Count:results.Stats.num_inst_memory_accesses, },
+    {Information:"Number of instruction memory hitrate", Count:results.Stats.num_inst_memory_hitrate, },
   ];
 
 
