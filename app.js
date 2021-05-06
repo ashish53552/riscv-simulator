@@ -49,6 +49,14 @@ app.post('/',(req,res)=>{
         var data;
         try {
             data = fs.readFileSync('Phase2/test.txt', 'utf8')
+            try {
+                fs.unlinkSync('Phase2/test.txt')
+                fs.unlinkSync('Phase2/inp.txt')
+                fs.unlinkSync('Phase2/t3.txt')
+                //file removed
+              } catch(err) {
+                console.error(err)
+            }
           // console.log(JSON.parse(data))
             data=JSON.parse(data)
             data.input_params=input_params;

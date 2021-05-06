@@ -70,8 +70,8 @@ let Table = [
 
 
 //  ------------------------------------------
-
 var show = "";
+
 function print_register_per_cycle(){
   var temp  = results.Stats.register_per_cycle;
   
@@ -80,10 +80,10 @@ function print_register_per_cycle(){
     for(var v in temp[key])
     {
       show+=("\n\t"+v+": ");
-      for(var k in temp[key][v]){
-        show+=("\n\t\t"+k+": ");
-      show+=("  "+temp[key][v][k]+"; ");
-    }
+      // for(var k in temp[key][v]){
+        // show+=("\n\t\t"+k+": ");
+      show+=("  "+temp[key][v]+"; ");
+    // }
     }
   }
  
@@ -140,15 +140,19 @@ function print_all_cycle_details()
 var condn = results.input_params;
 console.log(results)
 console.log(condn)
+
 if(condn.req_inst!='')
-{
+{ show +="Required instruction Details:\n\n";
   print_req_inst_details();
 }
-else if(condn.print_pipeline_registers==1)
+else if(condn.print_pipeline_registers==1){
+  show+="All Cycle Details:\n\n";
 print_all_cycle_details();
-else if(condn.register_after_each_cycle==1)
+}
+else if(condn.register_after_each_cycle==1){
+  show+="Register Per Cycle:\n\n";
 print_register_per_cycle();
-
+}
 
 var x = document.getElementById('mm');
 
@@ -219,7 +223,9 @@ for(var key in temp){
 var y = document.getElementById('mm1');
 
 y.innerHTML = Show;
+// --------------------------
+
+
 
 
 }
-  

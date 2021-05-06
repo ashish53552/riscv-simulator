@@ -41,6 +41,11 @@ const h=document.querySelector("#h");
 var results;
 submitDialogue.addEventListener('click', (event) => {
     // console.log(a.value+"\n"+ b.value+"\n"+c.value+"\n"+e.value+"\n"+f.value+"\n"+g.value+"\n"+h.value);
+    if(b.value=="" || c.value=="" || f.value=="" || g.value==""){
+
+        alert("invalid! please fill the required empty field to avoid wrong result");
+    }
+    else{
     var text;
     alert("Your code has been submitted successfully\nPlease check the Registers/Memory");
     $('#register-values').empty();
@@ -59,6 +64,7 @@ submitDialogue.addEventListener('click', (event) => {
     data.req_inst=req_inst.value;
     data.register_after_each_cycle=$('#register_after_each_cycle').is(":checked")?1:0;
     data.print_pipeline_registers=$('#print_pipeline_registers').is(":checked")?1:0;
+
     data.a=a.value;
     data.b=b.value;
     data.c=c.value;
@@ -147,7 +153,7 @@ submitDialogue.addEventListener('click', (event) => {
             text += '</tr>'
             stack_values.insertAdjacentHTML('beforeend', text);
        }
-
+    }
        // console.log(results);
 });
 
