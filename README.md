@@ -121,7 +121,6 @@ RISC-V-Simulator
 ### How to Execute
 
    * The simulator is deployed at https://sheltered-journey-97920.herokuapp.com/#
-   * 
    * For running it *locally* **(Python and Node)**<br>
   ```
 		git clone "repo url" 
