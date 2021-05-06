@@ -150,6 +150,68 @@ x.innerHTML = show;
 
 // ---------------------------------------------------
 
+// printing accessed block
+
+ var Show = "ACCESSED_BLOCK\n";
+
+var temp = results.Stats.accessed_blocks;
+for(var key in temp){
+  Show+=("\n"+key+": ");
+  for(var v in temp[key])
+  {
+    Show+=("\n\t"+v+": ");
+    Show+=("  "+temp[key][v]+"; ");
+  }
+}
+
+
+// ------ printing victim blocks
+temp = results.Stats.victim_blocks;
+Show+='\n';
+Show+="VICTIMS_BLOCK\n";
+
+for(var key in temp){
+  Show+=("\n"+key+": ");
+  for(var v in temp[key])
+  {
+    Show+=("\n\t"+v+": ");
+    Show+=("  "+temp[key][v]+"; ");
+  }
+}
+
+
+// ------- printing data cache
+temp = results.Stats.data_cache;
+Show+='\n\n';
+Show+="DATA_CACHE\n";
+
+for(var key in temp){
+  Show+=("\n"+key+": ");
+  for(var v in temp[key])
+  {
+    Show+=("\n\t"+v+": ");
+    Show+=("  "+temp[key][v]+"; ");
+  }
+}
+// ----printing instruction chache
+temp = results.Stats.instruction_cache;
+Show+='\n\n';
+Show+="INSTRUCTION_CACHE\n";
+
+for(var key in temp){
+  Show+=("\n"+key+": ");
+  for(var v in temp[key])
+  {
+    Show+=("\n\t"+v+": ");
+    Show+=("  "+temp[key][v]+"; ");
+  }
+}
+
+
+
+var y = document.getElementById('mm1');
+
+y.innerHTML = Show;
 
 
 }

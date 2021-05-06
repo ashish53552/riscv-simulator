@@ -56,11 +56,12 @@
                   <option value="2">2:fully_Associative</option>
                   <option value="3">3:Set_associative</option>
                 </select>
+
                 <label for="Cache Size">Ins.cache size:</label><br>
-                <input  class = "form-control" style="height:25px;" placeholder="In Bytes" id="b" name="b" type="number" value=""><br>
+                <input  class = "form-control" style="height:25px;" placeholder="In Bytes" id="b" name="b" type="number"  required><br>
 
                 <label for="Block Size">Ins.cache block size:</label><br>
-                <input  class = "form-control" style="height:25px;" placeholder="In Bytes" id="c" type="number" name="instruction_cache_block_size" value=""><br>
+                <input  class = "form-control" style="height:25px;" placeholder="In Bytes" id="c" type="number" name="instruction_cache_block_size" required><br>
 
                 <label for="Cache Size">Instruction Cache Block Size per set:</label><br>
                 <input id="d" class = "form-control" style="height:25px;" placeholder="" value=""><br>
@@ -73,11 +74,11 @@
                 </select>
 
                 <label for="Data Cache Size">Data Cache Size:</label><br>
-                <input id="f"  class = "form-control" style="height:25px;" placeholder="In Bytes" type="number" value=""><br>
+                <input id="f"  class = "form-control" style="height:25px;" placeholder="In Bytes" type="number" value="" required><br>
 
                
                 <label for="Data Cache Size">Data Cache Block Size per set:</label><br>
-                <input id="g" class = "form-control" style="height:25px;" placeholder="Bytes" type = "number" value=""><br>
+                <input id="g" class = "form-control" style="height:25px;" placeholder="Bytes" type = "number" value="" required><br>
                 
                 <label for="Data Block Size">Data Cache Block Placement Type:</label><br>
                 <input id="h"  class = "form-control" value="" style="height:25px;"><br>

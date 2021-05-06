@@ -162,7 +162,7 @@ tr:hover{
   min-height: 50%;
   width:40%;
   padding-left: 30px;
- 
+  color:midnightblue;
   /* margin-right:600px; */
 
   margin-top: 50px;
@@ -177,6 +177,7 @@ background: url(http://i.imgur.com/2cOaJ.png);
 background-attachment: local;
 position:absolute;
 background-repeat: no-repeat;
+color:blue;
 min-height: 40%;
 width:40%;
 padding-left: 30px;
