@@ -120,15 +120,15 @@ RISC-V-Simulator
 
 ### How to Execute
 
-   * For running it *locally* **(Python)**<br>
-  ```
-		git clone "repo url"
-		# open terminal and navigate to the Phase 2 folder and run 
-		python main2.py
-  ```
-        
    * The simulator is deployed at https://sheltered-journey-97920.herokuapp.com/#
-   * The various input will be asked for the nobs and PC for specific instruction and all the stats will be displayed in the terminal and the debug info (pipeline register info etc.) will be stored in a file named "debug_info.txt" for our reference.
+   * 
+   * For running it *locally* **(Python and Node)**<br>
+  ```
+		git clone "repo url" 
+		npm install 
+		node app.py
+  ```
+   * The simulator will now run on localhost/  . Provide various inputs and click "Submit". Now to view the stats click on "show stats". The register and the memory value can be seen the main screen itself.  
 ### Instructions Supported
 	R-Type:
 		add, and, or, sll, slt, sra, srl, sub, xor, mul, div, rem
