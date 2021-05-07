@@ -112,7 +112,7 @@ RISC-V-Simulator
 
 	* Phase1 - Contains the python files for various stages like instruction decoding, five stage execution, memory file, register file.
 	* Phase2 - Contains the python files for executing a set of instructuions in a pipelined fashion with data forwarding and static branch prediction techniques.
-	* Phase3 - Contains the python files for executing a set of instructuions in a pipelined fashion using a single level level of instruction and data cache (I$ & D$) in addition to the secondary memory.
+	* Phase3 - Contains the python files for executing a set of instructuions in a pipelined fashion using a single level level of instruction and data cache (I$ & D$) in addition to the main memory.
 	* test - Contains few testcases to test the validity of the simulator.
 	* public - Contains CSS and JS components of the front-end of the GUI.
 	* views - Contains the Express.js and JS components for the back-end of the GUI.
